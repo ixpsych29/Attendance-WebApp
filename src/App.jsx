@@ -1,12 +1,14 @@
 // import "./App.css";
 
-import LoginForm from "./Components/LoginForm";
-import SignupForm from "./Components/SignupForm";
+import DisplayCard from "./Components/DisplayCard";
+// import LoginForm from "./Components/LoginForm";
+// import SignupForm from "./Components/SignupForm";
 function App() {
   return (
     <>
-      <LoginForm />
-      {/* <SignupForm /> */}
+      {/* <LoginForm />
+      <SignupForm /> */}
+      <DisplayCard />
     </>
   );
 }
