@@ -1,18 +1,27 @@
 // import "./App.css";
 
+import { useState } from "react";
 import Dashboard from "./Components/Dashboard";
-import { Navbar } from "./Components/Navbar";
+import Navbar from "./Components/NavBar";
+import { Box, ThemeProvider, createTheme } from "@mui/material";
+
 // import LoginForm from "./Components/LoginForm";
 // import SignupForm from "./Components/SignupForm";
 
 function App() {
+  const [mode, setMode] = useState("light");
+  const darkTheme = createTheme({
+    palette: {
+      mode: mode,
+    },
+  });
   return (
-    <>
-      <Navbar />
-      {/* <LoginForm />
-      <SignupForm /> */}
-      <Dashboard />
-    </>
+    <ThemeProvider theme={darkTheme}>
+      <Box bgcolor={"background.default"} color={Text.primary}>
+        <Navbar />
+        <Dashboard mode={mode} setMode={setMode} />
+      </Box>
+    </ThemeProvider>
   );
 }
 
