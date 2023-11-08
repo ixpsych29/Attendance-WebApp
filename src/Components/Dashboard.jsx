@@ -1,5 +1,6 @@
 import { Container, Stack } from "@mui/material";
 import DisplayCard from "./DisplayCard";
+import RecordList from "./RecordList";
 
 const Dashboard = () => {
   return (
@@ -9,6 +10,7 @@ const Dashboard = () => {
         <DisplayCard />
         <DisplayCard />
       </Stack>
+      <RecordList />
     </Container>
   );
 };

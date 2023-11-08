@@ -9,7 +9,6 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import AndroidIcon from "@mui/icons-material/Android";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useState } from "react";
@@ -53,10 +52,6 @@ export const Navbar = () => {
       }}
     >
       <StyledToolBar>
-        {/* <Typography
-          variant="h6"
-          sx={{ display: { xs: "none", sm: "block" } }}
-        >Zain Dev</Typography> */}
         <img
           src="/src/assets/logo.png"
           alt="Your Logo"
