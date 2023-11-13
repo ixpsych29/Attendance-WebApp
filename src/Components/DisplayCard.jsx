@@ -10,7 +10,17 @@ import {
 const DisplayCard = () => {
   return (
     <Container>
-      <Card sx={{ maxWidth: 270, maxHeight: 170, mt: 3 }}>
+      <Card
+        sx={{
+          maxWidth: 270,
+          maxHeight: 170,
+          mt: 3,
+          background: `linear-gradient(90deg, 
+          rgba(70, 130, 180, 1) 0%,  /* Steel Blue */
+          rgba(25, 25, 112, 1) 50%,  /* Midnight Blue */
+          rgba(10, 10, 10, 1) 100%);`,
+        }}
+      >
         <CardContent>
           <Typography
             sx={{
@@ -19,12 +29,15 @@ const DisplayCard = () => {
               alignItems: "center",
             }}
             variant="h5"
-            color="#1565c0"
+            color="#fff"
             gutterBottom
           >
             Total Employees
           </Typography>
-          <Typography sx={{ textAlign: "center", mt: 2, mb: 0 }} variant="h4">
+          <Typography
+            sx={{ textAlign: "center", mt: 2, mb: 0, color: "#fff" }}
+            variant="h4"
+          >
             20
           </Typography>
         </CardContent>
@@ -33,7 +46,9 @@ const DisplayCard = () => {
             sx={{
               ml: 10,
               textAlign: "center",
-              "&:hover": { color: "darkblue" },
+              color: "#fff",
+              bgcolor: "darkblue",
+              "&:hover": { color: "white" },
             }}
             variant="outlined"
             size="small"
