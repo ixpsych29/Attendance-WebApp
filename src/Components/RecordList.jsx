@@ -21,7 +21,10 @@ const RecordList = () => {
 
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DemoContainer components={["DatePicker"]}>
-          <DatePicker sx={{ alignItems: "right" }} label="Basic date picker" />
+          <DatePicker
+            sx={{ justifyContent: "right" }}
+            label="Basic date picker"
+          />
         </DemoContainer>
       </LocalizationProvider>
 
