@@ -30,7 +30,11 @@ const DisplayCard = () => {
         </CardContent>
         <CardActions>
           <Button
-            sx={{ ml: 10, textAlign: "center" }}
+            sx={{
+              ml: 10,
+              textAlign: "center",
+              "&:hover": { color: "darkblue" },
+            }}
             variant="outlined"
             size="small"
           >

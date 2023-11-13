@@ -1,6 +1,7 @@
 import { Box, Container, Stack } from "@mui/material";
 import DisplayCard from "./DisplayCard";
 import Sidebar from "./Sidebar";
+import RecordList from "./RecordList";
 
 const Dashboard = ({ mode, setMode }) => {
   return (
@@ -12,6 +13,7 @@ const Dashboard = ({ mode, setMode }) => {
           <DisplayCard />
           <DisplayCard />
         </Stack>
+        <RecordList />
       </Container>
     </Box>
   );

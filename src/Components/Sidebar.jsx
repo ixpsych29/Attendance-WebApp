@@ -30,7 +30,7 @@ const Sidebar = ({ mode, setMode }) => {
           }}
         >
           <ListItem disablePadding>
-            <ListItemButton href="#Dashboard">
+            <ListItemButton href="Dashboard">
               <ListItemIcon>
                 <HomeIcon color="warning" />
               </ListItemIcon>
