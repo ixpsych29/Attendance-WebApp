@@ -41,26 +41,28 @@ const UserImage = styled("img")(({ theme }) => ({
   },
 }));
 
-export const Navbar = () => {
+const Navbar = () => {
   const [open, setOpen] = useState(false);
   return (
     <AppBar
       position="sticky"
       sx={{
-        background:
-          "linear-gradient(45deg, rgba(255, 0, 0, 0.7), rgba(0, 0, 255, 0.7))",
+        background: `linear-gradient(90deg, 
+          rgba(70, 130, 180, 1) 0%,  /* Steel Blue */
+          rgba(25, 25, 112, 1) 50%,  /* Midnight Blue */
+          rgba(10, 10, 10, 1) 100%);`,
       }}
     >
       <StyledToolBar>
         <img
           src="/src/assets/logo.png"
           alt="Your Logo"
-          style={{ height: "46px" }}
+          style={{ height: "40px" }}
         />
         <UserImage
-          src="https://www.sandyapps.co/wp-content/uploads/2023/02/logo-dark-scaled.webp"
+          src="/src/assets/sandyApps-white.png"
           alt="Your Logo"
-          style={{ height: "46px" }}
+          style={{ height: "60px" }}
         />
         <Icons>
           <Badge badgeContent={4} color="error">
@@ -104,3 +106,5 @@ export const Navbar = () => {
     </AppBar>
   );
 };
+
+export default Navbar;
