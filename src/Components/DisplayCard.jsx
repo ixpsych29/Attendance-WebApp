@@ -12,6 +12,7 @@ const DisplayCard = () => {
     <Container>
       <Card
         sx={{
+          borderRadius: "12px",
           maxWidth: 270,
           maxHeight: 170,
           mt: 3,
@@ -44,6 +45,7 @@ const DisplayCard = () => {
         <CardActions>
           <Button
             sx={{
+              borderRadius: "7px",
               ml: 10,
               textAlign: "center",
               color: "#fff",
