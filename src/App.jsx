@@ -1,9 +1,10 @@
 // import "./App.css";
 
 import { useState } from "react";
-import Dashboard from "./Components/Dashboard";
+// import Dashboard from "./Components/Dashboard";
 import Navbar from "./Components/NavBar";
 import { Box, ThemeProvider, createTheme } from "@mui/material";
+import Attendence from "./Components/Attendence";
 
 // import LoginForm from "./Components/LoginForm";
 // import SignupForm from "./Components/SignupForm";
@@ -19,7 +20,8 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <Box bgcolor={"background.default"} color={Text.primary}>
         <Navbar />
-        <Dashboard mode={mode} setMode={setMode} />
+        {/* <Dashboard mode={mode} setMode={setMode} /> */}
+        <Attendence mode={mode} setMode={setMode} />
       </Box>
     </ThemeProvider>
   );

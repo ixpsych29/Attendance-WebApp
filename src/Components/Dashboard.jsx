@@ -14,7 +14,7 @@ const Dashboard = ({ mode, setMode }) => {
           <DisplayCard />
         </Stack>
         <RecordList />
-      </Container >
+      </Container>
     </Box>
   );
 };
