@@ -51,6 +51,7 @@ const Navbar = () => {
           rgba(70, 130, 180, 1) 0%,  /* Steel Blue */
           rgba(25, 25, 112, 1) 50%,  /* Midnight Blue */
           rgba(10, 10, 10, 1) 100%);`,
+        width: "100%",
       }}
     >
       <StyledToolBar>

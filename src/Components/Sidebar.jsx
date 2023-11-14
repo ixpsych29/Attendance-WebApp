@@ -19,7 +19,8 @@ const Sidebar = ({ mode, setMode }) => {
       sx={{
         display: {
           xs: "none",
-          sm: "block",
+          sm: "none",
+          md: "block",
         },
       }}
     >
