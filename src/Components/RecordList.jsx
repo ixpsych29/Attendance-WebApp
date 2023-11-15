@@ -7,10 +7,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import DatePickerCmp from "./DatePickerCmp";
 
 const RecordList = () => {
   return (
@@ -23,11 +20,7 @@ const RecordList = () => {
         Employees Attendance History
       </Typography>
 
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DemoContainer components={["DatePicker"]}>
-          <DatePicker sx={{ left: "75%" }} label="Basic date picker" />
-        </DemoContainer>
-      </LocalizationProvider>
+      <DatePickerCmp />
 
       <Table
         sx={{ minWidth: 650, mt: 3 }}
@@ -43,6 +36,7 @@ const RecordList = () => {
             <TableCell align="right">Leave Pic</TableCell>
           </TableRow>
         </TableHead>
+
         <TableBody>
           <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
             <TableCell component="th" scope="row">

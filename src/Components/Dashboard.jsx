@@ -8,7 +8,8 @@ const Dashboard = ({ mode, setMode }) => {
     <Box>
       <Sidebar mode={mode} setMode={setMode} />
       <Container>
-        <Stack direction="row">
+        <Stack direction="row" spacing={3}>
+          <DisplayCard />
           <DisplayCard />
           <DisplayCard />
           <DisplayCard />
