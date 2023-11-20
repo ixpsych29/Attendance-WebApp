@@ -12,6 +12,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
 import TodayIcon from "@mui/icons-material/Today";
 import ModeNightIcon from "@mui/icons-material/ModeNight";
+import { Link, Outlet } from "react-router-dom";
 const Sidebar = ({ mode, setMode }) => {
   return (
     <Box
@@ -31,7 +32,7 @@ const Sidebar = ({ mode, setMode }) => {
           }}
         >
           <ListItem disablePadding>
-            <ListItemButton href="Dashboard">
+            <ListItemButton component={Link} to="/dashboard">
               <ListItemIcon>
                 <HomeIcon color="warning" />
               </ListItemIcon>
@@ -39,7 +40,7 @@ const Sidebar = ({ mode, setMode }) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton href="#">
+            <ListItemButton component={Link} to="/">
               <ListItemIcon>
                 <TodayIcon color="success" />
               </ListItemIcon>
@@ -47,7 +48,7 @@ const Sidebar = ({ mode, setMode }) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton href="#">
+            <ListItemButton component={Link} to="/profile">
               <ListItemIcon>
                 <PersonIcon color="error" />
               </ListItemIcon>
@@ -55,7 +56,7 @@ const Sidebar = ({ mode, setMode }) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton href="#">
+            <ListItemButton component={Link} to="/settings">
               <ListItemIcon>
                 <SettingsIcon color="secondary" />
               </ListItemIcon>
@@ -75,6 +76,7 @@ const Sidebar = ({ mode, setMode }) => {
             </ListItemButton>
           </ListItem>
         </List>
+        <Outlet />
       </Box>
     </Box>
   );

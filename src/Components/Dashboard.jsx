@@ -1,12 +1,10 @@
 import { Box, Container, Stack } from "@mui/material";
 import DisplayCard from "./DisplayCard";
-import Sidebar from "./Sidebar";
 import RecordList from "./RecordList";
 
-const Dashboard = ({ mode, setMode }) => {
+const Dashboard = () => {
   return (
     <Box>
-      <Sidebar mode={mode} setMode={setMode} />
       <Container>
         <Stack direction="row" spacing={3}>
           <DisplayCard />
