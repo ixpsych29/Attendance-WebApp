@@ -45,7 +45,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   return (
     <AppBar
-      position="sticky"
+      position="fixed"
       sx={{
         background: `linear-gradient(90deg, 
           rgba(70, 130, 180, 1) 0%,  /* Steel Blue */

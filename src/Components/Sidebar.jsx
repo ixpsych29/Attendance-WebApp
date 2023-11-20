@@ -12,11 +12,12 @@ import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
 import TodayIcon from "@mui/icons-material/Today";
 import ModeNightIcon from "@mui/icons-material/ModeNight";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 const Sidebar = ({ mode, setMode }) => {
   return (
     <Box
       p={2}
+      marginTop={6}
       sx={{
         display: {
           xs: "none",
@@ -76,7 +77,6 @@ const Sidebar = ({ mode, setMode }) => {
             </ListItemButton>
           </ListItem>
         </List>
-        <Outlet />
       </Box>
     </Box>
   );
