@@ -2,7 +2,7 @@ import { Box, ThemeProvider, createTheme } from "@mui/material";
 import { useState } from "react";
 import Navbar from "./NavBar";
 import Sidebar from "./Sidebar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 function Home() {
   const [mode, setMode] = useState("light");
@@ -11,15 +11,26 @@ function Home() {
       mode: mode,
     },
   });
+
+  const navigate = useNavigate();
+  const currentPath = window.location.pathname;
+
+  // Check if the current path is "/login" or "/signup"
+  const isLoginPage = currentPath === "/login";
+  const isSignUpPage = currentPath === "/signup";
   return (
     <ThemeProvider theme={darkTheme}>
       <Box bgcolor={"background.default"} color={Text.primary}>
-        <Box>
-          <Navbar />
-        </Box>
-        <Box>
-          <Sidebar mode={mode} setMode={setMode} />
-        </Box>
+        {!isLoginPage && !isSignUpPage && (
+          <>
+            <Box>
+              <Navbar />
+            </Box>
+            <Box>
+              <Sidebar mode={mode} setMode={setMode} />
+            </Box>
+          </>
+        )}
         <Box flex="1" p={3} marginLeft={15}>
           <Box>
             <Outlet />

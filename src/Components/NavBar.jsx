@@ -12,6 +12,7 @@ import {
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const StyledToolBar = styled(Toolbar)({
   display: "flex",
@@ -101,8 +102,12 @@ const Navbar = () => {
           horizontal: "right",
         }}
       >
-        <MenuItem>My account</MenuItem>
-        <MenuItem>Logout</MenuItem>
+        <MenuItem component={Link} to="/profile">
+          My account
+        </MenuItem>
+        <MenuItem component={Link} to="/login">
+          Logout
+        </MenuItem>
       </Menu>
     </AppBar>
   );
