@@ -12,6 +12,7 @@ function Home() {
     },
   });
 
+  // eslint-disable-next-line no-unused-vars
   const navigate = useNavigate();
   const currentPath = window.location.pathname;
 
@@ -31,7 +32,7 @@ function Home() {
             </Box>
           </>
         )}
-        <Box flex="1" p={3} marginLeft={15}>
+        <Box flex="1" p={3} marginLeft={4}>
           <Box>
             <Outlet />
           </Box>

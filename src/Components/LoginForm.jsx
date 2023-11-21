@@ -94,6 +94,8 @@ export default function LoginForm() {
           />
           <Button
             type="submit"
+            component={RouterLink}
+            to="/"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}

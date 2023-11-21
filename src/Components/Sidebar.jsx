@@ -13,6 +13,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import TodayIcon from "@mui/icons-material/Today";
 import ModeNightIcon from "@mui/icons-material/ModeNight";
 import { Link } from "react-router-dom";
+
 const Sidebar = ({ mode, setMode }) => {
   return (
     <Box
