@@ -5,6 +5,8 @@ import ProfilePage from "./Components/ProfilePage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./Components/Home";
 import Attendence from "./Components/Attendence";
+import LoginForm from "./Components/LoginForm";
+import SignupForm from "./Components/SignupForm";
 
 // import LoginForm from "./Components/LoginForm";
 // import SignupForm from "./Components/SignupForm";
@@ -20,6 +22,8 @@ function App() {
           <Route path="profile" element={<ProfilePage />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="settings" element={<ProfilePage />} />
+          <Route path="login" element={<LoginForm />} />
+          <Route path="signup" element={<SignupForm />} />
         </Route>
       </Routes>
     </BrowserRouter>
