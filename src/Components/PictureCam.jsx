@@ -10,7 +10,6 @@ import { useCallback, useRef, useState } from "react";
 const PictureCam = () => {
   const webcamRef = useRef(null);
   const [imgSrc, setImgSrc] = useState(null);
-  
 
   const capture = useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -23,7 +22,7 @@ const PictureCam = () => {
   };
 
   const handlePicSubmit = () => {
-    console.log("Submitted!")
+    console.log("Submitted!");
   };
 
   return (
@@ -44,7 +43,7 @@ const PictureCam = () => {
         {imgSrc ? (
           <>
             <button onClick={retake}>Retake photo</button>
-            <button onClick="handlePicSubmit">Submit</button>
+            <button onClick={handlePicSubmit}>Submit</button>
           </>
         ) : (
           <button onClick={capture}>Capture photo</button>
