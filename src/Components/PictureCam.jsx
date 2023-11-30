@@ -23,7 +23,7 @@ const PictureCam = () => {
   };
 
   const handlePicSubmit = () => {
-
+    console.log("Submitted!")
   };
 
   return (
