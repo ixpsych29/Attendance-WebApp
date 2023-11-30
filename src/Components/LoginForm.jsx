@@ -3,14 +3,15 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Link as RouterLink } from "react-router-dom";
+import { useState } from "react";
+import Dashboard from "./Dashboard";
+
 // const backgroundStyle = {
 //   backgroundImage: 'url("../assets/Images/logo.png")',
 //   backgroundSize: "cover",
@@ -41,13 +42,48 @@ function Copyright(props) {
 // TODO remove, this demo shouldn't need to reset the theme.
 
 export default function LoginForm() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({});
+
+  /* *********** Form Validation ************ */
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = {};
+
+    /* *********** validating email ************ */
+    if (!formData.email.includes("@")) {
+      newErrors.email = "Invalid Email";
+      isValid = false;
+    }
+
+    /* *********** Validating password ************ */
+    if (formData.password.length < 7) {
+      newErrors.password = "Password must be at least 7 characters";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // const data = new FormData(event.currentTarget);
+    // console.log({
+    //   email: data.get("email"),
+    //   password: data.get("password"),
+    // });
+    if (validateForm()) {
+      console.log("Valid Form");
+      <RouterLink></RouterLink>
+    } else {
+      console.log("Invalid Form");
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   return (
@@ -77,6 +113,10 @@ export default function LoginForm() {
             name="email"
             autoComplete="email"
             autoFocus
+            value={formData.email}
+            onChange={handleChange}
+            error={Boolean(errors.email)}
+            helperText={errors.email}
           />
           <TextField
             margin="normal"
@@ -87,15 +127,19 @@ export default function LoginForm() {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={formData.password}
+            onChange={handleChange}
+            error={Boolean(errors.password)}
+            helperText={errors.password}
           />
-          <FormControlLabel
+          {/* <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
-          />
+          /> */}
           <Button
             type="submit"
-            component={RouterLink}
-            to="/"
+            // component={RouterLink}
+            // to="/"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
