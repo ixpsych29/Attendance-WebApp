@@ -1,11 +1,6 @@
 import Webcam from "react-webcam";
 import { useCallback, useRef, useState } from "react";
 
-// const videoConstraints = {
-//   width: 400,
-//   height: 400,
-//   facingMode: "user",
-// };
 
 const PictureCam = () => {
   const webcamRef = useRef(null);
@@ -35,7 +30,7 @@ const PictureCam = () => {
           width={300}
           ref={webcamRef}
           screenshotFormat="image/jpeg"
-          screenshotQuality={1}
+          screenshotQuality={0.8}
           mirrored={true}
         />
       )}

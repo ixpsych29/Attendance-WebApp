@@ -43,9 +43,13 @@ const Sidebar = ({ mode, setMode }) => {
               component={Link}
               to="/dashboard"
               sx={{
-                backgroundColor: isActiveLink("/dashboard")
-                  ? "#20b5ff"
-                  : "inherit",
+                background: isActiveLink("/dashboard") ? "#1db0e6" : "inherit",
+                color: isActiveLink("/dashboard") ? "#fff" : "inherit",
+                borderRadius: 10,
+                "&:hover": {
+                  background: "#1b1d72",
+                  color: "#fff",
+                },
               }}
             >
               <ListItemIcon>
@@ -59,7 +63,13 @@ const Sidebar = ({ mode, setMode }) => {
               component={Link}
               to="/"
               sx={{
-                backgroundColor: isActiveLink("/") ? "#1bb3ff" : "inherit",
+                backgroundColor: isActiveLink("/") ? "#1db0e6" : "inherit",
+                color: isActiveLink("/") ? "#fff" : "inherit",
+                borderRadius: 10,
+                "&:hover": {
+                  background: "#1b1d72",
+                  color: "#fff",
+                },
               }}
             >
               <ListItemIcon>
@@ -74,8 +84,14 @@ const Sidebar = ({ mode, setMode }) => {
               to="/profile"
               sx={{
                 backgroundColor: isActiveLink("/profile")
-                  ? "#1bb3ff"
+                  ? "#1db0e6"
                   : "inherit",
+                color: isActiveLink("/profile") ? "#fff" : "inherit",
+                borderRadius: 10,
+                "&:hover": {
+                  background: "#1b1d72",
+                  color: "#fff",
+                },
               }}
             >
               <ListItemIcon>
@@ -90,8 +106,14 @@ const Sidebar = ({ mode, setMode }) => {
               to="/settings"
               sx={{
                 backgroundColor: isActiveLink("/settings")
-                  ? "#1bb3ff"
+                  ? "#1db0e6"
                   : "inherit",
+                color: isActiveLink("/settings") ? "#fff" : "inherit",
+                borderRadius: 10,
+                "&:hover": {
+                  background: "#1b1d72",
+                  color: "#fff",
+                },
               }}
             >
               <ListItemIcon>
