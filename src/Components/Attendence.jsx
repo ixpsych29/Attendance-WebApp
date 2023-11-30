@@ -2,7 +2,7 @@ import { Box, Stack, Container } from "@mui/system";
 import RecordList from "./RecordList";
 import { Button } from "@mui/material";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import WebCam from "./WebCam";
+import PictureCam from "./PictureCam";
 import { useState } from "react";
 
 function Attendence() {
@@ -21,7 +21,7 @@ function Attendence() {
           </Button>
         </Stack>
         <Box sx={{ display: "flex", justifyContent: "center" }}>
-          {shouldRender && <WebCam />}
+          {shouldRender && <PictureCam />}
         </Box>
         <RecordList />
       </Container>
