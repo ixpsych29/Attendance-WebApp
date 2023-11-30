@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Link as RouterLink } from "react-router-dom";
+import { useState } from "react";
 
 function Copyright(props) {
   return (
@@ -31,13 +32,60 @@ function Copyright(props) {
 // TODO remove, this demo shouldn't need to reset the theme.
 
 export default function SignupForm() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [errors, setErrors] = useState({});
+
+  const handleChanges = (event) => {
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+  };
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = {};
+
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.name) {
+      newErrors.name = "Enter user Name";
+      isValid = false;
+    }
+    if (!formData.email || !emailRegex.test(formData.email)) {
+      newErrors.email = "Enter a valid email address";
+      isValid = false;
+    }
+
+    // Validate password
+    if (formData.password.length < 7) {
+      newErrors.password = "Enter a valid password";
+      isValid = false;
+    }
+
+    // Validate confirm password
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    if (validateForm()) {
+      // Process form data or make API call here
+      console.log(formData);
+    } else {
+      // Form is not valid, handle accordingly
+      console.log("Form is not valid");
+    }
   };
 
   return (
@@ -67,6 +115,9 @@ export default function SignupForm() {
             name="name"
             autoComplete="text"
             autoFocus
+            error={errors.name}
+            value={formData.name}
+            onChange={handleChanges}
           />
           <TextField
             margin="normal"
@@ -77,6 +128,10 @@ export default function SignupForm() {
             name="email"
             autoComplete="email"
             autoFocus
+            value={formData.email}
+            onChange={handleChanges}
+            error={!!errors.email}
+            helperText={errors.email}
           />
           <TextField
             margin="normal"
@@ -87,16 +142,24 @@ export default function SignupForm() {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={formData.password}
+            onChange={handleChanges}
+            error={errors.password}
+            helperText={errors.password}
           />
           <TextField
             margin="normal"
             required
             fullWidth
-            name="confirm-password"
+            name="confirmPassword"
             label="Confirm-Password"
-            type="confirm-password"
-            id="confirm-password"
-            autoComplete="current-password"
+            type="password"
+            id="confirmPassword"
+            autoComplete="confirm-password"
+            value={formData.confirmPassword}
+            onChange={handleChanges}
+            error={!!errors.confirmPassword}
+            helperText={errors.confirmPassword}
           />
           <Button
             type="submit"

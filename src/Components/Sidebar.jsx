@@ -12,9 +12,14 @@ import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
 import TodayIcon from "@mui/icons-material/Today";
 import ModeNightIcon from "@mui/icons-material/ModeNight";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Sidebar = ({ mode, setMode }) => {
+  const location = useLocation();
+  const isActiveLink = (to) => {
+    return location.pathname === to;
+  };
+
   return (
     <Box
       p={2}
@@ -34,7 +39,15 @@ const Sidebar = ({ mode, setMode }) => {
           }}
         >
           <ListItem disablePadding>
-            <ListItemButton component={Link} to="/dashboard">
+            <ListItemButton
+              component={Link}
+              to="/dashboard"
+              sx={{
+                backgroundColor: isActiveLink("/dashboard")
+                  ? "#20b5ff"
+                  : "inherit",
+              }}
+            >
               <ListItemIcon>
                 <HomeIcon color="warning" />
               </ListItemIcon>
@@ -42,7 +55,13 @@ const Sidebar = ({ mode, setMode }) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton component={Link} to="/">
+            <ListItemButton
+              component={Link}
+              to="/"
+              sx={{
+                backgroundColor: isActiveLink("/") ? "#1bb3ff" : "inherit",
+              }}
+            >
               <ListItemIcon>
                 <TodayIcon color="success" />
               </ListItemIcon>
@@ -50,7 +69,15 @@ const Sidebar = ({ mode, setMode }) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton component={Link} to="/profile">
+            <ListItemButton
+              component={Link}
+              to="/profile"
+              sx={{
+                backgroundColor: isActiveLink("/profile")
+                  ? "#1bb3ff"
+                  : "inherit",
+              }}
+            >
               <ListItemIcon>
                 <PersonIcon color="error" />
               </ListItemIcon>
@@ -58,7 +85,15 @@ const Sidebar = ({ mode, setMode }) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton component={Link} to="/settings">
+            <ListItemButton
+              component={Link}
+              to="/settings"
+              sx={{
+                backgroundColor: isActiveLink("/settings")
+                  ? "#1bb3ff"
+                  : "inherit",
+              }}
+            >
               <ListItemIcon>
                 <SettingsIcon color="secondary" />
               </ListItemIcon>
