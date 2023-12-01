@@ -10,7 +10,6 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Link as RouterLink } from "react-router-dom";
 import { useState } from "react";
-import Dashboard from "./Dashboard";
 
 // const backgroundStyle = {
 //   backgroundImage: 'url("../assets/Images/logo.png")',

@@ -47,7 +47,7 @@ const Sidebar = ({ mode, setMode }) => {
                 color: isActiveLink("/dashboard") ? "#fff" : "inherit",
                 borderRadius: 10,
                 "&:hover": {
-                  background: "#1b1d72",
+                  background: "#1688b3",
                   color: "#fff",
                 },
               }}
@@ -67,7 +67,7 @@ const Sidebar = ({ mode, setMode }) => {
                 color: isActiveLink("/") ? "#fff" : "inherit",
                 borderRadius: 10,
                 "&:hover": {
-                  background: "#1b1d72",
+                  background: "#1688b3",
                   color: "#fff",
                 },
               }}
@@ -89,7 +89,7 @@ const Sidebar = ({ mode, setMode }) => {
                 color: isActiveLink("/profile") ? "#fff" : "inherit",
                 borderRadius: 10,
                 "&:hover": {
-                  background: "#1b1d72",
+                  background: "#1688b3",
                   color: "#fff",
                 },
               }}
@@ -111,7 +111,7 @@ const Sidebar = ({ mode, setMode }) => {
                 color: isActiveLink("/settings") ? "#fff" : "inherit",
                 borderRadius: 10,
                 "&:hover": {
-                  background: "#1b1d72",
+                  background: "#1688b3",
                   color: "#fff",
                 },
               }}
@@ -123,7 +123,15 @@ const Sidebar = ({ mode, setMode }) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton>
+            <ListItemButton
+              sx={{
+                "&:hover": {
+                  background: "#1688b3",
+                  color: "#fff",
+                  borderRadius: 10,
+                },
+              }}
+            >
               <ListItemIcon>
                 <ModeNightIcon color="primary" />
               </ListItemIcon>
