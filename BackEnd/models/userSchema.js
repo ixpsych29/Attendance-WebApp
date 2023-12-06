@@ -17,7 +17,7 @@ const userSchema = new Schema({
   },
   entranceTime: {
     type: Date,
-    default: Date.now,
+    default: Date.now(),
   },
   entrancePic: String,
   leavingTime: {
