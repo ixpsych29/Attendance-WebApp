@@ -1,5 +1,5 @@
-// const mongoose = requrie("mongoose");
+const mongoose = requrie("mongoose");
 
-// mongoose.connect("mongodb://localhost:27017/attendance-app");
+mongoose.connect("mongodb://localhost:27017/attendance-app");
 
-// module.exports = mongoose;
+module.exports = mongoose;
