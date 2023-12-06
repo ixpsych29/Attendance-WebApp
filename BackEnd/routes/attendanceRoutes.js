@@ -1,21 +1,20 @@
 const express = require("express");
+const {
+  getUsers,
+  getUser,
+  createUser,
+} = require("../controllers/userController");
 
 const router = express.Router();
 
 //all history
-router.get("/", (req, res) => {
-  res.json({ msg: "GET all History!" });
-});
+router.get("/", getUsers);
 
 //single person history
-router.get("/emp", (req, res) => {
-  res.json({ msg: "GET single employee" });
-});
+router.get("/:name", getUser);
 
 //insert new record
-router.post("/", (req, res) => {
-  res.json({ msg: "POST a new record!" });
-});
+router.post("/", createUser);
 
 //update record
 router.patch("/update", (req, res) => {

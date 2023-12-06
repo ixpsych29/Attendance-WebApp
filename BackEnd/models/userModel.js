@@ -15,14 +15,9 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  entranceTime: {
+  created_at: {
     type: Date,
     default: Date.now,
-  },
-  entrancePic: String,
-  leavingTime: {
-    type: Date,
-    default: null,
   },
 });
 
