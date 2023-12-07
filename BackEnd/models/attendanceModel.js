@@ -7,13 +7,13 @@ const attendanceModel = new Schema({
     type: String,
     required: true,
   },
-  entranceTime: {
-    type: Date,
-    deafult: Date.now(),
-  },
   picture: {
     type: String,
     base64: true,
+  },
+  entranceTime: {
+    type: Date,
+    default: Date.now(),
   },
   leavingTime: {
     type: Date,

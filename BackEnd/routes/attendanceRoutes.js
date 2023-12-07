@@ -1,5 +1,10 @@
 const express = require("express");
-const {} = require("../controllers/attendanceController");
+const {
+  getAttendance,
+  getOneAttendance,
+  createAttendance,
+  updateAttendance,
+} = require("../controllers/attendanceController");
 
 const router = express.Router();
 
@@ -7,7 +12,7 @@ const router = express.Router();
 router.get("/", getAttendance);
 
 //single day history
-router.get("/:userName", getOneAttendance);
+router.get("/:serNameu", getOneAttendance);
 
 //insert new record to history
 router.post("/", createAttendance);

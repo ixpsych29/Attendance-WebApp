@@ -18,14 +18,15 @@ const getOneAttendance = async (req, res) => {
 
 //insert new attendance record
 const createAttendance = async (req, res) => {
-  const { username, entranceTime, picture, leavingTime } = req.params;
+  const { username, picture, entranceTime, leavingTime } = req.body;
+  console.log(username);
 
   //INSERT new document to DB
   try {
     const todayAttendance = await Attendance.create({
       username,
-      entranceTime,
       picture,
+      entranceTime,
       leavingTime,
     });
     res.status(200).json(todayAttendance);
