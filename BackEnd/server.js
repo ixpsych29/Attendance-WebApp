@@ -1,9 +1,11 @@
 require("dotenv").config();
 const userRoutes = require("./routes/userRoutes");
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
 
+app.use(cors()); // Use this after the variable declaration
 const port = process.env.PORT || 4000;
 
 //middleware
@@ -15,7 +17,7 @@ app.use((req, res, next) => {
 });
 
 //routes
-app.use("/api/Users", userRoutes);
+app.use("/api/users", userRoutes);
 
 //connect to db
 mongoose
