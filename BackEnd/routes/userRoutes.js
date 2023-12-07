@@ -1,24 +1,29 @@
 const express = require("express");
 const {
   getUsers,
-  getUser,
+  getSingleUser,
   createUser,
 } = require("../controllers/userController");
 
 const router = express.Router();
 
-//all history
+//all users
 router.get("/", getUsers);
 
-//single person history
-router.get("/:name", getUser);
+//single user
+router.get("/:username", getSingleUser);
 
 //insert new record
 router.post("/", createUser);
 
 //update record
 router.patch("/update", (req, res) => {
-  res.json({ msg: "POST a new record!" });
+  res.json({ msg: "UPDATED user Profile!" });
+});
+
+//delete a record
+router.delete("/:username", (req, res) => {
+  res.json({ msg: "Deleted User Successfully!" });
 });
 
 module.exports = router;

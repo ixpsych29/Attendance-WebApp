@@ -1,32 +1,30 @@
 const User = require("../models/userModel");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 
 //get all Users
 const getUsers = async (req, res) => {
-  const users = await User.find({});
-
+  const users = await User.find({}).sort({ created_at: 1 });
   res.status(200).json(users);
 };
 
 //get a single User
-const getUser = async (req, res) => {
-  const { name } = req.params;
-  //   if (!mongoose.Types.ObjectId.isValid()) {
-  //     return res.status(404).jason({ error: "No Such User!!!" });
-  //   }
-  const user = await User.find({ username: name });
+const getSingleUser = async (req, res) => {
+  const { userName } = req.params;
+  const user = await User.find({ username: userName });
   if (!user) {
     return res.status(404).json({ error: "No user found" });
   }
   res.status(200).json(user);
 };
+
 //CREATE a new User
 const createUser = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { name, username, email, password } = req.body;
 
+  //add doc to DB
   try {
-    const user = await User.create({ username, email, password });
-    res.status(200).json(user);
+    const newUser = await User.create({ name, username, email, password });
+    res.status(200).json(newUser);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -38,6 +36,6 @@ const createUser = async (req, res) => {
 
 module.exports = {
   getUsers,
-  getUser,
+  getSingleUser,
   createUser,
 };
