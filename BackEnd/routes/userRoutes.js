@@ -3,6 +3,8 @@ const {
   getUsers,
   getSingleUser,
   createUser,
+  deleteUser,
+  updateUser,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -11,19 +13,15 @@ const router = express.Router();
 router.get("/", getUsers);
 
 //single user
-router.get("/:username", getSingleUser);
+router.get("/:userName", getSingleUser);
 
-//insert new record
+//insert new user
 router.post("/", createUser);
 
-//update record
-router.patch("/update", (req, res) => {
-  res.json({ msg: "UPDATED user Profile!" });
-});
+//update user profile
+router.patch("/:userName", updateUser);
 
-//delete a record
-router.delete("/:username", (req, res) => {
-  res.json({ msg: "Deleted User Successfully!" });
-});
+//delete user
+router.delete("/:userName", deleteUser);
 
 module.exports = router;
