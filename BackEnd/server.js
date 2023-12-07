@@ -2,9 +2,11 @@ require("dotenv").config();
 const userRoutes = require("./routes/userRoutes");
 const attendanceRoutes = require("./routes/attendanceRoutes");
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
 
+app.use(cors()); // Use this after the variable declaration
 const port = process.env.PORT || 4000;
 
 //middleware

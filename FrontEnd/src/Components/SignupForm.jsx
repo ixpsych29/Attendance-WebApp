@@ -7,8 +7,9 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
 
 function Copyright(props) {
   return (
@@ -32,8 +33,10 @@ function Copyright(props) {
 // TODO remove, this demo shouldn't need to reset the theme.
 
 export default function SignupForm() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
+    userName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -52,7 +55,11 @@ export default function SignupForm() {
     // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.name) {
-      newErrors.name = "Enter user Name";
+      newErrors.name = "Enter Name";
+      isValid = false;
+    }
+    if (!formData.userName) {
+      newErrors.name = "Enter a unique user Name";
       isValid = false;
     }
     if (!formData.email || !emailRegex.test(formData.email)) {
@@ -76,12 +83,34 @@ export default function SignupForm() {
     return isValid;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (validateForm()) {
-      // Process form data or make API call here
-      console.log(formData);
+      try {
+        const backendBaseUrl = "http://localhost:3000";
+        const apiEndpoint = "/api/users";
+
+        const response = await axios.post(`${backendBaseUrl}${apiEndpoint}`, {
+          name: formData.name,
+          username: formData.userName, // Ensure that the 'username' field is included
+          email: formData.email,
+          password: formData.password,
+        });
+        // Assuming your backend returns some data, you can log or use it as needed
+        console.log(response.data);
+
+        navigate("/login");
+
+        // Optionally, you can redirect the user or perform other actions after successful registration
+      } catch (error) {
+        // Handle errors from the server
+        console.error("Error registering user:", error);
+        console.log("Response data:", error.response.data);
+        console.log("Response status:", error.response.status);
+        console.log("Response headers:", error.response.headers);
+        // You may want to update the state or show an error message to the user
+      }
     } else {
       // Form is not valid, handle accordingly
       console.log("Form is not valid");
@@ -111,12 +140,25 @@ export default function SignupForm() {
             required
             fullWidth
             id="name"
-            label="User Name"
+            label="Name"
             name="name"
             autoComplete="text"
             autoFocus
             error={errors.name}
             value={formData.name}
+            onChange={handleChanges}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="userName"
+            label="User Name"
+            name="userName"
+            autoComplete="text"
+            autoFocus
+            error={errors.userName}
+            value={formData.userName}
             onChange={handleChanges}
           />
           <TextField
