@@ -2,7 +2,7 @@ import Webcam from "react-webcam";
 import { useCallback, useRef, useState } from "react";
 import axios from "axios";
 
-const PictureCam = () => {
+const PictureCam = ({ handleRender }) => {
   const webcamRef = useRef(null);
   const [imgSrc, setImgSrc] = useState(null);
 
@@ -17,7 +17,7 @@ const PictureCam = () => {
   };
 
   const handlePicSubmit = async () => {
-    console.log("submission working!");
+    console.log("Attendace MArked!");
     try {
       const response = await axios.post(
         "http://localhost:3000/api/attendance",
@@ -28,6 +28,8 @@ const PictureCam = () => {
       console.log(response.data);
     } catch (error) {
       console.log(error.response.data.message);
+    } finally {
+      handleRender(false);
     }
   };
 
