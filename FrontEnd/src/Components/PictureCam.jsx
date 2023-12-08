@@ -1,6 +1,6 @@
 import Webcam from "react-webcam";
 import { useCallback, useRef, useState } from "react";
-
+import axios from "axios";
 
 const PictureCam = () => {
   const webcamRef = useRef(null);
@@ -9,15 +9,26 @@ const PictureCam = () => {
   const capture = useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImgSrc(imageSrc);
-    console.log(imageSrc);
+    // console.log(imageSrc);
   }, [webcamRef]);
 
   const retake = () => {
     setImgSrc(null);
   };
 
-  const handlePicSubmit = () => {
-    console.log("Submitted!");
+  const handlePicSubmit = async () => {
+    console.log("submission working!");
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/attendance",
+        {
+          picture: imgSrc,
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.log(error.response.data.message);
+    }
   };
 
   return (

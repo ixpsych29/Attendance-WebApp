@@ -12,7 +12,7 @@ const router = express.Router();
 router.get("/", getAttendance);
 
 //single day history
-router.get("/:serNameu", getOneAttendance);
+router.get("/:userName", getOneAttendance);
 
 //insert new record to history
 router.post("/", createAttendance);

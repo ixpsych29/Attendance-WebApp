@@ -10,6 +10,7 @@ const attendanceModel = new Schema({
   picture: {
     type: String,
     base64: true,
+    required: true,
   },
   entranceTime: {
     type: Date,
