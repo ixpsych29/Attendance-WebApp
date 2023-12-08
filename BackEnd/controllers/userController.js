@@ -60,6 +60,24 @@ const updateUser = async (req, res) => {
   res.status(200).json(user);
 };
 
+//login a user
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email, password });
+
+    if (user) {
+      return res.status(200).json({ message: "Login successful" });
+    } else {
+      return res.status(401).json({ message: "Invalid Cradentials" });
+    }
+  } catch (error) {
+    console.error("Error during login:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 //exporting modules
 module.exports = {
   getUsers,
@@ -67,4 +85,5 @@ module.exports = {
   createUser,
   deleteUser,
   updateUser,
+  loginUser,
 };
