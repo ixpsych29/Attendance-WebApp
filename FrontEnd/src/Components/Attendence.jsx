@@ -21,7 +21,7 @@ function Attendence() {
           </Button>
         </Stack>
         <Box sx={{ display: "flex", justifyContent: "center" }}>
-          {shouldRender && <PictureCam />}
+          {shouldRender && <PictureCam handleRender={setShouldRender} />}
         </Box>
         <RecordList />
       </Container>
