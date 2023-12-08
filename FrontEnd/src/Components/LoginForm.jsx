@@ -8,8 +8,9 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
 
 // const backgroundStyle = {
 //   backgroundImage: 'url("../assets/Images/logo.png")',
@@ -43,6 +44,7 @@ function Copyright(props) {
 export default function LoginForm() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   /* *********** Form Validation ************ */
   const validateForm = () => {
@@ -65,16 +67,24 @@ export default function LoginForm() {
     return isValid;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // const data = new FormData(event.currentTarget);
-    // console.log({
-    //   email: data.get("email"),
-    //   password: data.get("password"),
-    // });
+
     if (validateForm()) {
-      console.log("Valid Form");
-      <RouterLink></RouterLink>
+      try {
+        console.log("hdukh");
+        const response = await axios.post(
+          "http://localhost:3000/api/users/login",
+          {
+            email: formData.email,
+            password: formData.password,
+          }
+        );
+        console.log(response.data);
+        navigate("/");
+      } catch (error) {
+        console.log(error.response.data.message);
+      }
     } else {
       console.log("Invalid Form");
     }
