@@ -62,10 +62,10 @@ const updateUser = async (req, res) => {
 
 //login a user
 const loginUser = async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
 
   try {
-    const user = await User.findOne({ email, password });
+    const user = await User.findOne({ username, password });
 
     if (user) {
       return res.status(200).json({ message: "Login successful" });

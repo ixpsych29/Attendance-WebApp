@@ -42,7 +42,7 @@ function Copyright(props) {
 // TODO remove, this demo shouldn't need to reset the theme.
 
 export default function LoginForm() {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({ username: "", password: "" });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
@@ -52,8 +52,8 @@ export default function LoginForm() {
     const newErrors = {};
 
     /* *********** validating email ************ */
-    if (!formData.email.includes("@")) {
-      newErrors.email = "Invalid Email";
+    if (!formData.username) {
+      newErrors.username = "Please enter username";
       isValid = false;
     }
 
@@ -72,11 +72,10 @@ export default function LoginForm() {
 
     if (validateForm()) {
       try {
-        console.log("hdukh");
         const response = await axios.post(
           "http://localhost:3000/api/users/login",
           {
-            email: formData.email,
+            username: formData.username,
             password: formData.password,
           }
         );
@@ -117,15 +116,15 @@ export default function LoginForm() {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="User Name"
+            name="username"
+            autoComplete="username"
             autoFocus
-            value={formData.email}
+            value={formData.username}
             onChange={handleChange}
-            error={Boolean(errors.email)}
-            helperText={errors.email}
+            error={Boolean(errors.username)}
+            helperText={errors.username}
           />
           <TextField
             margin="normal"
