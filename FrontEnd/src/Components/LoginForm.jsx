@@ -9,8 +9,9 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
+import UserContext from "./userContext";
 
 // const backgroundStyle = {
 //   backgroundImage: 'url("../assets/Images/logo.png")',
@@ -44,6 +45,7 @@ function Copyright(props) {
 export default function LoginForm() {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [errors, setErrors] = useState({});
+  const { setUserName } = useContext(UserContext);
   const navigate = useNavigate();
 
   /* *********** Form Validation ************ */
@@ -80,9 +82,13 @@ export default function LoginForm() {
           }
         );
         console.log(response.data);
+
+        //accessing username
+        setUserName(formData.username);
+
         navigate("/");
       } catch (error) {
-        console.log(error.response.data.message);
+        console.log(error);
       }
     } else {
       console.log("Invalid Form");

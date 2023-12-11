@@ -7,6 +7,7 @@ import { useState } from "react";
 
 function Attendence() {
   const [shouldRender, setShouldRender] = useState(false);
+
   return (
     <Box>
       <Container>

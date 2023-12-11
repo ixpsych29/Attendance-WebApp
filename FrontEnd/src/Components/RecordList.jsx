@@ -8,8 +8,13 @@ import {
   Typography,
 } from "@mui/material";
 import DatePickerCmp from "./DatePickerCmp";
+import UserContext from "./userContext";
+import { useContext } from "react";
 
 const RecordList = () => {
+  const { username } = useContext(UserContext);
+  console.log(username);
+
   return (
     <TableContainer sx={{ mt: 5 }}>
       <Typography
@@ -17,7 +22,7 @@ const RecordList = () => {
         textAlign="center"
         sx={{ mb: 3, color: "text.primary" }}
       >
-        Employees Attendance History
+        {username.toUpperCase()}, Your History
       </Typography>
 
       <DatePickerCmp />
