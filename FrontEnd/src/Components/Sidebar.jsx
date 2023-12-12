@@ -41,10 +41,12 @@ const Sidebar = ({ mode, setMode }) => {
           <ListItem disablePadding>
             <ListItemButton
               component={Link}
-              to="/dashboard"
+              to="/home/dashboard"
               sx={{
-                background: isActiveLink("/dashboard") ? "#1db0e6" : "inherit",
-                color: isActiveLink("/dashboard") ? "#fff" : "inherit",
+                background: isActiveLink("/home/dashboard")
+                  ? "#1db0e6"
+                  : "inherit",
+                color: isActiveLink("/home/dashboard") ? "#fff" : "inherit",
                 borderRadius: 10,
                 "&:hover": {
                   background: "#1688b3",
@@ -61,10 +63,10 @@ const Sidebar = ({ mode, setMode }) => {
           <ListItem disablePadding>
             <ListItemButton
               component={Link}
-              to="/"
+              to="/home"
               sx={{
-                backgroundColor: isActiveLink("/") ? "#1db0e6" : "inherit",
-                color: isActiveLink("/") ? "#fff" : "inherit",
+                backgroundColor: isActiveLink("/home") ? "#1db0e6" : "inherit",
+                color: isActiveLink("/home") ? "#fff" : "inherit",
                 borderRadius: 10,
                 "&:hover": {
                   background: "#1688b3",
@@ -81,12 +83,12 @@ const Sidebar = ({ mode, setMode }) => {
           <ListItem disablePadding>
             <ListItemButton
               component={Link}
-              to="/profile"
+              to="/home/profile"
               sx={{
-                backgroundColor: isActiveLink("/profile")
+                backgroundColor: isActiveLink("/home/profile")
                   ? "#1db0e6"
                   : "inherit",
-                color: isActiveLink("/profile") ? "#fff" : "inherit",
+                color: isActiveLink("/home/profile") ? "#fff" : "inherit",
                 borderRadius: 10,
                 "&:hover": {
                   background: "#1688b3",
@@ -103,12 +105,12 @@ const Sidebar = ({ mode, setMode }) => {
           <ListItem disablePadding>
             <ListItemButton
               component={Link}
-              to="/settings"
+              to="/home/settings"
               sx={{
-                backgroundColor: isActiveLink("/settings")
+                backgroundColor: isActiveLink("/home/settings")
                   ? "#1db0e6"
                   : "inherit",
-                color: isActiveLink("/settings") ? "#fff" : "inherit",
+                color: isActiveLink("/home/settings") ? "#fff" : "inherit",
                 borderRadius: 10,
                 "&:hover": {
                   background: "#1688b3",

@@ -42,7 +42,7 @@ const UserImage = styled("img")(({ theme }) => ({
   },
 }));
 
-const Navbar = () => {
+const Navbar = ({ login }) => {
   const [open, setOpen] = useState(false);
   return (
     <AppBar
@@ -105,7 +105,13 @@ const Navbar = () => {
         <MenuItem component={Link} to="/profile">
           My account
         </MenuItem>
-        <MenuItem component={Link} to="/login">
+        <MenuItem
+          component={Link}
+          to="/"
+          onClick={() => {
+            login(false);
+          }}
+        >
           Logout
         </MenuItem>
       </Menu>

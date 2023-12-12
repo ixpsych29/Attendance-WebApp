@@ -42,7 +42,7 @@ function Copyright(props) {
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
-export default function LoginForm() {
+export default function LoginForm({ login }) {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [errors, setErrors] = useState({});
   const { setUserName } = useContext(UserContext);
@@ -85,8 +85,9 @@ export default function LoginForm() {
 
         //accessing username
         setUserName(formData.username);
+        login(true);
 
-        navigate("/");
+        navigate("/home");
       } catch (error) {
         console.log(error);
       }
