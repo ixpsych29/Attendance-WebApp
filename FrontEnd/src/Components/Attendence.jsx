@@ -13,6 +13,7 @@ function Attendence() {
       <Container>
         <Stack direction="row" spacing={2}>
           <Button
+            sx={{ bgcolor: "#1db0e6", "&:hover": { bgcolor: "#1688b3" } }}
             variant="contained"
             size="small"
             startIcon={<CameraAltIcon />}

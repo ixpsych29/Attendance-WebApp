@@ -2,6 +2,10 @@ import Webcam from "react-webcam";
 import { useCallback, useContext, useRef, useState } from "react";
 import axios from "axios";
 import UserContext from "./userContext";
+import { Button } from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
 
 const PictureCam = ({ handleRender }) => {
   const webcamRef = useRef(null);
@@ -52,14 +56,49 @@ const PictureCam = ({ handleRender }) => {
           mirrored={true}
         />
       )}
-      <div className="btn-container">
+      <div style={{ textAlign: "center" }}>
         {imgSrc ? (
           <>
-            <button onClick={retake}>Retake photo</button>
-            <button onClick={handlePicSubmit}>Submit</button>
+            <Button
+              variant="contained"
+              sx={{
+                mt: 3,
+                mb: 2,
+                bgcolor: "#1db0e6",
+                "&:hover": { bgcolor: "#1688b3" },
+              }}
+              onClick={retake}
+            >
+              <RefreshIcon />
+            </Button>
+            <Button
+              variant="contained"
+              sx={{
+                mt: 3,
+                mb: 2,
+                ml: 1,
+                bgcolor: "#1db0e6",
+                "&:hover": { bgcolor: "#1688b3" },
+              }}
+              onClick={handlePicSubmit}
+            >
+              <CheckIcon />
+            </Button>
           </>
         ) : (
-          <button onClick={capture}>Capture photo</button>
+          <Button
+            variant="contained"
+            sx={{
+              mt: 3,
+              mb: 2,
+              mx: "auto",
+              bgcolor: "#1db0e6",
+              "&:hover": { bgcolor: "#1688b3" },
+            }}
+            onClick={capture}
+          >
+            <CameraAltIcon />
+          </Button>
         )}
       </div>
     </div>
