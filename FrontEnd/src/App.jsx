@@ -2,28 +2,56 @@
 
 import Dashboard from "./Components/Dashboard";
 import ProfilePage from "./Components/ProfilePage";
-import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Home from "./Components/Home";
 import Attendence from "./Components/Attendence";
 import LoginForm from "./Components/LoginForm";
 import SignupForm from "./Components/SignupForm";
-
-// import LoginForm from "./Components/LoginForm";
-// import SignupForm from "./Components/SignupForm";
+import { useState } from "react";
 
 function App() {
-  // eslint-disable-next-line no-unused-vars
+  const [authenticated, setAuthenticated] = useState(false);
 
+  // eslint-disable-next-line no-unused-vars
+  const ProtectedRoute = ({ element, ...rest }) => {
+    const isAuthenticated = authenticated;
+
+    return isAuthenticated ? (
+      // If authenticated, render the provided element
+      element
+    ) : (
+      // If not authenticated, redirect to the login page
+      <Navigate to="/" replace />
+    );
+  };
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LoginForm />} index />
+        <Route
+          path="/"
+          element={<LoginForm login={setAuthenticated} />}
+          index
+        />
         <Route path="/signup" element={<SignupForm />} index />
-        <Route path="/home/" element={<Home />}>
+        <Route
+          path="/home/"
+          element={
+            <ProtectedRoute element={<Home login={setAuthenticated} />} />
+          }
+        >
           <Route index element={<Attendence />} />
-          <Route path="profile" element={<ProfilePage />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="settings" element={<ProfilePage />} />
+          <Route
+            path="profile"
+            element={<ProtectedRoute element={<ProfilePage />} />}
+          ></Route>
+          <Route
+            path="dashboard"
+            element={<ProtectedRoute element={<Dashboard />} />}
+          ></Route>
+          <Route
+            path="settings"
+            element={<ProtectedRoute element={<ProfilePage />} />}
+          ></Route>
         </Route>
       </Routes>
     </BrowserRouter>

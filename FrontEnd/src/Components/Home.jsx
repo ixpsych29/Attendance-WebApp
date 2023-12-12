@@ -4,7 +4,7 @@ import Navbar from "./NavBar";
 import Sidebar from "./Sidebar";
 import { Outlet, useNavigate } from "react-router-dom";
 
-function Home() {
+function Home({ login }) {
   const [mode, setMode] = useState("light");
   const darkTheme = createTheme({
     palette: {
@@ -25,7 +25,7 @@ function Home() {
         {!isLoginPage && !isSignUpPage && (
           <>
             <Box>
-              <Navbar />
+              <Navbar login={login} />
             </Box>
             <Box>
               <Sidebar mode={mode} setMode={setMode} />
