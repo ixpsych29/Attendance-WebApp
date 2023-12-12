@@ -86,7 +86,7 @@ export default function LoginForm() {
         //accessing username
         setUserName(formData.username);
 
-        navigate("/");
+        navigate("/home");
       } catch (error) {
         console.log(error);
       }

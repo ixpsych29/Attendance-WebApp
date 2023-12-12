@@ -36,9 +36,8 @@ const RecordList = () => {
           <TableRow>
             <TableCell>Employee Name</TableCell>
             <TableCell align="right">Entrance Time</TableCell>
-            <TableCell align="right">Entrance Pic</TableCell>
             <TableCell align="right">Leave Time</TableCell>
-            <TableCell align="right">Leave Pic</TableCell>
+            <TableCell align="right">Picture</TableCell>
           </TableRow>
         </TableHead>
 
@@ -48,7 +47,6 @@ const RecordList = () => {
               Muhammad Abdullah Ibn Rafique
             </TableCell>
             <TableCell align="right">11:22 am</TableCell>
-            <TableCell align="right"></TableCell>
             <TableCell align="right">7:57 pm</TableCell>
             <TableCell align="right"></TableCell>
           </TableRow>
@@ -57,7 +55,6 @@ const RecordList = () => {
               Muhammad Abdullah Ibn Rafique
             </TableCell>
             <TableCell align="right">11:22 am</TableCell>
-            <TableCell align="right"></TableCell>
             <TableCell align="right">7:57 pm</TableCell>
             <TableCell align="right"></TableCell>
           </TableRow>
@@ -66,7 +63,6 @@ const RecordList = () => {
               Muhammad Abdullah Ibn Rafique
             </TableCell>
             <TableCell align="right">11:22 am</TableCell>
-            <TableCell align="right"></TableCell>
             <TableCell align="right">7:57 pm</TableCell>
             <TableCell align="right"></TableCell>
           </TableRow>

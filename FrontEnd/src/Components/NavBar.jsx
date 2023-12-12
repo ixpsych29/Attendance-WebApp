@@ -105,7 +105,7 @@ const Navbar = () => {
         <MenuItem component={Link} to="/profile">
           My account
         </MenuItem>
-        <MenuItem component={Link} to="/login">
+        <MenuItem component={Link} to="/">
           Logout
         </MenuItem>
       </Menu>

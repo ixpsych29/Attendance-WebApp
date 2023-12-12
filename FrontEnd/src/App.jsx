@@ -2,7 +2,7 @@
 
 import Dashboard from "./Components/Dashboard";
 import ProfilePage from "./Components/ProfilePage";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import Home from "./Components/Home";
 import Attendence from "./Components/Attendence";
 import LoginForm from "./Components/LoginForm";
@@ -17,13 +17,13 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />}>
+        <Route path="/" element={<LoginForm />} index />
+        <Route path="/signup" element={<SignupForm />} index />
+        <Route path="/home/" element={<Home />}>
           <Route index element={<Attendence />} />
           <Route path="profile" element={<ProfilePage />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="settings" element={<ProfilePage />} />
-          <Route path="login" element={<LoginForm />} />
-          <Route path="signup" element={<SignupForm />} />
         </Route>
       </Routes>
     </BrowserRouter>
