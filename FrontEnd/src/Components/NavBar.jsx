@@ -9,7 +9,6 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useState } from "react";
 import { Link } from "react-router-dom";
@@ -67,9 +66,6 @@ const Navbar = ({ login }) => {
           style={{ height: "60px" }}
         />
         <Icons>
-          <Badge badgeContent={4} color="error">
-            <MailIcon color="white" />
-          </Badge>
           <Badge badgeContent={4} color="error">
             <NotificationsIcon color="white" />
           </Badge>
