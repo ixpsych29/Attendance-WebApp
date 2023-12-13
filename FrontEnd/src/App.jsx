@@ -8,6 +8,7 @@ import Attendence from "./Components/Attendence";
 import LoginForm from "./Components/LoginForm";
 import SignupForm from "./Components/SignupForm";
 import { useState } from "react";
+import Nopage from "./Components/Nopage";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -33,6 +34,7 @@ function App() {
           index
         />
         <Route path="/signup" element={<SignupForm />} index />
+        <Route path="/*" element={<Nopage />} index />
         <Route
           path="/home/"
           element={
