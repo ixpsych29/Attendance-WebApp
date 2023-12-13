@@ -12,14 +12,8 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import axios from "axios";
 import UserContext from "./userContext";
-
-// const backgroundStyle = {
-//   backgroundImage: 'url("../assets/Images/logo.png")',
-//   backgroundSize: "cover",
-//   backgroundRepeat: "no-repeat",
-//   backgroundPosition: "center",
-//   height: "100vh", // Adjust the height as needed
-// };
+// eslint-disable-next-line no-unused-vars
+import toast, { Toaster } from "react-hot-toast";
 
 function Copyright(props) {
   return (
@@ -86,10 +80,11 @@ export default function LoginForm({ login }) {
         //accessing username
         setUserName(formData.username);
         login(true);
-
+        toast.success("Login successful!");
         navigate("/home");
       } catch (error) {
         console.log(error);
+        toast.error("Login failed. Please check your credentials.");
       }
     } else {
       console.log("Invalid Form");
