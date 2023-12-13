@@ -6,6 +6,7 @@ import { Button } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import toast from "react-hot-toast";
 
 const PictureCam = ({ handleRender }) => {
   const webcamRef = useRef(null);
@@ -13,6 +14,9 @@ const PictureCam = ({ handleRender }) => {
 
   const { username } = useContext(UserContext);
   console.log("PictureCam Working", username);
+
+  //notification in case of success
+  // const notify = () => toast.success("Success!");
 
   const capture = useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
@@ -27,14 +31,14 @@ const PictureCam = ({ handleRender }) => {
   const handlePicSubmit = async () => {
     console.log("Attendace MArked!");
     try {
-      const response = await axios.post(
-        "http://localhost:3000/api/attendance",
-        {
-          username: username,
-          picture: imgSrc,
-        }
-      );
-      console.log(response.data);
+      await axios.post("http://localhost:3000/api/attendance", {
+        username: username,
+        picture: imgSrc,
+      });
+
+      //notifying
+      toast.success("Attendance Marked!");
+      // console.log(response.data);
     } catch (error) {
       console.log(error.response.data.message);
     } finally {
@@ -80,7 +84,7 @@ const PictureCam = ({ handleRender }) => {
                 bgcolor: "#1db0e6",
                 "&:hover": { bgcolor: "#1688b3" },
               }}
-              onClick={handlePicSubmit}
+              onClick={() => handlePicSubmit()}
             >
               <CheckIcon />
             </Button>
