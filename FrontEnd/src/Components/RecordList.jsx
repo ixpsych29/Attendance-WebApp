@@ -1,4 +1,6 @@
 import {
+  Avatar,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -9,14 +11,32 @@ import {
 } from "@mui/material";
 import DatePickerCmp from "./DatePickerCmp";
 import UserContext from "./userContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import axios from "axios";
 
 const RecordList = () => {
   const { username } = useContext(UserContext);
-  console.log(username);
+  // console.log(username);
+  const [attendanceRecord, setAttendanceRecord] = useState([]);
+
+  useEffect(() => {
+    const fetchAttendanceRecords = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/attendance/${username}`
+        );
+        setAttendanceRecord(response.data);
+      } catch (error) {
+        console.error("Error Fetching Attendance Records", error);
+      }
+    };
+
+    //calling the fetchAttendanceRecords Function
+    fetchAttendanceRecords();
+  }, [username]);
 
   return (
-    <TableContainer sx={{ mt: 5 }}>
+    <TableContainer component={Paper} sx={{ mt: 5 }}>
       <Typography
         variant="h4"
         textAlign="center"
@@ -28,44 +48,49 @@ const RecordList = () => {
       <DatePickerCmp />
 
       <Table
+        stickyHeader
         sx={{ minWidth: 650, mt: 3 }}
         size="small"
         aria-label="a dense table"
       >
         <TableHead>
           <TableRow>
-            <TableCell>Employee Name</TableCell>
+            <TableCell align="right">Picture</TableCell>
             <TableCell align="right">Entrance Time</TableCell>
             <TableCell align="right">Leave Time</TableCell>
-            <TableCell align="right">Picture</TableCell>
           </TableRow>
         </TableHead>
 
         <TableBody>
-          <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-            <TableCell component="th" scope="row">
-              Muhammad Abdullah Ibn Rafique
-            </TableCell>
-            <TableCell align="right">11:22 am</TableCell>
-            <TableCell align="right">7:57 pm</TableCell>
-            <TableCell align="right"></TableCell>
-          </TableRow>
-          <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-            <TableCell component="th" scope="row">
-              Muhammad Abdullah Ibn Rafique
-            </TableCell>
-            <TableCell align="right">11:22 am</TableCell>
-            <TableCell align="right">7:57 pm</TableCell>
-            <TableCell align="right"></TableCell>
-          </TableRow>
-          <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-            <TableCell component="th" scope="row">
-              Muhammad Abdullah Ibn Rafique
-            </TableCell>
-            <TableCell align="right">11:22 am</TableCell>
-            <TableCell align="right">7:57 pm</TableCell>
-            <TableCell align="right"></TableCell>
-          </TableRow>
+          {attendanceRecord.map((record) => (
+            <TableRow
+              key={record._id}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              {/* //displaying picture */}
+              <TableCell align="right">
+                <Avatar sx={{ width: 70, height: 70 }}>
+                  {record.picture ? (
+                    <img
+                      src={record.picture}
+                      alt="Attendance"
+                      style={{ maxWidth: "100px" }}
+                    />
+                  ) : (
+                    "Not Found"
+                  )}
+                </Avatar>
+              </TableCell>
+
+              {/* //displaying entranceTime */}
+              <TableCell component="th" align="right" scope="row">
+                {record.entranceTime}
+              </TableCell>
+
+              {/* displaying leavingTime */}
+              <TableCell align="right">{record.leavingTime}</TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </TableContainer>

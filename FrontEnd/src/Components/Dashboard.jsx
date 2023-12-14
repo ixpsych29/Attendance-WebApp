@@ -6,8 +6,12 @@ const Dashboard = () => {
   return (
     <Box>
       <Container>
-        <Stack direction="row" spacing={3}>
-          <DisplayCard />
+        <Stack
+          direction="row"
+          justifyContent="center"
+          margin="0 auto"
+          spacing={0}
+        >
           <DisplayCard />
           <DisplayCard />
           <DisplayCard />

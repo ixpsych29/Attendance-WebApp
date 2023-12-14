@@ -1,5 +1,5 @@
 import { Box, Stack, Container } from "@mui/system";
-import RecordList from "./RecordList";
+// import RecordList from "./RecordList";
 import { Button } from "@mui/material";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import PictureCam from "./PictureCam";
@@ -25,7 +25,7 @@ function Attendence() {
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           {shouldRender && <PictureCam handleRender={setShouldRender} />}
         </Box>
-        <RecordList />
+        {/* <RecordList /> */}
       </Container>
     </Box>
   );
