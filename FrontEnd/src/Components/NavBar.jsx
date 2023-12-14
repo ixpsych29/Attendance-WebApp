@@ -114,5 +114,4 @@ const Navbar = ({ login }) => {
     </AppBar>
   );
 };
-
 export default Navbar;
