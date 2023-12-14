@@ -14,6 +14,9 @@ import axios from "axios";
 import UserContext from "./userContext";
 // eslint-disable-next-line no-unused-vars
 import toast, { Toaster } from "react-hot-toast";
+import { IconButton, InputAdornment } from "@mui/material";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 function Copyright(props) {
   return (
@@ -37,6 +40,8 @@ function Copyright(props) {
 // TODO remove, this demo shouldn't need to reset the theme.
 
 export default function LoginForm({ login }) {
+  const [showPassword, setShowPassword] = useState(false);
+
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [errors, setErrors] = useState({});
   const { setUserName } = useContext(UserContext);
@@ -134,22 +139,29 @@ export default function LoginForm({ login }) {
             fullWidth
             name="password"
             label="Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="password"
             autoComplete="current-password"
             value={formData.password}
             onChange={handleChange}
             error={Boolean(errors.password)}
             helperText={errors.password}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
-          {/* <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
           <Button
             type="submit"
-            // component={RouterLink}
-            // to="/"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
