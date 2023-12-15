@@ -40,7 +40,7 @@ const RecordList = () => {
       <Typography
         variant="h4"
         textAlign="center"
-        sx={{ mb: 3, color: "text.primary" }}
+        sx={{ mb: 3, color: "text.primary", mt: 3 }}
       >
         {username.toUpperCase()}, Your History
       </Typography>
@@ -49,15 +49,18 @@ const RecordList = () => {
 
       <Table
         stickyHeader
-        sx={{ minWidth: 650, mt: 3 }}
+        sx={{
+          minWidth: 650,
+          mt: 3,
+        }}
         size="small"
         aria-label="a dense table"
       >
         <TableHead>
           <TableRow>
-            <TableCell align="right">Picture</TableCell>
-            <TableCell align="right">Entrance Time</TableCell>
-            <TableCell align="right">Leave Time</TableCell>
+            <TableCell align="center">Picture</TableCell>
+            <TableCell align="center">Entrance Time</TableCell>
+            <TableCell align="center">Leave Time</TableCell>
           </TableRow>
         </TableHead>
 
@@ -68,27 +71,34 @@ const RecordList = () => {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               {/* //displaying picture */}
-              <TableCell align="right">
-                <Avatar sx={{ width: 70, height: 70 }}>
-                  {record.picture ? (
+              <TableCell
+                align="center"
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                {record.picture ? (
+                  <Avatar sx={{ width: 70, height: 70 }}>
                     <img
                       src={record.picture}
                       alt="Attendance"
                       style={{ maxWidth: "100px" }}
                     />
-                  ) : (
-                    "Not Found"
-                  )}
-                </Avatar>
+                  </Avatar>
+                ) : (
+                  "Not Found"
+                )}
               </TableCell>
 
               {/* //displaying entranceTime */}
-              <TableCell component="th" align="right" scope="row">
+              <TableCell component="th" align="center" scope="row">
                 {record.entranceTime}
               </TableCell>
 
               {/* displaying leavingTime */}
-              <TableCell align="right">{record.leavingTime}</TableCell>
+              <TableCell align="center">{record.leavingTime}</TableCell>
             </TableRow>
           ))}
         </TableBody>

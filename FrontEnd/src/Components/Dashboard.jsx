@@ -1,4 +1,4 @@
-import { Box, Container, Stack } from "@mui/material";
+import { Box, Container, Divider, Stack } from "@mui/material";
 import DisplayCard from "./DisplayCard";
 import RecordList from "./RecordList";
 
@@ -16,6 +16,10 @@ const Dashboard = () => {
           <DisplayCard />
           <DisplayCard />
         </Stack>
+        <Divider
+          variant="middle"
+          sx={{ mt: 7, mb: 7, borderColor: "primary.main", borderWidth: 2 }}
+        />
         <RecordList />
       </Container>
     </Box>
