@@ -9,7 +9,7 @@ const getAttendance = async (req, res) => {
 //get single day history
 const getOneAttendance = async (req, res) => {
   const { userName } = req.params;
-  const employee = await User.find({ username: userName });
+  const employee = await Attendance.find({ username: userName });
   if (!employee) {
     return res.status(404).json({ error: "No user found" });
   }

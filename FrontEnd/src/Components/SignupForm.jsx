@@ -100,7 +100,7 @@ export default function SignupForm() {
         // Assuming your backend returns some data, you can log or use it as needed
         console.log(response.data);
 
-        navigate("/login");
+        navigate("/");
 
         // Optionally, you can redirect the user or perform other actions after successful registration
       } catch (error) {
