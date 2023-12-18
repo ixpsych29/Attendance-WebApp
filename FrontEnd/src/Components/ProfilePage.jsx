@@ -7,7 +7,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { Select } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 function Copyright(props) {
   return (
@@ -101,21 +101,23 @@ export default function ProfilePage() {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Select>
-                <TextField
+              <FormControl fullWidth>
+                <InputLabel htmlFor="gender">Gender</InputLabel>
+                <Select
                   autoComplete="gender"
                   name="gender"
                   fullWidth
                   id="gender"
                   label="Gender"
                   autoFocus
-                />
-                <option value="male">Male</option>
-                <option value="female">female</option>
-                <option value="Custom">female</option>
-                <option value="Rather Not Say ">female</option>
-              </Select>
+                >
+                  <MenuItem value="male">Male</MenuItem>
+                  <MenuItem value="female">Female</MenuItem>
+                  <MenuItem value="custom">Custom</MenuItem>
+                </Select>
+              </FormControl>
             </Grid>
+
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
