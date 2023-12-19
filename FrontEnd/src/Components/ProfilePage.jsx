@@ -4,10 +4,18 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  FormControl,
+  Input,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
+import { useState } from "react";
 
 function Copyright(props) {
   return (
@@ -29,12 +37,34 @@ function Copyright(props) {
 }
 
 export default function ProfilePage() {
+  const [isHovered, setIsHovered] = useState(false);
+  const [profilePicture, setProfilePicture] = useState(
+    "https://randomuser.me/api/portraits/men/1.jpg"
+  );
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfilePicture(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
+      firstName: data.get("firstName"),
+      lastName: data.get("lastName"),
       email: data.get("email"),
-      password: data.get("password"),
+      username: data.get("username"),
+      gender: data.get("gender"),
+      D_O_B: data.get("D.O.B"),
+      phoneNo: data.get("phone-no"),
     });
   };
 
@@ -52,9 +82,39 @@ export default function ProfilePage() {
         <Typography component="h1" variant="h5" fontWeight="bold">
           Profile Information
         </Typography>
-        <Avatar sx={{ m: 5, bgcolor: "grey", width: "100px", height: "100px" }}>
-          <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="" />
-        </Avatar>
+        <label
+          htmlFor="upload-avatar"
+          style={{ cursor: "pointer" }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <Avatar
+            sx={{
+              m: 5,
+              bgcolor: "grey",
+              width: "100px",
+              height: "100px",
+              "&:hover": {
+                "& .upload-icon": {
+                  display: "block",
+                },
+              },
+            }}
+            alt=""
+            src={profilePicture}
+          >
+            {isHovered && (
+              <CameraAltIcon className="upload-icon" fontSize="large" />
+            )}
+          </Avatar>
+          <Input
+            accept="image/*"
+            id="upload-avatar"
+            type="file"
+            style={{ display: "none" }}
+            onChange={handleFileChange}
+          />
+        </label>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
@@ -105,7 +165,7 @@ export default function ProfilePage() {
                 <InputLabel htmlFor="gender">Gender</InputLabel>
                 <Select
                   autoComplete="gender"
-                  name="gender"
+                  name="male"
                   fullWidth
                   id="gender"
                   label="Gender"
@@ -145,8 +205,8 @@ export default function ProfilePage() {
             sx={{
               mt: 3,
               mb: 2,
-              bgcolor: "#1b1d72",
-              "&:hover": { bgcolor: "#1db0e6" },
+              bgcolor: "#1db0e6",
+              "&:hover": { bgcolor: "#1b1d72" },
             }}
           >
             Update Profile
