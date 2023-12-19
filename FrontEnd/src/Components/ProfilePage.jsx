@@ -104,7 +104,11 @@ export default function ProfilePage() {
             src={profilePicture}
           >
             {isHovered && (
-              <CameraAltIcon className="upload-icon" fontSize="large" />
+              <CameraAltIcon
+                className="upload-icon"
+                fontSize="large"
+                // onClick={openFileDialog}
+              />
             )}
           </Avatar>
           <Input
