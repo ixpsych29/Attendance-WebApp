@@ -205,7 +205,6 @@ export default function ProfilePage() {
                 >
                   <MenuItem value="male">Male</MenuItem>
                   <MenuItem value="female">Female</MenuItem>
-                  <MenuItem value="custom">Custom</MenuItem>
                 </Select>
               </FormControl>
             </Grid>

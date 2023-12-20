@@ -29,11 +29,13 @@ const PictureCam = ({ handleRender }) => {
   };
 
   const handlePicSubmit = async () => {
-    console.log("Attendace MArked!");
+    const date = new Date();
+    console.log("Attendance Submitted at: ", date);
     try {
       await axios.post("http://localhost:3000/api/attendance", {
         username: username,
         picture: imgSrc,
+        entranceTime: date,
       });
 
       //notifying

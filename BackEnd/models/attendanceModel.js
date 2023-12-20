@@ -14,7 +14,8 @@ const attendanceModel = new Schema({
   },
   entranceTime: {
     type: Date,
-    default: Date.now(),
+    // default: Date.now(),
+    required: true,
   },
   leavingTime: {
     type: Date,

@@ -13,11 +13,40 @@ import DatePickerCmp from "./DatePickerCmp";
 import UserContext from "./userContext";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+// import dayjs from "dayjs";
+// import "dayjs/locale/en"; // Import the desired locale
+// import utc from "dayjs/plugin/utc";
+// import timezone from "dayjs/plugin/timezone";
+// import relativeTime from "dayjs/plugin/relativeTime";
+// import localizedFormat from "dayjs/plugin/localizedFormat";
 
 const RecordList = () => {
   const { username } = useContext(UserContext);
   // console.log(username);
   const [attendanceRecord, setAttendanceRecord] = useState([]);
+
+  // // Enable Day.js plugins
+  // dayjs.extend(utc);
+  // dayjs.extend(timezone);
+  // dayjs.extend(relativeTime);
+  // dayjs.extend(localizedFormat);
+
+  // // Set the default time zone to PKT
+  // dayjs.tz.setDefault("Asia/Karachi");
+
+  //formatting date & time
+  const formatTime = (date) => {
+    // return dayjs(date).format("hh:mm A");
+    const time = new Date(date);
+    let hours = time.getHours();
+    console.log("Hours: ", hours);
+    const minutes = time.getMinutes();
+    const period = hours >= 12 ? "PM" : "AM";
+
+    hours = hours % 12 || 12;
+
+    return `${hours}:${minutes.toString().padStart(2, "0")} ${period}`;
+  };
 
   useEffect(() => {
     const fetchAttendanceRecords = async () => {
@@ -94,7 +123,11 @@ const RecordList = () => {
 
               {/* //displaying entranceTime */}
               <TableCell component="th" align="center" scope="row">
-                {record.entranceTime}
+                {/* {console.log(
+                  "Formatted Time:",
+                  formatTime(record.entranceTime)
+                )} */}
+                {formatTime(record.entranceTime)}
               </TableCell>
 
               {/* displaying leavingTime */}
