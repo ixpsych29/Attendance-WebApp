@@ -43,6 +43,7 @@ const RecordList = () => {
     const minutes = time.getMinutes();
     const period = hours >= 12 ? "PM" : "AM";
 
+    //convert 0 to 12 for midnight and noon
     hours = hours % 12 || 12;
 
     return `${hours}:${minutes.toString().padStart(2, "0")} ${period}`;
