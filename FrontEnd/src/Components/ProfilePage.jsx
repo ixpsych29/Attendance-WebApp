@@ -8,6 +8,7 @@ import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import axios from "axios";
 import {
   FormControl,
   Input,
@@ -15,7 +16,8 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import UserContext from "./userContext";
 
 function Copyright(props) {
   return (
@@ -37,20 +39,46 @@ function Copyright(props) {
 }
 
 export default function ProfilePage() {
+  const { username } = useContext(UserContext);
+
   const [isHovered, setIsHovered] = useState(false);
-  const [profilePicture, setProfilePicture] = useState(
-    "https://randomuser.me/api/portraits/men/1.jpg"
-  );
+  const [profilePicture, setProfilePicture] = useState("../assets/logo.png");
 
-  const handleFileChange = (event) => {
+  // const handleFileChange = (event) => {
+  //   const file = event.target.files[0];
+
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setProfilePicture(reader.result);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
+
+  const handleFileChange = async (event) => {
     const file = event.target.files[0];
+    const data = new FormData();
+    data.append("profilePicture", file);
 
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfilePicture(reader.result);
-      };
-      reader.readAsDataURL(file);
+    try {
+      // Send Axios request to update the profile picture
+      const response = await axios.put(
+        `http://localhost:3000/api/users/${username}`,
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("Profile picture updated successfully");
+
+      // Assuming the backend sends the updated profile picture URL
+      setProfilePicture(response.data.profilePicture);
+    } catch (error) {
+      console.error("Error updating profile picture:", error);
     }
   };
 

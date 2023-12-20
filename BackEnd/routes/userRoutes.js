@@ -20,7 +20,7 @@ router.get("/:userName", getSingleUser);
 router.post("/", createUser);
 
 //update user profile
-router.patch("/:userName", updateUser);
+router.put("/:userName", updateUser);
 
 //delete user
 router.delete("/:userName", deleteUser);
