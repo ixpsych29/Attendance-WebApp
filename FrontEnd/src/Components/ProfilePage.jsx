@@ -46,43 +46,43 @@ export default function ProfilePage() {
     "../assets/defaultProfile.jpg"
   );
 
-  // const handleFileChange = (event) => {
-  //   const file = event.target.files[0];
-
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setProfilePicture(reader.result);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
-
-  const handleFileChange = async (event) => {
+  const handleFileChange = (event) => {
     const file = event.target.files[0];
-    const data = new FormData();
-    data.append("profilePicture", file);
 
-    try {
-      // Send Axios request to update the profile picture
-      const response = await axios.put(
-        `http://localhost:3000/api/users/${username}`,
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      console.log("Profile picture updated successfully");
-
-      // Assuming the backend sends the updated profile picture URL
-      setProfilePicture(response.data.profilePicture);
-    } catch (error) {
-      console.error("Error updating profile picture:", error);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfilePicture(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
+
+  // const handleFileChange = async (event) => {
+  //   const file = event.target.files[0];
+  //   const data = new FormData();
+  //   data.append("profilePicture", file);
+
+  //   try {
+  //     // Send Axios request to update the profile picture
+  //     const response = await axios.put(
+  //       `http://localhost:3000/api/users/${username}`,
+  //       data,
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     );
+
+  //     console.log("Profile picture updated successfully");
+
+  //     // Assuming the backend sends the updated profile picture URL
+  //     setProfilePicture(response.data.profilePicture);
+  //   } catch (error) {
+  //     console.error("Error updating profile picture:", error);
+  //   }
+  // };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -112,14 +112,10 @@ export default function ProfilePage() {
         <Typography component="h1" variant="h5" fontWeight="bold">
           Profile Information
         </Typography>
-        <label
-          htmlFor="upload-avatar"
-          style={{ cursor: "pointer" }}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
+        <label htmlFor="upload-avatar">
           <Avatar
             sx={{
+              cursor: "pointer",
               m: 5,
               bgcolor: "grey",
               width: "100px",
@@ -130,7 +126,9 @@ export default function ProfilePage() {
                 },
               },
             }}
-            alt=""
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            alt="profile picture"
             src={profilePicture}
           >
             {isHovered && (
