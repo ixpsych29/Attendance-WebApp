@@ -197,7 +197,7 @@ export default function ProfilePage() {
                 <InputLabel htmlFor="gender">Gender</InputLabel>
                 <Select
                   autoComplete="gender"
-                  name="male"
+                  defaultValue="male"
                   fullWidth
                   id="gender"
                   label="Gender"
