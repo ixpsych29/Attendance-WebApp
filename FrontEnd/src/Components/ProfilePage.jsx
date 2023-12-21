@@ -8,7 +8,7 @@ import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import axios from "axios";
+// import axios from "axios";
 import {
   FormControl,
   Input,
@@ -179,6 +179,7 @@ export default function ProfilePage() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                defaultValue=""
               />
             </Grid>
             <Grid item xs={12}>
@@ -190,6 +191,7 @@ export default function ProfilePage() {
                 label="Username"
                 name="username"
                 autoComplete="username"
+                defaultValue={username}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -197,12 +199,12 @@ export default function ProfilePage() {
                 <InputLabel htmlFor="gender">Gender</InputLabel>
                 <Select
                   autoComplete="gender"
-                  defaultValue="male"
+                  defaultValue="select"
                   fullWidth
                   id="gender"
                   label="Gender"
-                  autoFocus
                 >
+                  <MenuItem value="select">Select</MenuItem>
                   <MenuItem value="male">Male</MenuItem>
                   <MenuItem value="female">Female</MenuItem>
                 </Select>
@@ -216,6 +218,7 @@ export default function ProfilePage() {
                 label="D.O.B"
                 name="D.O.B"
                 autoComplete="D.O.B"
+                type="date"
               />
               {/* <DatePickerCmp /> */}
             </Grid>
