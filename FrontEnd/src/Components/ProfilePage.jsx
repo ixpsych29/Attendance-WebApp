@@ -42,7 +42,9 @@ export default function ProfilePage() {
   const { username } = useContext(UserContext);
 
   const [isHovered, setIsHovered] = useState(false);
-  const [profilePicture, setProfilePicture] = useState("../assets/logo.png");
+  const [profilePicture, setProfilePicture] = useState(
+    "../assets/defaultProfile.jpg"
+  );
 
   // const handleFileChange = (event) => {
   //   const file = event.target.files[0];
