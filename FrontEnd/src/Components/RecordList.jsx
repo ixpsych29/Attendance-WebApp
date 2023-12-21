@@ -72,7 +72,7 @@ const RecordList = () => {
         textAlign="center"
         sx={{ mb: 3, color: "text.primary", mt: 3 }}
       >
-        {username.toUpperCase()}, Your History
+        {username}, Your History
       </Typography>
 
       <DatePickerCmp />
