@@ -9,6 +9,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import axios from "axios";
+import NoImage from "../assets/defaultProfile.jpg";
 import {
   FormControl,
   Input,
@@ -42,47 +43,47 @@ export default function ProfilePage() {
   const { username } = useContext(UserContext);
 
   const [isHovered, setIsHovered] = useState(false);
-  const [profilePicture, setProfilePicture] = useState(
-    "../assets/defaultProfile.jpg"
-  );
+  const [profilePicture, setProfilePicture] = useState(NoImage);
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
+  console.log(isHovered, "-----------");
 
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfilePicture(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // const handleFileChange = async (event) => {
+  // const handleFileChange = (event) => {
   //   const file = event.target.files[0];
-  //   const data = new FormData();
-  //   data.append("profilePicture", file);
 
-  //   try {
-  //     // Send Axios request to update the profile picture
-  //     const response = await axios.put(
-  //       `http://localhost:3000/api/users/${username}`,
-  //       data,
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       }
-  //     );
-
-  //     console.log("Profile picture updated successfully");
-
-  //     // Assuming the backend sends the updated profile picture URL
-  //     setProfilePicture(response.data.profilePicture);
-  //   } catch (error) {
-  //     console.error("Error updating profile picture:", error);
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setProfilePicture(reader.result);
+  //     };
+  //     reader.readAsDataURL(file);
   //   }
   // };
+
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    const data = new FormData();
+    data.append("profilePicture", file);
+
+    try {
+      // Send Axios request to update the profile picture
+      const response = await axios.put(
+        `http://localhost:3000/api/users/${username}`,
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      console.log("Profile picture updated successfully");
+
+      // Assuming the backend sends the updated profile picture URL
+      setProfilePicture(response.data.profilePicture);
+    } catch (error) {
+      console.error("Error updating profile picture:", error);
+    }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -131,13 +132,16 @@ export default function ProfilePage() {
             alt="profile picture"
             src={profilePicture}
           >
-            {isHovered && (
-              <CameraAltIcon
-                className="upload-icon"
-                fontSize="large"
-                // onClick={openFileDialog}
-              />
-            )}
+            {isHovered &&
+              (console.log("hovered", "***********************************"),
+              (
+                <CameraAltIcon
+                  className="upload-icon"
+                  fontSize="large"
+                  color="error"
+                  // onClick={openFileDialog}
+                />
+              ))}
           </Avatar>
           <Input
             accept="image/*"
