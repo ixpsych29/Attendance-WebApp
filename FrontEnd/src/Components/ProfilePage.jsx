@@ -224,9 +224,10 @@ export default function ProfilePage() {
                 name="D.O.B"
                 autoComplete="D.O.B"
                 type="date"
+                placeholder="dd/mm/yyyy"
               />
-              {/* <DatePickerCmp /> */}
             </Grid>
+
             <Grid item xs={12}>
               <TextField
                 fullWidth
