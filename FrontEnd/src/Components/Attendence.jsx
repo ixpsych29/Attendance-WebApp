@@ -6,7 +6,7 @@ import PictureCam from "./PictureCam";
 import { useState } from "react";
 
 function Attendence() {
-  const [shouldRender, setShouldRender] = useState(false);
+  const [shouldRender, setShouldRender] = useState(true);
 
   return (
     <Box>
