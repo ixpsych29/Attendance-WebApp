@@ -42,7 +42,6 @@ function Copyright(props) {
 
 export default function ProfilePage() {
   const { username } = useContext(UserContext);
-
   const [isHovered, setIsHovered] = useState(false);
   const [profilePicture, setProfilePicture] = useState(NoImage);
 
@@ -50,7 +49,6 @@ export default function ProfilePage() {
 
   // const handleFileChange = (event) => {
   //   const file = event.target.files[0];
-
   //   if (file) {
   //     const reader = new FileReader();
   //     reader.onloadend = () => {
