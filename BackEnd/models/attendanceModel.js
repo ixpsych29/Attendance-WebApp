@@ -21,6 +21,10 @@ const attendanceModel = new Schema({
     type: Date,
     default: null,
   },
+  presentStatus: {
+    type: String,
+    default: null,
+  },
 });
 
 const Attendance = mongoose.model("Attendance", attendanceModel);
