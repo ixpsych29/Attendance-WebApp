@@ -1,4 +1,4 @@
-import { Box, Container, Divider, Stack } from "@mui/material";
+import { Box, Container, CssBaseline, Divider, Stack } from "@mui/material";
 import DisplayCard from "./DisplayCard";
 import RecordList from "./RecordList";
 import { useEffect, useState } from "react";
@@ -52,6 +52,8 @@ const Dashboard = () => {
 
   return (
     <Box>
+      <CssBaseline />
+
       <Container>
         <Stack
           direction="row"

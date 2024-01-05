@@ -41,14 +41,14 @@ function App() {
             <ProtectedRoute element={<Home login={setAuthenticated} />} />
           }
         >
-          <Route index element={<Attendence />} />
+          <Route index element={<Dashboard />} />
           <Route
             path="profile"
             element={<ProtectedRoute element={<ProfilePage />} />}
           ></Route>
           <Route
-            path="dashboard"
-            element={<ProtectedRoute element={<Dashboard />} />}
+            path="attendence"
+            element={<ProtectedRoute element={<Attendence />} />}
           ></Route>
           <Route
             path="settings"

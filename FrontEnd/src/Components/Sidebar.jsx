@@ -40,12 +40,10 @@ const Sidebar = ({ mode, setMode }) => {
           <ListItem disablePadding>
             <ListItemButton
               component={Link}
-              to="/home/dashboard"
+              to="/home"
               sx={{
-                background: isActiveLink("/home/dashboard")
-                  ? "#1db0e6"
-                  : "inherit",
-                color: isActiveLink("/home/dashboard") ? "#fff" : "inherit",
+                background: isActiveLink("/home") ? "#1db0e6" : "inherit",
+                color: isActiveLink("/home") ? "#fff" : "inherit",
                 borderRadius: 10,
                 "&:hover": {
                   background: "#1688b3",
@@ -62,10 +60,12 @@ const Sidebar = ({ mode, setMode }) => {
           <ListItem disablePadding>
             <ListItemButton
               component={Link}
-              to="/home"
+              to="/home/attendence"
               sx={{
-                backgroundColor: isActiveLink("/home") ? "#1db0e6" : "inherit",
-                color: isActiveLink("/home") ? "#fff" : "inherit",
+                backgroundColor: isActiveLink("/home/attendence")
+                  ? "#1db0e6"
+                  : "inherit",
+                color: isActiveLink("/home/attendence") ? "#fff" : "inherit",
                 borderRadius: 10,
                 "&:hover": {
                   background: "#1688b3",
@@ -102,23 +102,9 @@ const Sidebar = ({ mode, setMode }) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton
-              component={Link}
-              to="/home/settings"
-              sx={{
-                backgroundColor: isActiveLink("/home/settings")
-                  ? "#1db0e6"
-                  : "inherit",
-                color: isActiveLink("/home/settings") ? "#fff" : "inherit",
-                borderRadius: 10,
-                "&:hover": {
-                  background: "#1688b3",
-                  color: "#fff",
-                },
-              }}
-            >
+            <ListItemButton>
               <ListItemIcon>
-                <ModeNightIcon color="primary" />
+                <ModeNightIcon color="black" />
               </ListItemIcon>
               <Switch
                 onChange={() => {

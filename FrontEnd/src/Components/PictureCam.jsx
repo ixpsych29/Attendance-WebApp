@@ -7,8 +7,10 @@ import CheckIcon from "@mui/icons-material/Check";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-const PictureCam = ({ handleRender }) => {
+const PictureCam = () => {
+  const navigate = useNavigate();
   const webcamRef = useRef(null);
   const [imgSrc, setImgSrc] = useState(null);
 
@@ -40,11 +42,11 @@ const PictureCam = ({ handleRender }) => {
 
       //notifying
       toast.success("Attendance Marked!");
+      navigate("/home");
+
       // console.log(response.data);
     } catch (error) {
       console.log(error.response.data.message);
-    } finally {
-      handleRender(false);
     }
   };
 
