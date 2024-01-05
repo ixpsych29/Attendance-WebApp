@@ -1,4 +1,4 @@
-import { Box, Stack, Container } from "@mui/system";
+import { Box, Container } from "@mui/system";
 // import RecordList from "./RecordList";
 import PictureCam from "./PictureCam";
 
