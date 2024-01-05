@@ -13,7 +13,7 @@ const PictureCam = ({ handleRender }) => {
   const [imgSrc, setImgSrc] = useState(null);
 
   const { username } = useContext(UserContext);
-  console.log("PictureCam Working", username);
+  // console.log("PictureCam Working", username);
 
   //notification in case of success
   // const notify = () => toast.success("Success!");

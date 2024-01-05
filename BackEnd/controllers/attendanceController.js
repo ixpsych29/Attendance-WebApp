@@ -66,6 +66,18 @@ const updateAttendance = async (req, res) => {
 const getPresentOnes = async (req, res) => {
   try {
     const currentDate = moment().tz("Asia/Karachi").startOf("day");
+
+    await Attendance.updateMany(
+      {
+        entranceTime: {
+          $gte: currentDate.toDate(),
+          $lt: currentDate.clone().add(1, "days").toDate(),
+        },
+        presentStatus: "Present",
+      },
+      { $set: { presentStatus: null } }
+    );
+
     const presentAttendees = await Attendance.find({
       entranceTime: {
         $gte: currentDate.toDate(),
