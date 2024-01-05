@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import PersonIcon from "@mui/icons-material/Person";
-import SettingsIcon from "@mui/icons-material/Settings";
 import TodayIcon from "@mui/icons-material/Today";
 import ModeNightIcon from "@mui/icons-material/ModeNight";
 import { Link, useLocation } from "react-router-dom";
@@ -115,22 +114,6 @@ const Sidebar = ({ mode, setMode }) => {
                 "&:hover": {
                   background: "#1688b3",
                   color: "#fff",
-                },
-              }}
-            >
-              <ListItemIcon>
-                <SettingsIcon color="secondary" />
-              </ListItemIcon>
-              <ListItemText primary="Settings" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton
-              sx={{
-                "&:hover": {
-                  background: "#1688b3",
-                  color: "#fff",
-                  borderRadius: 10,
                 },
               }}
             >
