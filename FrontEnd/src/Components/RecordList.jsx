@@ -39,7 +39,7 @@ const RecordList = () => {
     // return dayjs(date).format("hh:mm A");
     const time = new Date(date);
     let hours = time.getHours();
-    console.log("Hours: ", hours);
+    // console.log("Hours: ", hours);
     const minutes = time.getMinutes();
     const period = hours >= 12 ? "PM" : "AM";
 

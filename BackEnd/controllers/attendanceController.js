@@ -1,9 +1,22 @@
 const Attendance = require("../models/attendanceModel");
+const moment = require("moment-timezone");
 
-//get all history
+//get all history with distinct employee count
 const getAttendance = async (req, res) => {
-  const employee = await Attendance.find({}).sort({ entranceTime: 1 });
-  res.status(200).json(employee);
+  try {
+    const employee = await Attendance.aggregate([
+      {
+        $group: { _id: "$username" },
+      },
+    ]).sort({ entranceTime: 1 });
+
+    const distinctEmployeeCount = employee.length;
+
+    res.status(200).json({ distinctEmployeeCount });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
 };
 
 //get single day history
@@ -26,6 +39,7 @@ const createAttendance = async (req, res) => {
       username,
       picture,
       entranceTime,
+      presentStatus: "Present",
     });
     res.status(200).json(todayAttendance);
   } catch (err) {
@@ -36,14 +50,35 @@ const createAttendance = async (req, res) => {
 //UPDATING attendance at leaving time.
 const updateAttendance = async (req, res) => {
   const { userName } = req.params;
+  const { leavingTime } = req.body;
+
   const employee = await Attendance.findOneAndUpdate(
     { username: userName },
-    { ...req.body }
+    { leavingTime }
   );
   if (!employee) {
     return res.status(404).json({ error: "not found today attendance!" });
   }
   res.status(200).json(remployee);
+};
+
+// Get present attendees for the current date
+const getPresentOnes = async (req, res) => {
+  try {
+    const currentDate = moment().tz("Asia/Karachi").startOf("day");
+    const presentAttendees = await Attendance.find({
+      entranceTime: {
+        $gte: currentDate.toDate(),
+        $lt: currentDate.clone().add(1, "days").toDate(),
+      },
+      presentStatus: "Present",
+    });
+
+    res.status(200).json(presentAttendees);
+  } catch (error) {
+    console.error("Error fetching present attendees:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 //exporting modules
@@ -52,4 +87,5 @@ module.exports = {
   getOneAttendance,
   createAttendance,
   updateAttendance,
+  getPresentOnes,
 };

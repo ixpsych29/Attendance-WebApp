@@ -3,8 +3,15 @@ const User = require("../models/userModel");
 
 //get all Users
 const getUsers = async (req, res) => {
-  const users = await User.find({}).sort({ created_at: 1 });
-  res.status(200).json(users);
+  try {
+    const users = await User.find({}).sort({ created_at: 1 });
+    const totalEmployees = users.length;
+
+    res.status(200).json({ totalEmployees, users });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 //get a single User

@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 
-const DisplayCard = () => {
+const DisplayCard = (props) => {
   return (
     <Container>
       <Card
@@ -33,13 +33,13 @@ const DisplayCard = () => {
             color="#fff"
             gutterBottom
           >
-            Total Employees
+            {props.title} Employees
           </Typography>
           <Typography
             sx={{ textAlign: "center", mt: 2, mb: 0, color: "#fff" }}
             variant="h4"
           >
-            20
+            {props.count}
           </Typography>
         </CardContent>
         <CardActions>
