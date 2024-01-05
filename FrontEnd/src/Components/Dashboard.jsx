@@ -19,7 +19,7 @@ const Dashboard = () => {
         // console.log("totalResponse ", totalResponse.data);
         setTotalEmployees(totalResponse.data.totalEmployees || 0);
 
-        //fetching the count of present employees
+        //fetching the total present employees
         const presentResponse = await axios.get(
           `http://localhost:3000/api/attendance`
         );
