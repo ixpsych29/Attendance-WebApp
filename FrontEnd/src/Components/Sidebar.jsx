@@ -102,21 +102,7 @@ const Sidebar = ({ mode, setMode }) => {
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
-            <ListItemButton
-              component={Link}
-              to="/home/settings"
-              sx={{
-                backgroundColor: isActiveLink("/home/settings")
-                  ? "#1db0e6"
-                  : "inherit",
-                color: isActiveLink("/home/settings") ? "#fff" : "inherit",
-                borderRadius: 10,
-                "&:hover": {
-                  background: "#1688b3",
-                  color: "#fff",
-                },
-              }}
-            >
+            <ListItemButton>
               <ListItemIcon>
                 <ModeNightIcon color="primary" />
               </ListItemIcon>
