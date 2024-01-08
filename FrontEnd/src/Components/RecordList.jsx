@@ -25,28 +25,32 @@ const RecordList = () => {
   // console.log(username);
   const [attendanceRecord, setAttendanceRecord] = useState([]);
 
-  // // Enable Day.js plugins
-  // dayjs.extend(utc);
-  // dayjs.extend(timezone);
-  // dayjs.extend(relativeTime);
-  // dayjs.extend(localizedFormat);
-
-  // // Set the default time zone to PKT
-  // dayjs.tz.setDefault("Asia/Karachi");
-
   //formatting date & time
-  const formatTime = (date) => {
-    // return dayjs(date).format("hh:mm A");
+  const formatDateTime = (date) => {
     const time = new Date(date);
+    console.log("recordList time", time);
+
+    //format date
+    const formattedDate = time.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "2-digit",
+    });
+
+    //format Time
     let hours = time.getHours();
     // console.log("Hours: ", hours);
+
     const minutes = time.getMinutes();
     const period = hours >= 12 ? "PM" : "AM";
 
     //convert 0 to 12 for midnight and noon
     hours = hours % 12 || 12;
 
-    return `${hours}:${minutes.toString().padStart(2, "0")} ${period}`;
+    const formattedTime = `${hours}:${minutes
+      .toString()
+      .padStart(2, "0")} ${period}`;
+    return { formattedDate, formattedTime };
   };
 
   useEffect(() => {
@@ -89,6 +93,7 @@ const RecordList = () => {
         <TableHead>
           <TableRow>
             <TableCell align="center">Picture</TableCell>
+            <TableCell align="center">Date</TableCell>
             <TableCell align="center">Entrance Time</TableCell>
             <TableCell align="center">Leave Time</TableCell>
           </TableRow>
@@ -122,17 +127,20 @@ const RecordList = () => {
                 )}
               </TableCell>
 
+              {/* //Displaying Date  */}
+              <TableCell component="th" align="center" scope="row">
+                {formatDateTime(record.entranceTime).formattedDate}
+              </TableCell>
+
               {/* //displaying entranceTime */}
               <TableCell component="th" align="center" scope="row">
-                {/* {console.log(
-                  "Formatted Time:",
-                  formatTime(record.entranceTime)
-                )} */}
-                {formatTime(record.entranceTime)}
+                {formatDateTime(record.entranceTime).formattedTime}
               </TableCell>
 
               {/* displaying leavingTime */}
-              <TableCell align="center">{record.leavingTime}</TableCell>
+              <TableCell component="th" align="center" scope="row">
+                {formatDateTime(record.leavingTime).formattedTime}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
