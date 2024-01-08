@@ -220,9 +220,10 @@ export default function ProfilePage() {
                 id="D.O.B"
                 label="D.O.B"
                 name="D.O.B"
-                autoComplete="D.O.B"
+                closeOnSelect={true}
                 type="date"
-                placeholder="dd/mm/yyyy"
+
+                // placeholder=""
               />
             </Grid>
 

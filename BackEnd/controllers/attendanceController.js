@@ -6,9 +6,16 @@ const getAttendance = async (req, res) => {
   try {
     const employee = await Attendance.aggregate([
       {
-        $group: { _id: "$username" },
+        $group: {
+          _id: {
+            username: "$username",
+            entranceTime: {
+              $dateToString: { format: "%Y-%m-%d", date: "$entranceTime" },
+            },
+          },
+        },
       },
-    ]).sort({ entranceTime: 1 });
+    ]).sort({ "_id.date": 1 });
 
     const distinctEmployeeCount = employee.length;
 
