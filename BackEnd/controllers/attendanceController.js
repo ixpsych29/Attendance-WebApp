@@ -79,10 +79,6 @@ const getPresentOnes = async (req, res) => {
     );
 
     const presentAttendees = await Attendance.find({
-      entranceTime: {
-        $gte: currentDate.toDate(),
-        $lt: currentDate.clone().add(1, "days").toDate(),
-      },
       presentStatus: "Present",
     });
 
