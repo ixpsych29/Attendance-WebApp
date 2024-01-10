@@ -1,4 +1,4 @@
-import { Box, Container, CssBaseline, Divider, Stack } from "@mui/material";
+import { Box, Container, CssBaseline, Stack } from "@mui/material";
 import DisplayCard from "./DisplayCard";
 import RecordList from "./RecordList";
 import { useEffect, useState } from "react";
@@ -8,7 +8,6 @@ const Dashboard = () => {
   const [totalEmployees, setTotalEmployees] = useState(0);
   const [presentEmployees, setPresentEmployees] = useState(0);
   const [absentEmployees, setAbsentEmployees] = useState(0);
-  // const [lastFetchTimestamp, setLastFetchTimestamp] = useState(0);
 
   const fetchRecords = async () => {
     try {
