@@ -220,7 +220,6 @@ export default function ProfilePage() {
                 id="D.O.B"
                 label="D.O.B"
                 name="D.O.B"
-                closeOnSelect={true}
                 type="date"
 
                 // placeholder=""

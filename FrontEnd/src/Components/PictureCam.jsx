@@ -105,6 +105,7 @@ const PictureCam = () => {
             }}
             onClick={capture}
           >
+            Check-in &nbsp;
             <CameraAltIcon />
           </Button>
         )}

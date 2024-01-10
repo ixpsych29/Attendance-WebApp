@@ -37,8 +37,6 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 export default function LoginForm({ login }) {
   const [showPassword, setShowPassword] = useState(false);
 

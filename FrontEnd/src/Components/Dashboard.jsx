@@ -10,6 +10,9 @@ const Dashboard = () => {
   const [absentEmployees, setAbsentEmployees] = useState(0);
   // const [lastFetchTimestamp, setLastFetchTimestamp] = useState(0);
 
+  const date = new Date();
+  // console.log(date);
+
   const fetchRecords = async () => {
     try {
       // Add a cache-busting parameter to the API requests
@@ -24,7 +27,7 @@ const Dashboard = () => {
 
       //fetching the total present employees
       const presentResponse = await axios.get(
-        `http://localhost:3000/api/attendance?cacheBuster=${uniqueIdentifier}`
+        `http://localhost:3000/api/attendance/:${date}`
       );
       // console.log("presentResponse ", presentResponse.data);
       setPresentEmployees(presentResponse.data.distinctEmployeeCount || 0);

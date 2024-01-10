@@ -1,5 +1,5 @@
 const Attendance = require("../models/attendanceModel");
-const moment = require("moment-timezone");
+// const moment = require("moment-timezone");
 
 //get all history with distinct employee count
 const getAttendance = async (req, res) => {
@@ -40,6 +40,17 @@ const getOneAttendance = async (req, res) => {
 const createAttendance = async (req, res) => {
   const { username, picture, entranceTime } = req.body;
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const existingAttendance = await Attendance.find({
+    username,
+    entranceTime: { $gte: today, $lt: today.setDate(today.getDate() + 1) },
+  });
+
+  if (existingAttendance) {
+    res.status(400).json({ error: "Attendance Marked Already for Today" });
+  }
   //INSERT new document to DB
   try {
     const todayAttendance = await Attendance.create({
@@ -72,28 +83,12 @@ const updateAttendance = async (req, res) => {
 // Get present attendees for the current date
 const getPresentOnes = async (req, res) => {
   try {
-    const currentDate = moment().tz("Asia/Karachi").startOf("day");
-
-    await Attendance.updateMany(
-      {
-        entranceTime: {
-          $gte: currentDate.toDate(),
-          $lt: currentDate.clone().add(1, "days").toDate(),
-        },
-        presentStatus: "Present",
-      },
-      { $set: { presentStatus: null } }
-    );
-
-    const presentAttendees = await Attendance.find({
-      entranceTime: {
-        $gte: currentDate.toDate(),
-        $lt: currentDate.clone().add(1, "days").toDate(),
-      },
-      presentStatus: "Present",
-    });
-
-    res.status(200).json(presentAttendees);
+    const { entranceTime } = req.body;
+    const employee = await Attendance.find({ entranceTime: entranceTime });
+    if (!employee) {
+      return res.status(404).json({ error: "No user found" });
+    }
+    res.status(200).json(employee);
   } catch (error) {
     console.error("Error fetching present attendees:", error);
     res.status(500).json({ error: "Internal Server Error" });

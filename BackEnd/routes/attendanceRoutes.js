@@ -4,6 +4,7 @@ const {
   getOneAttendance,
   createAttendance,
   updateAttendance,
+  getPresentOnes,
 } = require("../controllers/attendanceController");
 
 const router = express.Router();
@@ -19,5 +20,8 @@ router.post("/", createAttendance);
 
 //update attendance history
 router.patch("/:userName", updateAttendance);
+
+//get presentOnes
+router.get("/:entranceTime", getPresentOnes);
 
 module.exports = router;
