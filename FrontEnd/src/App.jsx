@@ -13,6 +13,7 @@ import UserDashboard from "./Components/UserDashboard";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
+  const [role, setRole] = useState("");
 
   // eslint-disable-next-line no-unused-vars
   const ProtectedRoute = ({ element, ...rest }) => {
@@ -31,7 +32,7 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<LoginForm login={setAuthenticated} />}
+          element={<LoginForm login={setAuthenticated} role={setRole} />}
           index
         />
         <Route path="/signup" element={<SignupForm />} index />
@@ -42,7 +43,9 @@ function App() {
             <ProtectedRoute element={<Home login={setAuthenticated} />} />
           }
         >
-          <Route index element={<Dashboard />} />
+          {/* Conditionally render dashboards based on role */}
+          {role === "user" && <Route index element={<UserDashboard />} />}
+          {role === "admin" && <Route index element={<Dashboard />} />}
           <Route
             path="profile"
             element={<ProtectedRoute element={<ProfilePage />} />}
@@ -50,10 +53,6 @@ function App() {
           <Route
             path="attendence"
             element={<ProtectedRoute element={<Attendence />} />}
-          ></Route>
-          <Route
-            path="u"
-            element={<ProtectedRoute element={<UserDashboard />} />}
           ></Route>
         </Route>
       </Routes>

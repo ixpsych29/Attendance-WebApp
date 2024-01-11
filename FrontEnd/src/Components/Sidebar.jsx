@@ -82,28 +82,6 @@ const Sidebar = ({ mode, setMode }) => {
           <ListItem disablePadding>
             <ListItemButton
               component={Link}
-              to="/home/u"
-              sx={{
-                backgroundColor: isActiveLink("/home/u")
-                  ? "#1db0e6"
-                  : "inherit",
-                color: isActiveLink("/home/u") ? "#fff" : "inherit",
-                borderRadius: 10,
-                "&:hover": {
-                  background: "#1688b3",
-                  color: "#fff",
-                },
-              }}
-            >
-              <ListItemIcon>
-                <TodayIcon color="success" />
-              </ListItemIcon>
-              <ListItemText primary="UserDashboard" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton
-              component={Link}
               to="/home/profile"
               sx={{
                 backgroundColor: isActiveLink("/home/profile")
