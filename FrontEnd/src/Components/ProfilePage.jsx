@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import { useContext, useState } from "react";
 import UserContext from "./userContext";
+import toast from "react-hot-toast";
 
 function Copyright(props) {
   return (
@@ -45,7 +46,7 @@ export default function ProfilePage() {
   const [isHovered, setIsHovered] = useState(false);
   const [profilePicture, setProfilePicture] = useState(NoImage);
 
-  console.log(isHovered, "-----------");
+  // console.log(isHovered, "-----------");
 
   // const handleFileChange = (event) => {
   //   const file = event.target.files[0];
@@ -75,7 +76,7 @@ export default function ProfilePage() {
         }
       );
 
-      console.log("Profile picture updated successfully");
+      toast.success("Profile picture updated successfully");
 
       // Assuming the backend sends the updated profile picture URL
       setProfilePicture(response.data.profilePicture);
@@ -86,16 +87,16 @@ export default function ProfilePage() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
-      email: data.get("email"),
-      username: data.get("username"),
-      gender: data.get("gender"),
-      D_O_B: data.get("D.O.B"),
-      phoneNo: data.get("phone-no"),
-    });
+    // const data = new FormData(event.currentTarget);
+    // console.log({
+    //   firstName: data.get("firstName"),
+    //   lastName: data.get("lastName"),
+    //   email: data.get("email"),
+    //   username: data.get("username"),
+    //   gender: data.get("gender"),
+    //   D_O_B: data.get("D.O.B"),
+    //   phoneNo: data.get("phone-no"),
+    // });
   };
 
   return (
@@ -131,16 +132,15 @@ export default function ProfilePage() {
             alt="profile picture"
             src={profilePicture}
           >
-            {isHovered &&
-              (console.log("hovered", "***********************************"),
-              (
-                <CameraAltIcon
-                  className="upload-icon"
-                  fontSize="large"
-                  color="error"
-                  // onClick={openFileDialog}
-                />
-              ))}
+            {isHovered && (
+              // (console.log("hovered", "***********************************"),
+              <CameraAltIcon
+                className="upload-icon"
+                fontSize="large"
+                color="error"
+                // onClick={openFileDialog}
+              />
+            )}
           </Avatar>
           <Input
             accept="image/*"

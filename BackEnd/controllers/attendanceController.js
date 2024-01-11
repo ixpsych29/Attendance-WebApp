@@ -48,9 +48,11 @@ const createAttendance = async (req, res) => {
     entranceTime: { $gte: today, $lt: today.setDate(today.getDate() + 1) },
   });
 
-  if (existingAttendance) {
+  if (existingAttendance.length > 0) {
     res.status(400).json({ error: "Attendance Marked Already for Today" });
+    return;
   }
+
   //INSERT new document to DB
   try {
     const todayAttendance = await Attendance.create({
@@ -77,7 +79,7 @@ const updateAttendance = async (req, res) => {
   if (!employee) {
     return res.status(404).json({ error: "not found today attendance!" });
   }
-  res.status(200).json(remployee);
+  res.status(200).json(employee);
 };
 
 // Get present attendees for the current date
