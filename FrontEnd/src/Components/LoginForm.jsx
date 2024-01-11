@@ -85,7 +85,7 @@ export default function LoginForm({ login }) {
         //accessing username
         setUserName(formData.username);
         login(true);
-        toast.success("Login successful!");
+        toast.success(response.data.message);
         navigate("/home");
       } catch (error) {
         console.log(error);

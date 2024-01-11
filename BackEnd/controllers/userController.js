@@ -89,10 +89,20 @@ const loginUser = async (req, res) => {
   try {
     const user = await User.findOne({ username, password });
 
-    if (user) {
-      return res.status(200).json({ message: "Login successful" });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid Credentials" });
+    }
+    // Check user role
+    if (user.role === "admin") {
+      // Redirect to admin dashboard or send admin-specific response
+      return res
+        .status(200)
+        .json({ message: "Admin Login successful", role: "admin" });
     } else {
-      return res.status(401).json({ message: "Invalid Cradentials" });
+      // Redirect to user dashboard or send user-specific response
+      return res
+        .status(200)
+        .json({ message: "User Login successful", role: "user" });
     }
   } catch (error) {
     console.error("Error during login:", error);
