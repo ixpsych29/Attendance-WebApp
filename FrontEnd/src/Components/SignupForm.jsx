@@ -156,7 +156,6 @@ export default function SignupForm() {
             label="User Name"
             name="userName"
             autoComplete="text"
-            autoFocus
             error={errors.userName}
             value={formData.userName}
             onChange={handleChanges}
@@ -169,7 +168,6 @@ export default function SignupForm() {
             label="Email Address"
             name="email"
             autoComplete="email"
-            autoFocus
             value={formData.email}
             onChange={handleChanges}
             error={!!errors.email}

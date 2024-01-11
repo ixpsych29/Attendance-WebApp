@@ -29,7 +29,7 @@ const RecordList = () => {
   //formatting date & time
   const formatDateTime = (date) => {
     const time = new Date(date);
-    console.log("recordList time", time);
+    // console.log("recordList time", time);
 
     //format date
     const formattedDate = time.toLocaleDateString("en-US", {
