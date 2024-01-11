@@ -89,33 +89,12 @@ const updateAttendance = async (req, res) => {
 // Get present attendees for the current date
 const getPresentOnes = async (req, res) => {
   try {
-<<<<<<< HEAD
-    const currentDate = moment().tz("Asia/Karachi").startOf("day");
-
-    await Attendance.updateMany(
-      {
-        entranceTime: {
-          $gte: currentDate.toDate(),
-          $lt: currentDate.clone().add(1, "days").toDate(),
-        },
-        presentStatus: "Present",
-      },
-      { $set: { presentStatus: null } }
-    );
-
-    const presentAttendees = await Attendance.find({
-      presentStatus: "Present",
-    });
-
-    res.status(200).json(presentAttendees);
-=======
     const { entranceTime } = req.body;
     const employee = await Attendance.find({ entranceTime: entranceTime });
     if (!employee) {
       return res.status(404).json({ error: "No user found" });
     }
     res.status(200).json(employee);
->>>>>>> 70b6064ce90d82921dead97094b2933ebaa41ce5
   } catch (error) {
     console.error("Error fetching present attendees:", error);
     res.status(500).json({ error: "Internal Server Error" });
