@@ -60,15 +60,13 @@ const Dashboard = () => {
           justifyContent="center"
           margin="0 auto"
           spacing={0}
+          sx={{ mb: 7 }}
         >
           <DisplayCard title="Total" count={totalEmployees} />
           <DisplayCard title="Present" count={presentEmployees} />
           <DisplayCard title="Absent" count={absentEmployees} />
         </Stack>
-        <Divider
-          variant="middle"
-          sx={{ mt: 7, mb: 7, borderColor: "primary.main", borderWidth: 2 }}
-        />
+
         <RecordList />
       </Container>
     </Box>

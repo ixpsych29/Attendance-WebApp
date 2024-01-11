@@ -9,6 +9,7 @@ import LoginForm from "./Components/LoginForm";
 import SignupForm from "./Components/SignupForm";
 import { useState } from "react";
 import Nopage from "./Components/Nopage";
+import UserDashboard from "./Components/UserDashboard";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -51,8 +52,8 @@ function App() {
             element={<ProtectedRoute element={<Attendence />} />}
           ></Route>
           <Route
-            path="settings"
-            element={<ProtectedRoute element={<ProfilePage />} />}
+            path="u"
+            element={<ProtectedRoute element={<UserDashboard />} />}
           ></Route>
         </Route>
       </Routes>

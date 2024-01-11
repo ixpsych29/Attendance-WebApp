@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Divider,
   Paper,
   Table,
   TableBody,
@@ -70,7 +71,7 @@ const RecordList = () => {
   }, [username]);
 
   return (
-    <TableContainer component={Paper} sx={{ mt: 5 }}>
+    <TableContainer component={Paper} sx={{ mt: 0 }}>
       <Typography
         variant="h4"
         textAlign="center"
@@ -78,7 +79,10 @@ const RecordList = () => {
       >
         {username}, Your History
       </Typography>
-
+      <Divider
+        variant="middle"
+        sx={{ mt: 7, mb: 7, borderColor: "primary.main", borderWidth: 2 }}
+      />
       <DatePickerCmp />
 
       <Table
