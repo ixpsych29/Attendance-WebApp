@@ -43,12 +43,15 @@ const createAttendance = async (req, res) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const existingAttendance = await Attendance.find({
-    username,
-    entranceTime: { $gte: today, $lt: today.setDate(today.getDate() + 1) },
+  const existingAttendance = await Attendance.findOne({
+    // username,
+    entranceTime: {
+      $gte: today,
+      $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+    },
   });
 
-  if (existingAttendance.length > 0) {
+  if (existingAttendance) {
     res.status(400).json({ error: "Attendance Marked Already for Today" });
     return;
   }
@@ -59,6 +62,7 @@ const createAttendance = async (req, res) => {
       username,
       picture,
       entranceTime,
+      leavingTime: null,
       presentStatus: "Present",
     });
     res.status(200).json(todayAttendance);

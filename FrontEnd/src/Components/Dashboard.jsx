@@ -27,7 +27,7 @@ const Dashboard = () => {
 
       //fetching the total present employees
       const presentResponse = await axios.get(
-        `http://localhost:3000/api/attendance/:${date}`
+        `http://localhost:3000/api/attendance?entranceTime=${date}`
       );
       // console.log("presentResponse ", presentResponse.data);
       setPresentEmployees(presentResponse.data.distinctEmployeeCount || 0);
