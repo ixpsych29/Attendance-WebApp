@@ -21,7 +21,16 @@ function Home({ login }) {
   const isSignUpPage = currentPath === "/signup";
   return (
     <ThemeProvider theme={darkTheme}>
-      <Box bgcolor={"background.default"} color={Text.primary}>
+      <Boxj
+        bgcolor={"background.default"}
+        sx={{
+          // background: "linear-gradient(to right, #FFFFFF, #1688b3)",
+          color: "text.primary",
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         {!isLoginPage && !isSignUpPage && (
           <>
             <Box>
@@ -37,7 +46,7 @@ function Home({ login }) {
             <Outlet />
           </Box>
         </Box>
-      </Box>
+      </Boxj>
     </ThemeProvider>
   );
 }

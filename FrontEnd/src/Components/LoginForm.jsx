@@ -80,7 +80,7 @@ export default function LoginForm({ login, role }) {
             password: formData.password,
           }
         );
-        console.log(response.data);
+        // console.log(response.data);
 
         //accessing username
         setUserName(formData.username);
