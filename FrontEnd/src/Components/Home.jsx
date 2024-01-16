@@ -21,7 +21,7 @@ function Home({ login }) {
   const isSignUpPage = currentPath === "/signup";
   return (
     <ThemeProvider theme={darkTheme}>
-      <Boxj
+      <Box
         bgcolor={"background.default"}
         sx={{
           // background: "linear-gradient(to right, #FFFFFF, #1688b3)",
@@ -46,7 +46,7 @@ function Home({ login }) {
             <Outlet />
           </Box>
         </Box>
-      </Boxj>
+      </Box>
     </ThemeProvider>
   );
 }
