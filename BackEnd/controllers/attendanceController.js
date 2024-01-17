@@ -27,11 +27,15 @@ const getAttendance = async (req, res) => {
 };
 const getTodayAttendances = async (req, res) => {
   try {
-    const today = new Date(); // Get the current date
-    today.setHours(0, 0, 0, 0); // Set time to midnight for comparison
+    const dateParam = req.query.date;
+    const date = dateParam ? new Date(dateParam) : new Date();
+    date.setHours(0, 0, 0, 0);
 
     const attendances = await Attendance.find({
-      entranceTime: { $gte: today },
+      entranceTime: {
+        $gte: date,
+        $lt: new Date(date.getTime() + 24 * 60 * 60 * 1000),
+      },
     }).sort({ entranceTime: 1 });
 
     res.status(200).json(attendances);
@@ -39,6 +43,10 @@ const getTodayAttendances = async (req, res) => {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error!" });
   }
+};
+
+module.exports = {
+  getTodayAttendances,
 };
 
 //get single day history

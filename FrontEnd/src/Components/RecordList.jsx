@@ -14,6 +14,8 @@ import DatePickerCmp from "./DatePickerCmp";
 import UserContext from "./userContext";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import dayjs from "dayjs";
+
 // import dayjs from "dayjs";
 // import "dayjs/locale/en"; // Import the desired locale
 // import utc from "dayjs/plugin/utc";
@@ -25,6 +27,7 @@ const RecordList = () => {
   const { username, role } = useContext(UserContext);
   // console.log(username);
   const [attendanceRecord, setAttendanceRecord] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(dayjs());
 
   const isAdmin = role === "admin";
 
@@ -42,12 +45,8 @@ const RecordList = () => {
 
     //format Time
     let hours = time.getHours();
-    // console.log("Hours: ", hours);
-
     const minutes = time.getMinutes();
     const period = hours >= 12 ? "PM" : "AM";
-
-    //convert 0 to 12 for midnight and noon
     hours = hours % 12 || 12;
 
     const formattedTime = `${hours}:${minutes
@@ -61,10 +60,14 @@ const RecordList = () => {
         let apiUrl;
         if (isAdmin) {
           // Fetch attendance records for all users (admin)
-          apiUrl = "http://localhost:3000/api/attendance/all";
+          apiUrl = `http://localhost:3000/api/attendance/all?date=${selectedDate.toISOString()}`;
         } else {
           // Fetch attendance records for the current user
           apiUrl = `http://localhost:3000/api/attendance/${username}`;
+
+          // apiUrl = `http://localhost:3000/api/attendance/${username}?date=${selectedDate.format(
+          //   "YYYY-MM-DD"
+          // )}`;
         }
 
         const response = await axios.get(apiUrl);
@@ -76,7 +79,10 @@ const RecordList = () => {
 
     // Calling the fetchAttendanceRecords Function
     fetchAttendanceRecords();
-  }, [isAdmin, username]);
+  }, [isAdmin, username, selectedDate]);
+  const handleDateChange = (newDate) => {
+    setSelectedDate(newDate);
+  };
 
   return (
     <TableContainer component={Paper} sx={{ mt: 0 }}>
@@ -92,7 +98,7 @@ const RecordList = () => {
         variant="middle"
         sx={{ mt: 7, mb: 7, borderColor: "primary.main", borderWidth: 2 }}
       />
-      <DatePickerCmp />
+      <DatePickerCmp value={selectedDate} onChange={handleDateChange} />
 
       <Table
         stickyHeader
