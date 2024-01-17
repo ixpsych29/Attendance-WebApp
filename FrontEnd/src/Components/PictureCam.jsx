@@ -44,6 +44,11 @@ const PictureCam = () => {
         navigate("/home");
         return;
       }
+      console.log("Attendance Data:", {
+        username: username,
+        picture: imgSrc,
+        entranceTime: date,
+      });
 
       //if not marked, then mark attendance
       await axios.post("http://localhost:3000/api/attendance", {
@@ -58,7 +63,10 @@ const PictureCam = () => {
 
       // console.log(response.data);
     } catch (error) {
-      console.log(error.response.data.message);
+      // console.log(error.response.data.message);
+      console.log(
+        "errooorrrrssssssssssssssssssssssssssssssssssssssssssssssssss"
+      );
     }
   };
 

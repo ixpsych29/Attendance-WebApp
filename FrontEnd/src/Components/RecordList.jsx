@@ -22,9 +22,11 @@ import axios from "axios";
 // import localizedFormat from "dayjs/plugin/localizedFormat";
 
 const RecordList = () => {
-  const { username } = useContext(UserContext);
+  const { username, role } = useContext(UserContext);
   // console.log(username);
   const [attendanceRecord, setAttendanceRecord] = useState([]);
+
+  const isAdmin = role === "admin";
 
   //formatting date & time
   const formatDateTime = (date) => {
@@ -53,22 +55,28 @@ const RecordList = () => {
       .padStart(2, "0")} ${period}`;
     return { formattedDate, formattedTime };
   };
-
   useEffect(() => {
     const fetchAttendanceRecords = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3000/api/attendance/${username}`
-        );
+        let apiUrl;
+        if (isAdmin) {
+          // Fetch attendance records for all users (admin)
+          apiUrl = "http://localhost:3000/api/attendance/all";
+        } else {
+          // Fetch attendance records for the current user
+          apiUrl = `http://localhost:3000/api/attendance/${username}`;
+        }
+
+        const response = await axios.get(apiUrl);
         setAttendanceRecord(response.data);
       } catch (error) {
         console.error("Error Fetching Attendance Records", error);
       }
     };
 
-    //calling the fetchAttendanceRecords Function
+    // Calling the fetchAttendanceRecords Function
     fetchAttendanceRecords();
-  }, [username]);
+  }, [isAdmin, username]);
 
   return (
     <TableContainer component={Paper} sx={{ mt: 0 }}>
@@ -77,8 +85,9 @@ const RecordList = () => {
         textAlign="center"
         sx={{ mb: 3, color: "text.primary", mt: 3 }}
       >
-        {username}, Your History
+        {role === "admin" ? "Admin Dashboard" : `${username}, Your History`}
       </Typography>
+
       <Divider
         variant="middle"
         sx={{ mt: 7, mb: 7, borderColor: "primary.main", borderWidth: 2 }}
@@ -97,6 +106,7 @@ const RecordList = () => {
         <TableHead>
           <TableRow>
             <TableCell align="center">Picture</TableCell>
+            <TableCell align="center">User Name</TableCell>
             <TableCell align="center">Date</TableCell>
             <TableCell align="center">Entrance Time</TableCell>
             <TableCell align="center">Leave Time</TableCell>
@@ -130,6 +140,7 @@ const RecordList = () => {
                   "Not Found"
                 )}
               </TableCell>
+              <TableCell align="center">{record.username}</TableCell>
 
               {/* //Displaying Date  */}
               <TableCell component="th" align="center" scope="row">

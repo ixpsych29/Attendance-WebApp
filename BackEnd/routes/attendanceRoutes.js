@@ -5,12 +5,15 @@ const {
   createAttendance,
   updateAttendance,
   getPresentOnes,
+  getTodayAttendances,
 } = require("../controllers/attendanceController");
 
 const router = express.Router();
 
 //all history
 router.get("/", getAttendance);
+
+router.get("/all", getTodayAttendances);
 
 //single day history
 router.get("/:userName", getOneAttendance);

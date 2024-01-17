@@ -44,7 +44,7 @@ export default function LoginForm({ login, role }) {
 
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [errors, setErrors] = useState({});
-  const { setUserName } = useContext(UserContext);
+  const { setUserName, setUserRole } = useContext(UserContext);
   const navigate = useNavigate();
 
   /* *********** Form Validation ************ */
@@ -87,6 +87,7 @@ export default function LoginForm({ login, role }) {
         login(true);
         toast.success(response.data.message);
         role(response.data.role);
+        setUserRole(response.data.role);
         navigate("/home");
       } catch (error) {
         console.log(error);
