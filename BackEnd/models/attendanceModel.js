@@ -7,23 +7,34 @@ const attendanceModel = new Schema({
     type: String,
     required: true,
   },
-  picture: {
-    type: String,
-    base64: true,
-    required: true,
-  },
-  entranceTime: {
-    type: Date,
-    // default: Date.now(),
-    required: true,
-  },
-  leavingTime: {
-    type: Date,
-    default: null,
-  },
-  presentStatus: {
-    type: String,
-    default: null,
+  attendanceObj: {
+    type: Map,
+    of: {
+      checkIn: {
+        type: Boolean,
+        default: false,
+      },
+      entranceTime: {
+        type: Date,
+      },
+      checkOut: {
+        type: Boolean,
+        default: false,
+      },
+      leavingTime: {
+        type: Date,
+        default: null,
+      },
+      picture: {
+        type: String,
+        base64: true,
+        required: true,
+      },
+      status: {
+        type: Boolean,
+        default: false,
+      },
+    },
   },
 });
 

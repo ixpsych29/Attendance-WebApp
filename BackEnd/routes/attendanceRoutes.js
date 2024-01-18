@@ -19,7 +19,7 @@ router.get("/:userName", getOneAttendance);
 router.post("/", createAttendance);
 
 //update attendance history
-router.patch("/:userName", updateAttendance);
+router.put("/", updateAttendance);
 
 //get presentOnes
 router.get("/:entranceTime", getPresentOnes);

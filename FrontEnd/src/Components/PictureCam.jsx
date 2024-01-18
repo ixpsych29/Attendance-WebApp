@@ -32,31 +32,30 @@ const PictureCam = () => {
 
   const handlePicSubmit = async () => {
     const date = new Date();
-    // console.log("Attendance Submitted at: ", date);
+    console.log("Attendance Submitted at: ", date);
     try {
-      const existingAttendanceResponse = await axios.get(
-        `http://localhost:3000/api/attendance/${username}`
-      );
-
-      //checking if attendance already marked
-      if (existingAttendanceResponse.data.length > 0) {
-        toast.error("Attendance Already Marked!");
-        navigate("/home");
-        return;
-      }
-
-      //if not marked, then mark attendance
-      await axios.post("http://localhost:3000/api/attendance", {
+      const payload = {
         username: username,
         picture: imgSrc,
-        entranceTime: date,
-      });
+        entranceTime: date.toISOString(),
+      };
 
-      //notifying
-      toast.success("Attendance Marked!");
-      navigate("/home");
+      const response = await axios.post(
+        "http://localhost:3000/api/attendance",
+        payload
+      );
 
-      // console.log(response.data);
+      // console.log("Response Data, FrontEnd", response.data);
+
+      if (response.data && response.data.error) {
+        // If the server sends an error response
+        console.error("Error:", response.data.error);
+        toast.error("Error marking attendance");
+      } else {
+        // If the attendance is marked successfully
+        toast.success("Attendance Marked!");
+        navigate("/home");
+      }
     } catch (error) {
       console.log(error.response.data.message);
     }
