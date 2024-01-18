@@ -30,14 +30,12 @@ const getTodayAttendances = async (req, res) => {
     const dateParam = req.query.date;
     const date = dateParam ? new Date(dateParam) : new Date();
     date.setHours(0, 0, 0, 0);
-
     const attendances = await Attendance.find({
       entranceTime: {
         $gte: date,
         $lt: new Date(date.getTime() + 24 * 60 * 60 * 1000),
       },
     }).sort({ entranceTime: 1 });
-
     res.status(200).json(attendances);
   } catch (error) {
     console.log(error);
@@ -62,10 +60,8 @@ const getOneAttendance = async (req, res) => {
 //insert new attendance record
 const createAttendance = async (req, res) => {
   const { username, picture, entranceTime } = req.body;
-
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-
   // const existingAttendance = await Attendance.findOne({
   //   entranceTime: {
   //     $gte: today,

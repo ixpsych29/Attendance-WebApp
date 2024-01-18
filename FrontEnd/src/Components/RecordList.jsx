@@ -64,10 +64,6 @@ const RecordList = () => {
         } else {
           // Fetch attendance records for the current user
           apiUrl = `http://localhost:3000/api/attendance/${username}`;
-
-          // apiUrl = `http://localhost:3000/api/attendance/${username}?date=${selectedDate.format(
-          //   "YYYY-MM-DD"
-          // )}`;
         }
 
         const response = await axios.get(apiUrl);
