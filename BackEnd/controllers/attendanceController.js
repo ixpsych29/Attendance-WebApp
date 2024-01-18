@@ -45,42 +45,23 @@ const createAttendance = async (req, res) => {
   const todayKey = today.toISOString().replace(/\./g, "_");
 
   try {
-    const existingAttendance = await Attendance.findOne({ username });
+    const updatedAttendance = await Attendance.findOneAndUpdate(
+      { username, [`attendanceObj.${todayKey}.checkOut`]: false },
+      {
+        $set: {
+          [`attendanceObj.${todayKey}.checkOut`]: true,
+          [`attendanceObj.${todayKey}.leavingTime`]: new Date(),
+        },
+      },
+      { new: true, upsert: true }
+    );
 
-    if (existingAttendance) {
-      console.log("existing attendance found", existingAttendance);
-
-      //check if the attendance for today already exist
-      if (existingAttendance.attendanceObj[todayKey]) {
-        console.log("Attendance Already marked for today");
-        if (existingAttendance.attendanceObj[todayKey].checkOut) {
-          res
-            .status(400)
-            .json({ error: "Attendance Already CheckedOut for Today" });
-          return;
-        }
-      }
-
-      console.log("updating for today", todayKey);
-      console.log("Before upadate");
-
-      //if not, update the attendance for today
-      existingAttendance.attendanceObj[todayKey] = {
-        ...existingAttendance.attendanceObj[todayKey],
-        checkOut: true,
-        leavingTime: new Date(),
-      };
-
-      //saving the updated document
-      await existingAttendance.save();
-
-      console.log("After upadate", existingAttendance);
-
-      res.status(200).json(existingAttendance);
+    if (updatedAttendance) {
+      console.log("Attendance updated with checkout and leaving time!");
+      res.status(200).json(updatedAttendance);
     } else {
-      console.log("entering else");
-      //if there is no existing record, create a new one
-      const newAttendance = Attendance.create({
+      // If no document is updated, create a new one
+      const newAttendance = await Attendance.create({
         username,
         attendanceObj: {
           [todayKey]: {
@@ -94,7 +75,7 @@ const createAttendance = async (req, res) => {
         },
       });
 
-      console.log("Attendance Created!");
+      console.log("New Attendance Created!");
       res.status(200).json(newAttendance);
     }
   } catch (err) {
@@ -102,74 +83,46 @@ const createAttendance = async (req, res) => {
   }
 };
 
-//UPDATING attendance at leaving time.
-// const updateAttendance = async (req, res) => {
-//   const { username, checkOut } = req.body;
+//updating the attendance record
+const updateAttendanceRecord = async (username, todayKey) => {
+  try {
+    const updatedAttendance = await Attendance.findOneAndUpdate(
+      {
+        username,
+        [`attendanceObj.${todayKey}.checkOut`]: false,
+      },
+      {
+        $set: {
+          [`attendanceObj.${todayKey}.checkOut`]: true,
+          [`attendanceObj.${todayKey}.leavingTime`]: new Date(),
+        },
+      },
+      { new: true } //return the modified document
+    );
+    return updatedAttendance;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
 
-//   const employee = await Attendance.findOneAndUpdate(
-//     { username: userName },
-//     { leavingTime }
-//   );
-//   if (!employee) {
-//     return res.status(404).json({ error: "not found today attendance!" });
-//   }
-//   res.status(200).json(employee);
-// };
-
-// Separate API endpoint for updating attendance
+//
 const updateAttendance = async (req, res) => {
-  const { username, checkOut } = req.body;
-
-  console.log("Received request to update attendance:", {
-    username,
-    checkOut,
-  });
+  const { username } = req.body;
 
   const today = new Date();
   const todayKey = today.toISOString().replace(/\./g, "_");
-
   try {
-    const existingAttendance = await Attendance.findOne({ username });
+    const updatedAttendance = await updateAttendanceRecord(username, todayKey);
 
-    if (existingAttendance) {
-      console.log("Existing attendance found:", existingAttendance);
-
-      if (existingAttendance.attendanceObj[todayKey]) {
-        console.log("Attendance already marked for today:", todayKey);
-
-        // If already checked out, return an error
-        if (existingAttendance.attendanceObj[todayKey].checkOut) {
-          res
-            .status(400)
-            .json({ error: "Attendance already checked out for today" });
-          return;
-        }
-
-        // Update the existing attendance with checkout and leaving time
-        existingAttendance.attendanceObj[todayKey] = {
-          ...existingAttendance.attendanceObj[todayKey],
-          checkOut: true,
-          leavingTime: checkOut, // You can customize how you handle leaving time
-        };
-
-        // Saving the updated document
-        await existingAttendance.save();
-
-        console.log("Attendance updated with checkout and leaving time!");
-        res.status(200).json(existingAttendance);
-      } else {
-        res.status(400).json({
-          error:
-            "Attendance not marked for today. Please mark attendance first.",
-        });
-      }
+    if (updatedAttendance) {
+      console.log("Attendance updated with leavingtime and checkout");
+      res.status(400).json(updatedAttendance);
     } else {
-      res
-        .status(400)
-        .json({ error: "No attendance record found for the given username." });
+      console.error("Error in updateAttendance", err.message);
+      res.status(500).json({ error: "Internal Server Error" });
     }
   } catch (err) {
-    console.error("Error in updateAttendance:", err.message);
+    console.error("Error in update Attendance", err.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
