@@ -13,6 +13,7 @@ const PictureCam = () => {
   const navigate = useNavigate();
   const webcamRef = useRef(null);
   const [imgSrc, setImgSrc] = useState(null);
+  const [checkedIn, setCheckedIn] = useState(false);
 
   const { username } = useContext(UserContext);
   // console.log("PictureCam Working", username);
@@ -39,22 +40,40 @@ const PictureCam = () => {
         picture: imgSrc,
         entranceTime: date.toISOString(),
       };
-
-      const response = await axios.post(
-        "http://localhost:3000/api/attendance",
-        payload
-      );
-
-      // console.log("Response Data, FrontEnd", response.data);
-
-      if (response.data && response.data.error) {
-        // If the server sends an error response
-        console.error("Error:", response.data.error);
-        toast.error("Error marking attendance");
+      console.log("before checkin condtion");
+      if (checkedIn) {
+        console.log("if, put api");
+        const response = await axios.put(
+          "http://localhost:3000/api/attendance",
+          { username: username, checkoutTime: date.toISOString() }
+        );
+        if (response.data && response.data.error) {
+          console.error("Error:", response.data.error);
+          toast.error("Error updating attendance");
+        } else {
+          toast.success("Attendance Updated!");
+          navigate("/home");
+        }
+        console.log("after checkin condtion");
       } else {
-        // If the attendance is marked successfully
-        toast.success("Attendance Marked!");
-        navigate("/home");
+        console.log("else, post api");
+        const response = await axios.post(
+          "http://localhost:3000/api/attendance",
+          payload
+        );
+
+        // console.log("Response Data, FrontEnd", response.data);
+
+        if (response.data && response.data.error) {
+          // If the server sends an error response
+          console.error("Error:", response.data.error);
+          toast.error("Error marking attendance");
+        } else {
+          // If the attendance is marked successfully
+          toast.success("Attendance Marked!");
+          setCheckedIn(true);
+          navigate("/home");
+        }
       }
     } catch (error) {
       console.log(error.response.data.message);
