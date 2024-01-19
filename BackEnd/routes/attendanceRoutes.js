@@ -23,8 +23,4 @@ router.post("/", createAttendance);
 
 //update attendance history
 router.patch("/:userName", updateAttendance);
-
-//get presentOnes
-router.get("/:entranceTime", getPresentOnes);
-
 module.exports = router;

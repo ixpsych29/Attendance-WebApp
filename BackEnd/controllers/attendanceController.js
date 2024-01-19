@@ -48,6 +48,8 @@ module.exports = {
 };
 
 //get single day history
+//
+//
 const getOneAttendance = async (req, res) => {
   const { userName } = req.params;
   const employee = await Attendance.find({ username: userName });

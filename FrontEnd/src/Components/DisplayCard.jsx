@@ -6,6 +6,7 @@ import {
   Container,
   Typography,
 } from "@mui/material";
+import toast from "react-hot-toast";
 
 const DisplayCard = (props) => {
   return (
@@ -51,6 +52,9 @@ const DisplayCard = (props) => {
               color: "#fff",
               bgcolor: "darkblue",
               "&:hover": { color: "white" },
+            }}
+            onClick={() => {
+              toast("Coming Soon...");
             }}
             variant="outlined"
             size="small"

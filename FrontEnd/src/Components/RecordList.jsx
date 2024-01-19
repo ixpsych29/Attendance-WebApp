@@ -14,21 +14,11 @@ import DatePickerCmp from "./DatePickerCmp";
 import UserContext from "./userContext";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import dayjs from "dayjs";
 
-// import dayjs from "dayjs";
-// import "dayjs/locale/en"; // Import the desired locale
-// import utc from "dayjs/plugin/utc";
-// import timezone from "dayjs/plugin/timezone";
-// import relativeTime from "dayjs/plugin/relativeTime";
-// import localizedFormat from "dayjs/plugin/localizedFormat";
-
-const RecordList = () => {
+const RecordList = ({ selectedDate, setSelectedDate }) => {
   const { username, role } = useContext(UserContext);
   // console.log(username);
   const [attendanceRecord, setAttendanceRecord] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(dayjs());
-
   const isAdmin = role === "admin";
 
   //formatting date & time
@@ -121,7 +111,6 @@ const RecordList = () => {
               key={record._id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              {/* //displaying picture */}
               <TableCell
                 align="center"
                 style={{
