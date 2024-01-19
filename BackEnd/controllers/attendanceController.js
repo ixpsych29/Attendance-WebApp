@@ -23,6 +23,27 @@ const getAttendance = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error!" });
   }
 };
+const getTodayAttendances = async (req, res) => {
+  try {
+    const dateParam = req.query.date;
+    const date = dateParam ? new Date(dateParam) : new Date();
+    date.setHours(0, 0, 0, 0);
+    const attendances = await Attendance.find({
+      entranceTime: {
+        $gte: date,
+        $lt: new Date(date.getTime() + 24 * 60 * 60 * 1000),
+      },
+    }).sort({ entranceTime: 1 });
+    res.status(200).json(attendances);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+};
+
+module.exports = {
+  getTodayAttendances,
+};
 
 //get single day history
 const getOneAttendance = async (req, res) => {
@@ -37,13 +58,20 @@ const getOneAttendance = async (req, res) => {
 //insert new attendance record
 const createAttendance = async (req, res) => {
   const { username, picture, entranceTime } = req.body;
-
-  // console.log(username, picture, entranceTime);
-
   const today = new Date();
-  // today.setHours(0, 0, 0, 0);
-  const todayKey = today.toISOString().replace(/\./g, "_");
+  today.setHours(0, 0, 0, 0);
+  // const existingAttendance = await Attendance.findOne({
+  //   entranceTime: {
+  //     $gte: today,
+  //     $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+  //   },
+  // });
 
+  // if (existingAttendance) {
+  //   res.status(400).json({ error: "Attendance Marked Already for Today" });
+  //   return;
+  // }
+  //INSERT new document to DB
   try {
     const updatedAttendance = await Attendance.findOneAndUpdate(
       { username, [`attendanceObj.${todayKey}.checkOut`]: false },
@@ -149,4 +177,5 @@ module.exports = {
   createAttendance,
   updateAttendance,
   getPresentOnes,
+  getTodayAttendances,
 };

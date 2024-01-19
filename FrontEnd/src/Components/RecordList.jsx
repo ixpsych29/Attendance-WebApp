@@ -14,6 +14,8 @@ import DatePickerCmp from "./DatePickerCmp";
 import UserContext from "./userContext";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import dayjs from "dayjs";
+
 // import dayjs from "dayjs";
 // import "dayjs/locale/en"; // Import the desired locale
 // import utc from "dayjs/plugin/utc";
@@ -22,9 +24,12 @@ import axios from "axios";
 // import localizedFormat from "dayjs/plugin/localizedFormat";
 
 const RecordList = () => {
-  const { username } = useContext(UserContext);
+  const { username, role } = useContext(UserContext);
   // console.log(username);
   const [attendanceRecord, setAttendanceRecord] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(dayjs());
+
+  const isAdmin = role === "admin";
 
   //formatting date & time
   const formatDateTime = (date) => {
@@ -40,12 +45,8 @@ const RecordList = () => {
 
     //format Time
     let hours = time.getHours();
-    // console.log("Hours: ", hours);
-
     const minutes = time.getMinutes();
     const period = hours >= 12 ? "PM" : "AM";
-
-    //convert 0 to 12 for midnight and noon
     hours = hours % 12 || 12;
 
     const formattedTime = `${hours}:${minutes
@@ -53,22 +54,31 @@ const RecordList = () => {
       .padStart(2, "0")} ${period}`;
     return { formattedDate, formattedTime };
   };
-
   useEffect(() => {
     const fetchAttendanceRecords = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3000/api/attendance/${username}`
-        );
+        let apiUrl;
+        if (isAdmin) {
+          // Fetch attendance records for all users (admin)
+          apiUrl = `http://localhost:3000/api/attendance/all?date=${selectedDate.toISOString()}`;
+        } else {
+          // Fetch attendance records for the current user
+          apiUrl = `http://localhost:3000/api/attendance/${username}`;
+        }
+
+        const response = await axios.get(apiUrl);
         setAttendanceRecord(response.data);
       } catch (error) {
         console.error("Error Fetching Attendance Records", error);
       }
     };
 
-    //calling the fetchAttendanceRecords Function
+    // Calling the fetchAttendanceRecords Function
     fetchAttendanceRecords();
-  }, [username]);
+  }, [isAdmin, username, selectedDate]);
+  const handleDateChange = (newDate) => {
+    setSelectedDate(newDate);
+  };
 
   return (
     <TableContainer component={Paper} sx={{ mt: 0 }}>
@@ -77,13 +87,14 @@ const RecordList = () => {
         textAlign="center"
         sx={{ mb: 3, color: "text.primary", mt: 3 }}
       >
-        {username}, Your History
+        {role === "admin" ? "Admin Dashboard" : `${username}, Your History`}
       </Typography>
+
       <Divider
         variant="middle"
         sx={{ mt: 7, mb: 7, borderColor: "primary.main", borderWidth: 2 }}
       />
-      <DatePickerCmp />
+      <DatePickerCmp value={selectedDate} onChange={handleDateChange} />
 
       <Table
         stickyHeader
@@ -97,6 +108,7 @@ const RecordList = () => {
         <TableHead>
           <TableRow>
             <TableCell align="center">Picture</TableCell>
+            <TableCell align="center">User Name</TableCell>
             <TableCell align="center">Date</TableCell>
             <TableCell align="center">Entrance Time</TableCell>
             <TableCell align="center">Leave Time</TableCell>
@@ -130,6 +142,7 @@ const RecordList = () => {
                   "Not Found"
                 )}
               </TableCell>
+              <TableCell align="center">{record.username}</TableCell>
 
               {/* //Displaying Date  */}
               <TableCell component="th" align="center" scope="row">

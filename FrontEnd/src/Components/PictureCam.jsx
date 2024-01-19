@@ -35,11 +35,28 @@ const PictureCam = () => {
     const date = new Date();
     console.log("Attendance Submitted at: ", date);
     try {
-      const payload = {
+      const existingAttendanceResponse = await axios.get(
+        `http://localhost:3000/api/attendance/${username}`
+      );
+
+      //checking if attendance already marked
+      if (existingAttendanceResponse.data.length > 0) {
+        toast.error("Attendance Already Marked!");
+        navigate("/home");
+        return;
+      }
+      console.log("Attendance Data:", {
+        username: username,
+        picture: imgSrc,
+        entranceTime: date,
+      });
+
+      //if not marked, then mark attendance
+      await axios.post("http://localhost:3000/api/attendance", {
         username: username,
         picture: imgSrc,
         entranceTime: date.toISOString(),
-      };
+      });
       console.log("before checkin condtion");
       if (checkedIn) {
         console.log("if, put api");
@@ -59,7 +76,11 @@ const PictureCam = () => {
         console.log("else, post api");
         const response = await axios.post(
           "http://localhost:3000/api/attendance",
-          payload
+          {
+            username: username,
+            picture: imgSrc,
+            entranceTime: date,
+          }
         );
 
         // console.log("Response Data, FrontEnd", response.data);
@@ -76,7 +97,10 @@ const PictureCam = () => {
         }
       }
     } catch (error) {
-      console.log(error.response.data.message);
+      // console.log(error.response.data.message);
+      console.log(
+        "errooorrrrssssssssssssssssssssssssssssssssssssssssssssssssss"
+      );
     }
   };
 
