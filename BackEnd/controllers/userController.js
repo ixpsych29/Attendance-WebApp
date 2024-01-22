@@ -4,7 +4,7 @@ const User = require("../models/userModel");
 //get all Users
 const getUsers = async (req, res) => {
   try {
-    const users = await User.find({}).sort({ created_at: 1 });
+    const users = await User.find({ role: "user" }).sort({ created_at: 1 });
     const totalEmployees = users.length;
 
     res.status(200).json({ totalEmployees, users });

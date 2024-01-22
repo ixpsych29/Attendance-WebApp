@@ -53,7 +53,7 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
           apiUrl = `http://localhost:3000/api/attendance/all?date=${selectedDate.toISOString()}`;
         } else {
           // Fetch attendance records for the current user
-          apiUrl = `http://localhost:3000/api/attendance/${username}`;
+          apiUrl = `http://localhost:3000/api/attendance/monthly/${username}`;
         }
 
         const response = await axios.get(apiUrl);
@@ -84,8 +84,9 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
         variant="middle"
         sx={{ mt: 7, mb: 7, borderColor: "primary.main", borderWidth: 2 }}
       />
-      <DatePickerCmp value={selectedDate} onChange={handleDateChange} />
-
+      {isAdmin ? (
+        <DatePickerCmp value={selectedDate} onChange={handleDateChange} />
+      ) : null}
       <Table
         stickyHeader
         sx={{
@@ -144,9 +145,16 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
               </TableCell>
 
               {/* displaying leavingTime */}
-              <TableCell component="th" align="center" scope="row">
-                {formatDateTime(record.leavingTime).formattedTime}
-              </TableCell>
+
+              {record.leavingTime ? (
+                <TableCell component="th" align="center" scope="row">
+                  {formatDateTime(record.leavingTime).formattedTime}
+                </TableCell>
+              ) : (
+                <TableCell component="th" align="center" scope="row">
+                  {"didn't Checked Out "}
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>

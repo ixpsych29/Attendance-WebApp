@@ -50,10 +50,12 @@ function App() {
             path="profile"
             element={<ProtectedRoute element={<ProfilePage />} />}
           ></Route>
-          <Route
-            path="attendence"
-            element={<ProtectedRoute element={<Attendence />} />}
-          ></Route>
+          {role === "user" && (
+            <Route
+              path="attendence"
+              element={<ProtectedRoute element={<Attendence />} />}
+            />
+          )}
         </Route>
       </Routes>
     </BrowserRouter>

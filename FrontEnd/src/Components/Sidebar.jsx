@@ -12,8 +12,12 @@ import PersonIcon from "@mui/icons-material/Person";
 import TodayIcon from "@mui/icons-material/Today";
 import ModeNightIcon from "@mui/icons-material/ModeNight";
 import { Link, useLocation } from "react-router-dom";
+import { useContext } from "react";
+import UserContext from "./userContext";
 
 const Sidebar = ({ mode, setMode }) => {
+  const { role } = useContext(UserContext);
+
   const location = useLocation();
   const isActiveLink = (to) => {
     return location.pathname === to;
@@ -57,28 +61,30 @@ const Sidebar = ({ mode, setMode }) => {
               <ListItemText primary="Home" />
             </ListItemButton>
           </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton
-              component={Link}
-              to="/home/attendence"
-              sx={{
-                backgroundColor: isActiveLink("/home/attendence")
-                  ? "#1db0e6"
-                  : "inherit",
-                color: isActiveLink("/home/attendence") ? "#fff" : "inherit",
-                borderRadius: 10,
-                "&:hover": {
-                  background: "#1688b3",
-                  color: "#fff",
-                },
-              }}
-            >
-              <ListItemIcon>
-                <TodayIcon color="success" />
-              </ListItemIcon>
-              <ListItemText primary="Attendence" />
-            </ListItemButton>
-          </ListItem>
+          {role === "user" && (
+            <ListItem disablePadding>
+              <ListItemButton
+                component={Link}
+                to="/home/attendence"
+                sx={{
+                  backgroundColor: isActiveLink("/home/attendence")
+                    ? "#1db0e6"
+                    : "inherit",
+                  color: isActiveLink("/home/attendence") ? "#fff" : "inherit",
+                  borderRadius: 10,
+                  "&:hover": {
+                    background: "#1688b3",
+                    color: "#fff",
+                  },
+                }}
+              >
+                <ListItemIcon>
+                  <TodayIcon color="success" />
+                </ListItemIcon>
+                <ListItemText primary="Attendence" />
+              </ListItemButton>
+            </ListItem>
+          )}
           <ListItem disablePadding>
             <ListItemButton
               component={Link}
