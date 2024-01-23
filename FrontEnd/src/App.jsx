@@ -1,5 +1,3 @@
-// import "./App.css";
-
 import Dashboard from "./Components/Dashboard";
 import ProfilePage from "./Components/ProfilePage";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";

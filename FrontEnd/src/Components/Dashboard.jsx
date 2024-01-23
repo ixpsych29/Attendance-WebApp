@@ -43,7 +43,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchRecords();
-
     const intervalId = setInterval(() => {
       fetchRecords();
     }, 60000); //after every 1 minute

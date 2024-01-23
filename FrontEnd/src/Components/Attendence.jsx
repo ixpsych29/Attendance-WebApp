@@ -1,5 +1,4 @@
 import { Box, Container } from "@mui/system";
-// import RecordList from "./RecordList";
 import PictureCam from "./PictureCam";
 import { CssBaseline } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
