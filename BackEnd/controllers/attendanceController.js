@@ -55,42 +55,18 @@ const createAttendance = async (req, res) => {
   const { username, picture, entranceTime } = req.body;
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+  //INSERT new document to DB
   try {
-    const updatedAttendance = await Attendance.findOneAndUpdate(
-      { username, [`attendanceObj.${todayKey}.checkOut`]: false },
-      {
-        $set: {
-          [`attendanceObj.${todayKey}.checkOut`]: true,
-          [`attendanceObj.${todayKey}.leavingTime`]: new Date(),
-        },
-      },
-      { new: true, upsert: true }
-    );
-
-    if (updatedAttendance) {
-      console.log("Attendance updated with checkout and leaving time!");
-      res.status(200).json(updatedAttendance);
-    } else {
-      // If no document is updated, create a new one
-      const newAttendance = await Attendance.create({
-        username,
-        attendanceObj: {
-          [todayKey]: {
-            checkIn: true,
-            entranceTime,
-            checkOut: false,
-            leavingTime: null,
-            picture,
-            status: true,
-          },
-        },
-      });
-
-      console.log("New Attendance Created!");
-      res.status(200).json(newAttendance);
-    }
+    const todayAttendance = await Attendance.create({
+      username,
+      picture,
+      entranceTime,
+      leavingTime: null,
+      presentStatus: "Present",
+    });
+    res.status(200).json(todayAttendance);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(400).json({ error: err.message });
   }
 };
 

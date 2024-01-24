@@ -15,9 +15,6 @@ const router = express.Router();
 // Get one month  report
 router.get("/report", getAttendanceReport);
 
-//all history
-router.get("/", getAttendance);
-
 router.get("/all", getTodayAttendances);
 
 //single day history
