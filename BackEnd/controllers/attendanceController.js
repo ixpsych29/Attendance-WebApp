@@ -62,7 +62,6 @@ const createAttendance = async (req, res) => {
       picture,
       entranceTime,
       leavingTime: null,
-      presentStatus: "Present",
     });
     res.status(200).json(todayAttendance);
   } catch (err) {
