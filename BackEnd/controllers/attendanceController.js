@@ -1,25 +1,9 @@
 const Attendance = require("../models/attendanceModel");
-const createCsvWriter = require("csv-writer").createObjectCsvWriter;
-const dayjs = require("dayjs");
-// const moment = require("moment-timezone");
 
 //get all history with distinct employee count
 const getAttendance = async (req, res) => {
   try {
-    // const employee = await Attendance.aggregate([
-    //   {
-    //     $group: {
-    //       _id: {
-    //         username: "$username",
-    //         entranceTime: {
-    //           $dateToString: { format: "%Y-%m-%d", date: "$entranceTime" },
-    //         },
-    //       },
-    //     },
-    //   },
-    // ]).sort({ "_id.date": 1 });
-    // const distinctEmployeeCount = employee.length;
-    // res.status(200).json({ distinctEmployeeCount });
+    console.log("getAttendance");
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Internal Server Error!" });
