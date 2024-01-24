@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Button,
   Divider,
   Paper,
   Table,
@@ -14,6 +15,8 @@ import DatePickerCmp from "./DatePickerCmp";
 import UserContext from "./userContext";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { createObjectCsvWriter } from "csv-writer";
+import dayjs from "dayjs";
 
 const RecordList = ({ selectedDate, setSelectedDate }) => {
   const { username, role } = useContext(UserContext);
@@ -69,6 +72,47 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
   const handleDateChange = (newDate) => {
     setSelectedDate(newDate);
   };
+  const generateCSVReport = async () => {
+    try {
+      // Fetch attendance data for the previous month
+      // const lastMonthStartDate = dayjs().subtract(1, "month").startOf("month");
+      // const lastMonthEndDate = dayjs().subtract(1, "month").endOf("month");
+
+      const currentMonthStartDate = dayjs().startOf("month");
+      const currentDate = dayjs().endOf("day");
+
+      // Generate report for the current month
+      const apiUrl = `http://localhost:3000/api/attendance/report?startDate=${currentMonthStartDate.toISOString()}&endDate=${currentDate.toISOString()}`;
+
+      // const apiUrl = `http://localhost:3000/api/attendance/report?startDate=${lastMonthStartDate.toISOString()}&endDate=${lastMonthEndDate.toISOString()}`;
+      const reportResponse = await axios.get(apiUrl);
+
+      console.log("reportResponse", reportResponse.data);
+      // Extract relevant data for CSV
+      const csvData = reportResponse.data.map((record) => ({
+        username: record.username,
+        entranceTime: record.entranceTime,
+        leavingTime: record.leavingTime,
+      }));
+
+      // Create CSV file
+      const csvWriter = createObjectCsvWriter({
+        path: "attendance_report.csv",
+        header: [
+          { id: "username", title: "Username" },
+          { id: "entranceTime", title: "Entrance Time" },
+          { id: "leavingTime", title: "Leaving Time" },
+        ],
+      });
+
+      await csvWriter.writeRecords(csvData);
+
+      // Notify user and provide download link
+      alert("CSV report generated successfully!");
+    } catch (error) {
+      console.error("Error generating CSV report", error);
+    }
+  };
 
   return (
     <TableContainer component={Paper} sx={{ mt: 0 }}>
@@ -84,6 +128,9 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
         variant="middle"
         sx={{ mt: 7, mb: 7, borderColor: "primary.main", borderWidth: 2 }}
       />
+      <Button variant="contained" onClick={generateCSVReport}>
+        Generate CSV Report
+      </Button>
       {isAdmin ? (
         <DatePickerCmp value={selectedDate} onChange={handleDateChange} />
       ) : null}

@@ -7,9 +7,13 @@ const {
   getPresentOnes,
   getTodayAttendances,
   getMonthlyAttendances,
+  getAttendanceReport,
 } = require("../controllers/attendanceController");
 
 const router = express.Router();
+
+// Get one month  report
+router.get("/report", getAttendanceReport);
 
 //all history
 router.get("/", getAttendance);

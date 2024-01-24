@@ -1,4 +1,6 @@
 const Attendance = require("../models/attendanceModel");
+const createCsvWriter = require("csv-writer").createObjectCsvWriter;
+const dayjs = require("dayjs");
 // const moment = require("moment-timezone");
 
 //get all history with distinct employee count
@@ -145,6 +147,30 @@ const getMonthlyAttendances = async (req, res) => {
   }
 };
 
+// controllers/attendanceController.js
+
+const getAttendanceReport = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+
+    const reportStartDate = dayjs(startDate).startOf("day");
+    const reportEndDate = dayjs(endDate).endOf("day");
+
+    console.log("reportStartDate", reportStartDate);
+    console.log("reportEndDate", reportEndDate);
+
+    const attendanceData = await Attendance.find({
+      entranceTime: { $gte: reportStartDate, $lte: reportEndDate },
+    });
+
+    console.log("attendanceData", attendanceData);
+
+    res.status(200).json(attendanceData);
+  } catch (error) {
+    console.error("Error fetching attendance report", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 //exporting modules
 module.exports = {
   getAttendance,
@@ -154,4 +180,5 @@ module.exports = {
   getPresentOnes,
   getTodayAttendances,
   getMonthlyAttendances,
+  getAttendanceReport,
 };
