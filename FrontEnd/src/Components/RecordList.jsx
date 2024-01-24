@@ -17,6 +17,7 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
 import DownloadCSVReport from "./DownladReport";
+import FormatDateTime from "./formatDateTime";
 
 const RecordList = ({ selectedDate, setSelectedDate }) => {
   const { username, role } = useContext(UserContext);
@@ -24,27 +25,6 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
   const [attendanceRecord, setAttendanceRecord] = useState([]);
   const isAdmin = role === "admin";
 
-  //formatting date & time
-  const formatDateTime = (date) => {
-    const time = new Date(date);
-    //format date
-    const formattedDate = time.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "2-digit",
-    });
-
-    //format Time
-    let hours = time.getHours();
-    const minutes = time.getMinutes();
-    const period = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12 || 12;
-
-    const formattedTime = `${hours}:${minutes
-      .toString()
-      .padStart(2, "0")} ${period}`;
-    return { formattedDate, formattedTime };
-  };
   useEffect(() => {
     const fetchAttendanceRecords = async () => {
       try {
@@ -84,7 +64,6 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
 
       // const apiUrl = `http://localhost:3000/api/attendance/report?startDate=${lastMonthStartDate.toISOString()}&endDate=${lastMonthEndDate.toISOString()}`;
       const reportResponse = await axios.get(apiUrl);
-
       DownloadCSVReport(reportResponse.data);
     } catch (error) {
       console.error("Error generating CSV report", error);
@@ -160,19 +139,19 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
 
               {/* //Displaying Date  */}
               <TableCell component="th" align="center" scope="row">
-                {formatDateTime(record.entranceTime).formattedDate}
+                {FormatDateTime(record.entranceTime).formattedDate}
               </TableCell>
 
               {/* //displaying entranceTime */}
               <TableCell component="th" align="center" scope="row">
-                {formatDateTime(record.entranceTime).formattedTime}
+                {FormatDateTime(record.entranceTime).formattedTime}
               </TableCell>
 
               {/* displaying leavingTime */}
 
               {record.leavingTime ? (
                 <TableCell component="th" align="center" scope="row">
-                  {formatDateTime(record.leavingTime).formattedTime}
+                  {FormatDateTime(record.leavingTime).formattedTime}
                 </TableCell>
               ) : (
                 <TableCell component="th" align="center" scope="row">
