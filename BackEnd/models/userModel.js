@@ -21,7 +21,7 @@ const userModel = new Schema({
   },
   profilePicture: {
     type: String,
-    base64: true,
+    default: null,
   },
   created_at: {
     type: Date,

@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import axios from "axios";
-import NoImage from "../assets/defaultProfile.jpg";
+// import NoImage from "../assets/defaultProfile.jpg";
 // import axios from "axios";
 import {
   FormControl,
@@ -44,59 +44,49 @@ function Copyright(props) {
 export default function ProfilePage() {
   const { username } = useContext(UserContext);
   const [isHovered, setIsHovered] = useState(false);
-  const [profilePicture, setProfilePicture] = useState(NoImage);
+  const [file, setFile] = useState(null);
 
-  // console.log(isHovered, "-----------");
+  const handleFileChange = (event) => {
+    console.log(event.target.files);
+    setFile(event.target.files[0]);
+  };
 
-  // const handleFileChange = (event) => {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setProfilePicture(reader.result);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
-
-  const handleFileChange = async (event) => {
-    const file = event.target.files[0];
-    const data = new FormData();
-    data.append("profilePicture", file);
-
+  const handleUpload = async (e) => {
+    e.preventDefault();
     try {
-      // Send Axios request to update the profile picture
+      console.log("profilePicture", typeof profilePicture);
+
+      //storing image in formData
+      const formData = new FormData();
+      formData.append("profilePicture", file);
+
+      console.log(formData);
+
       const response = await axios.put(
         `http://localhost:3000/api/users/${username}`,
-        data,
+        formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         }
       );
+      console.log(
+        "response from axios patch call to update data",
+        response.data
+      );
 
-      toast.success("Profile picture updated successfully");
-
-      // Assuming the backend sends the updated profile picture URL
-      setProfilePicture(response.data.profilePicture);
-    } catch (error) {
-      console.error("Error updating profile picture:", error);
+      if (response) {
+        console.log(response.data.imageUrl);
+        toast.success("Profile Updated Successfully");
+      }
+    } catch (err) {
+      console.log("Error Updating Profile Pic", err);
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // const data = new FormData(event.currentTarget);
-    // console.log({
-    //   firstName: data.get("firstName"),
-    //   lastName: data.get("lastName"),
-    //   email: data.get("email"),
-    //   username: data.get("username"),
-    //   gender: data.get("gender"),
-    //   D_O_B: data.get("D.O.B"),
-    //   phoneNo: data.get("phone-no"),
-    // });
   };
 
   return (
@@ -113,43 +103,70 @@ export default function ProfilePage() {
         <Typography component="h1" variant="h5" fontWeight="bold">
           Profile Information
         </Typography>
-        <label htmlFor="upload-avatar">
-          <Avatar
-            sx={{
-              cursor: "pointer",
-              m: 5,
-              bgcolor: "grey",
-              width: "100px",
-              height: "100px",
-              "&:hover": {
-                "& .upload-icon": {
-                  display: "block",
+        <form onSubmit={handleUpload}>
+          <label htmlFor="upload-avatar">
+            <Avatar
+              sx={{
+                cursor: "pointer",
+                m: 5,
+                bgcolor: "grey",
+                width: "100px",
+                height: "100px",
+                "&:hover": {
+                  "& .upload-icon": {
+                    display: "block",
+                  },
                 },
-              },
-            }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            alt="profile picture"
-            src={profilePicture}
-          >
-            {isHovered && (
-              // (console.log("hovered", "***********************************"),
-              <CameraAltIcon
-                className="upload-icon"
-                fontSize="large"
-                color="error"
-                // onClick={openFileDialog}
-              />
+              }}
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              alt="profile picture"
+            >
+              {file ? (
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt="ProfilePicture"
+                  style={{ width: "100%", height: "100%" }}
+                />
+              ) : (
+                <>
+                  {isHovered && (
+                    // (console.log("hovered", "***********************************"),
+                    <CameraAltIcon
+                      className="upload-icon"
+                      fontSize="large"
+                      color="error"
+                      // onClick={openFileDialog}
+                    />
+                  )}
+                </>
+              )}
+            </Avatar>
+            <Input
+              accept="image/*"
+              id="upload-avatar"
+              type="file"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
+            {file && (
+              <div>
+                {/* {console.log("profilePicture", profilePicture.name)} */}
+                <Button
+                  type="submit"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    margin: "auto",
+                  }}
+                  variant="outlined"
+                >
+                  Upload
+                </Button>
+              </div>
             )}
-          </Avatar>
-          <Input
-            accept="image/*"
-            id="upload-avatar"
-            type="file"
-            style={{ display: "none" }}
-            onChange={handleFileChange}
-          />
-        </label>
+          </label>
+        </form>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>

@@ -1,4 +1,6 @@
 const User = require("../models/userModel");
+const multer = require("multer");
+const path = require("path");
 // const mongoose = require("mongoose");
 
 //get all Users
@@ -58,24 +60,71 @@ const deleteUser = async (req, res) => {
   res.status(200).json(user);
 };
 
+//updation logic starts here...
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/images/"); //specify the destination folder
+  },
+  filename: (req, file, cb) => {
+    //using username and timeStamp to create File name
+    // const timeStamp = new Date().toISOString().replace(/[-:.]/g, "");
+    const filename = `${req.params.userName}_${file.originalname}`;
+    console.log(file.originalname);
+    console.log(filename);
+    cb(null, filename);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  //allow only images
+  if (file.mimetype.match(/^image\/(jpg|jpeg|png)$/)) {
+    cb(null, true);
+  } else {
+    cb(new Error("Invalid File Type, please upload an image"), false);
+  }
+};
+
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: {
+    fileSize: 1024 * 1024 * 5, //limiting to 5MB
+  },
+});
+
 //update a User
 const updateUser = async (req, res) => {
+  console.log(req.body);
   const { userName } = req.params;
-  const { profilePicture } = req.body;
 
   try {
-    const user = await User.findOneAndUpdate(
-      { username: userName },
-      { profilePicture },
-      { new: true } // This option returns the updated document
-    );
+    // using multer to handle file upload
+    upload.single("profilePicture")(req, res, (err) => {
+      if (err) {
+        return res.status(400).json({ error: err.message });
+      }
 
-    if (!user) {
-      return res.status(404).json({ error: "No such user found!" });
-    }
+      //extracting the file name
+      const fileName = req.file.filename;
+      console.log(fileName);
 
-    console.log("User profile picture updated:", user);
-    res.status(200).json({ profilePicture: user.profilePicture });
+      //updating the mongoDB with picName
+      const updateRes = User.findOneAndUpdate(
+        { username: userName },
+        { profilePicture: fileName },
+        { new: true }
+      ).then((user) => {
+        if (!user) {
+          return res.status(404).json({ error: "User not found" });
+        }
+        console.log(updateRes.data);
+        //otherwise respond with success message
+        res
+          .status(200)
+          .json({ message: "Profile picture updated successfully" });
+      });
+    });
   } catch (error) {
     console.error("Error updating profile picture:", error);
     res.status(500).json({ error: error.message });
@@ -118,4 +167,5 @@ module.exports = {
   deleteUser,
   updateUser,
   loginUser,
+  upload,
 };

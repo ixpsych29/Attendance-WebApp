@@ -68,8 +68,8 @@ export default function SignupForm() {
     }
 
     // Validate password
-    if (formData.password.length < 7) {
-      newErrors.password = "Enter a valid password";
+    if (formData.password.length < 7 || formData.password.length > 15) {
+      newErrors.password = "Enter a valid password between 7 and 15 letters";
       isValid = false;
     }
 
