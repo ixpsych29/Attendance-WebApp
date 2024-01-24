@@ -1,38 +1,19 @@
 import convertArrayToCSV from "convert-array-to-csv";
+import FormatDateTime from "./formatDateTime";
 
 const DownloadCSVReport = async (reportData) => {
-  //formatting date & time
-  const formatDateTime = (date) => {
-    const time = new Date(date);
-    //format date
-    const formattedDate = time.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "2-digit",
-    });
-
-    //format Time
-    let hours = time.getHours();
-    const minutes = time.getMinutes();
-    const period = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12 || 12;
-
-    const formattedTime = `${hours}:${minutes
-      .toString()
-      .padStart(2, "0")} ${period}`;
-    return { formattedDate, formattedTime };
-  };
   try {
     // Extract relevant data for CSV
     const csvData = reportData.map((record) => {
       return {
         username: record.username,
-        date: formatDateTime(record.date).formattedDate,
-        entranceTime: formatDateTime(record.entranceTime).formattedTime,
-        leavingTime: formatDateTime(record.leavingTime).formattedTime,
+        date: FormatDateTime(record.entranceTime).formattedDate,
+        entranceTime: FormatDateTime(record.entranceTime).formattedTime,
+        leavingTime: record.leavingTime
+          ? FormatDateTime(record.leavingTime).formattedTime
+          : null,
       };
     });
-
     // Convert array to CSV
     const csvContent = convertArrayToCSV(csvData);
 
