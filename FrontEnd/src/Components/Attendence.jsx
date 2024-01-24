@@ -19,7 +19,7 @@ function Attendence() {
         const response = await axios.get(
           `http://localhost:3000/api/attendance/${username}`
         );
-        if (response.data.leavingTime != null) {
+        if (response.data && response.data.leavingTime != null) {
           setAttendanceMarked(true);
         }
       } catch (error) {
