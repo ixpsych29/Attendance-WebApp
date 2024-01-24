@@ -84,7 +84,11 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
         variant="middle"
         sx={{ mt: 7, mb: 7, borderColor: "primary.main", borderWidth: 2 }}
       />
-      <Button variant="contained" onClick={generateCSVReport}>
+      <Button
+        variant="contained"
+        onClick={generateCSVReport}
+        sx={{ left: "5%" }}
+      >
         Generate CSV Report
       </Button>
       {isAdmin ? (
