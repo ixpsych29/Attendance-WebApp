@@ -156,15 +156,9 @@ const getAttendanceReport = async (req, res) => {
     const reportStartDate = dayjs(startDate).startOf("day");
     const reportEndDate = dayjs(endDate).endOf("day");
 
-    console.log("reportStartDate", reportStartDate);
-    console.log("reportEndDate", reportEndDate);
-
     const attendanceData = await Attendance.find({
       entranceTime: { $gte: reportStartDate, $lte: reportEndDate },
     });
-
-    console.log("attendanceData", attendanceData);
-
     res.status(200).json(attendanceData);
   } catch (error) {
     console.error("Error fetching attendance report", error);

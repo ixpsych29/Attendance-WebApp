@@ -15,8 +15,8 @@ import DatePickerCmp from "./DatePickerCmp";
 import UserContext from "./userContext";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { createObjectCsvWriter } from "csv-writer";
 import dayjs from "dayjs";
+import DownloadCSVReport from "./DownladReport";
 
 const RecordList = ({ selectedDate, setSelectedDate }) => {
   const { username, role } = useContext(UserContext);
@@ -27,8 +27,6 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
   //formatting date & time
   const formatDateTime = (date) => {
     const time = new Date(date);
-    // console.log("recordList time", time);
-
     //format date
     const formattedDate = time.toLocaleDateString("en-US", {
       year: "numeric",
@@ -87,28 +85,7 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
       // const apiUrl = `http://localhost:3000/api/attendance/report?startDate=${lastMonthStartDate.toISOString()}&endDate=${lastMonthEndDate.toISOString()}`;
       const reportResponse = await axios.get(apiUrl);
 
-      console.log("reportResponse", reportResponse.data);
-      // Extract relevant data for CSV
-      const csvData = reportResponse.data.map((record) => ({
-        username: record.username,
-        entranceTime: record.entranceTime,
-        leavingTime: record.leavingTime,
-      }));
-
-      // Create CSV file
-      const csvWriter = createObjectCsvWriter({
-        path: "attendance_report.csv",
-        header: [
-          { id: "username", title: "Username" },
-          { id: "entranceTime", title: "Entrance Time" },
-          { id: "leavingTime", title: "Leaving Time" },
-        ],
-      });
-
-      await csvWriter.writeRecords(csvData);
-
-      // Notify user and provide download link
-      alert("CSV report generated successfully!");
+      DownloadCSVReport(reportResponse.data);
     } catch (error) {
       console.error("Error generating CSV report", error);
     }
