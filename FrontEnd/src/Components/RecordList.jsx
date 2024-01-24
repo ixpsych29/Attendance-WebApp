@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Button,
   Divider,
   Paper,
   Table,
@@ -15,27 +16,17 @@ import UserContext from "./userContext";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
+import DownloadCSVReport from "./DownladReport";
 
-// import dayjs from "dayjs";
-// import "dayjs/locale/en"; // Import the desired locale
-// import utc from "dayjs/plugin/utc";
-// import timezone from "dayjs/plugin/timezone";
-// import relativeTime from "dayjs/plugin/relativeTime";
-// import localizedFormat from "dayjs/plugin/localizedFormat";
-
-const RecordList = () => {
+const RecordList = ({ selectedDate, setSelectedDate }) => {
   const { username, role } = useContext(UserContext);
   // console.log(username);
   const [attendanceRecord, setAttendanceRecord] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(dayjs());
-
   const isAdmin = role === "admin";
 
   //formatting date & time
   const formatDateTime = (date) => {
     const time = new Date(date);
-    // console.log("recordList time", time);
-
     //format date
     const formattedDate = time.toLocaleDateString("en-US", {
       year: "numeric",
@@ -63,7 +54,7 @@ const RecordList = () => {
           apiUrl = `http://localhost:3000/api/attendance/all?date=${selectedDate.toISOString()}`;
         } else {
           // Fetch attendance records for the current user
-          apiUrl = `http://localhost:3000/api/attendance/${username}`;
+          apiUrl = `http://localhost:3000/api/attendance/monthly/${username}`;
         }
 
         const response = await axios.get(apiUrl);
@@ -78,6 +69,26 @@ const RecordList = () => {
   }, [isAdmin, username, selectedDate]);
   const handleDateChange = (newDate) => {
     setSelectedDate(newDate);
+  };
+  const generateCSVReport = async () => {
+    try {
+      // Fetch attendance data for the previous month
+      // const lastMonthStartDate = dayjs().subtract(1, "month").startOf("month");
+      // const lastMonthEndDate = dayjs().subtract(1, "month").endOf("month");
+
+      const currentMonthStartDate = dayjs().startOf("month");
+      const currentDate = dayjs().endOf("day");
+
+      // Generate report for the current month
+      const apiUrl = `http://localhost:3000/api/attendance/report?startDate=${currentMonthStartDate.toISOString()}&endDate=${currentDate.toISOString()}`;
+
+      // const apiUrl = `http://localhost:3000/api/attendance/report?startDate=${lastMonthStartDate.toISOString()}&endDate=${lastMonthEndDate.toISOString()}`;
+      const reportResponse = await axios.get(apiUrl);
+
+      DownloadCSVReport(reportResponse.data);
+    } catch (error) {
+      console.error("Error generating CSV report", error);
+    }
   };
 
   return (
@@ -94,8 +105,12 @@ const RecordList = () => {
         variant="middle"
         sx={{ mt: 7, mb: 7, borderColor: "primary.main", borderWidth: 2 }}
       />
-      <DatePickerCmp value={selectedDate} onChange={handleDateChange} />
-
+      <Button variant="contained" onClick={generateCSVReport}>
+        Generate CSV Report
+      </Button>
+      {isAdmin ? (
+        <DatePickerCmp value={selectedDate} onChange={handleDateChange} />
+      ) : null}
       <Table
         stickyHeader
         sx={{
@@ -121,7 +136,6 @@ const RecordList = () => {
               key={record._id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              {/* //displaying picture */}
               <TableCell
                 align="center"
                 style={{
@@ -155,9 +169,16 @@ const RecordList = () => {
               </TableCell>
 
               {/* displaying leavingTime */}
-              <TableCell component="th" align="center" scope="row">
-                {formatDateTime(record.leavingTime).formattedTime}
-              </TableCell>
+
+              {record.leavingTime ? (
+                <TableCell component="th" align="center" scope="row">
+                  {formatDateTime(record.leavingTime).formattedTime}
+                </TableCell>
+              ) : (
+                <TableCell component="th" align="center" scope="row">
+                  {"didn't Checked Out "}
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>

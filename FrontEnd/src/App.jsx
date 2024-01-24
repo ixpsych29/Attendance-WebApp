@@ -1,5 +1,3 @@
-// import "./App.css";
-
 import Dashboard from "./Components/Dashboard";
 import ProfilePage from "./Components/ProfilePage";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
@@ -50,10 +48,12 @@ function App() {
             path="profile"
             element={<ProtectedRoute element={<ProfilePage />} />}
           ></Route>
-          <Route
-            path="attendence"
-            element={<ProtectedRoute element={<Attendence />} />}
-          ></Route>
+          {role === "user" && (
+            <Route
+              path="attendence"
+              element={<ProtectedRoute element={<Attendence />} />}
+            />
+          )}
         </Route>
       </Routes>
     </BrowserRouter>

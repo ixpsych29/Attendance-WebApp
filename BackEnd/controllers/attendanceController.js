@@ -1,4 +1,6 @@
 const Attendance = require("../models/attendanceModel");
+const createCsvWriter = require("csv-writer").createObjectCsvWriter;
+const dayjs = require("dayjs");
 // const moment = require("moment-timezone");
 
 //get all history with distinct employee count
@@ -41,18 +43,27 @@ const getTodayAttendances = async (req, res) => {
   }
 };
 
-module.exports = {
-  getTodayAttendances,
-};
-
 //get single day history
+//
+//
 const getOneAttendance = async (req, res) => {
-  const { userName } = req.params;
-  const employee = await Attendance.find({ username: userName });
-  if (!employee) {
-    return res.status(404).json({ error: "No user found" });
+  try {
+    const { userName } = req.params;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const employee = await Attendance.findOne({
+      username: userName,
+      entranceTime: {
+        $gte: today,
+        $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+      },
+    });
+    res.status(200).json(employee);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error!" });
   }
-  res.status(200).json(employee);
 };
 
 //insert new attendance record
@@ -60,18 +71,6 @@ const createAttendance = async (req, res) => {
   const { username, picture, entranceTime } = req.body;
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  // const existingAttendance = await Attendance.findOne({
-  //   entranceTime: {
-  //     $gte: today,
-  //     $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
-  //   },
-  // });
-
-  // if (existingAttendance) {
-  //   res.status(400).json({ error: "Attendance Marked Already for Today" });
-  //   return;
-  // }
-  //INSERT new document to DB
   try {
     const updatedAttendance = await Attendance.findOneAndUpdate(
       { username, [`attendanceObj.${todayKey}.checkOut`]: false },
@@ -111,47 +110,29 @@ const createAttendance = async (req, res) => {
   }
 };
 
-//updating the attendance record
-const updateAttendanceRecord = async (username, todayKey) => {
-  try {
-    const updatedAttendance = await Attendance.findOneAndUpdate(
-      {
-        username,
-        [`attendanceObj.${todayKey}.checkOut`]: false,
-      },
-      {
-        $set: {
-          [`attendanceObj.${todayKey}.checkOut`]: true,
-          [`attendanceObj.${todayKey}.leavingTime`]: new Date(),
-        },
-      },
-      { new: true } //return the modified document
-    );
-    return updatedAttendance;
-  } catch (err) {
-    throw new Error(err.message);
-  }
-};
-
-//
+//UPDATING attendance at leaving time.
 const updateAttendance = async (req, res) => {
-  const { username } = req.body;
-
-  const today = new Date();
-  const todayKey = today.toISOString().replace(/\./g, "_");
   try {
-    const updatedAttendance = await updateAttendanceRecord(username, todayKey);
+    const { userName } = req.params;
+    const { leavingTime } = req.body;
 
-    if (updatedAttendance) {
-      console.log("Attendance updated with leavingtime and checkout");
-      res.status(400).json(updatedAttendance);
-    } else {
-      console.error("Error in updateAttendance", err.message);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  } catch (err) {
-    console.error("Error in update Attendance", err.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    // Get the current date without the time component
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+
+    // Find or create the attendance record for the current date
+    let employee = await Attendance.findOne({
+      username: userName,
+      entranceTime: { $gte: currentDate },
+    });
+    // Update the leaving time of the existing record
+    employee.leavingTime = leavingTime;
+    await employee.save();
+
+    res.status(200).json(employee);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error!" });
   }
 };
 
@@ -170,6 +151,43 @@ const getPresentOnes = async (req, res) => {
   }
 };
 
+const getMonthlyAttendances = async (req, res) => {
+  try {
+    const { userName } = req.params;
+    const now = new Date();
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+    const attendances = await Attendance.find({
+      username: userName,
+      entranceTime: { $gte: startOfMonth, $lte: endOfMonth },
+    });
+
+    res.status(200).json(attendances);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal Server Error!" });
+  }
+};
+
+// controllers/attendanceController.js
+
+const getAttendanceReport = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+
+    const reportStartDate = dayjs(startDate).startOf("day");
+    const reportEndDate = dayjs(endDate).endOf("day");
+
+    const attendanceData = await Attendance.find({
+      entranceTime: { $gte: reportStartDate, $lte: reportEndDate },
+    });
+    res.status(200).json(attendanceData);
+  } catch (error) {
+    console.error("Error fetching attendance report", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 //exporting modules
 module.exports = {
   getAttendance,
@@ -178,4 +196,6 @@ module.exports = {
   updateAttendance,
   getPresentOnes,
   getTodayAttendances,
+  getMonthlyAttendances,
+  getAttendanceReport,
 };

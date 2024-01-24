@@ -6,7 +6,7 @@ const path = require("path");
 //get all Users
 const getUsers = async (req, res) => {
   try {
-    const users = await User.find({}).sort({ created_at: 1 });
+    const users = await User.find({ role: "user" }).sort({ created_at: 1 });
     const totalEmployees = users.length;
 
     res.status(200).json({ totalEmployees, users });
@@ -143,12 +143,10 @@ const loginUser = async (req, res) => {
     }
     // Check user role
     if (user.role === "admin") {
-      // Redirect to admin dashboard or send admin-specific response
       return res
         .status(200)
         .json({ message: "Admin Login successful", role: "admin" });
     } else {
-      // Redirect to user dashboard or send user-specific response
       return res
         .status(200)
         .json({ message: "User Login successful", role: "user" });

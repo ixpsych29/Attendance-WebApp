@@ -6,9 +6,14 @@ const {
   updateAttendance,
   getPresentOnes,
   getTodayAttendances,
+  getMonthlyAttendances,
+  getAttendanceReport,
 } = require("../controllers/attendanceController");
 
 const router = express.Router();
+
+// Get one month  report
+router.get("/report", getAttendanceReport);
 
 //all history
 router.get("/", getAttendance);
@@ -21,10 +26,13 @@ router.get("/:userName", getOneAttendance);
 //insert new record to history
 router.post("/", createAttendance);
 
+//update attendance check out time
+router.put("/:userName", updateAttendance);
+
 //update attendance history
 router.put("/", updateAttendance);
 
-//get presentOnes
-router.get("/:entranceTime", getPresentOnes);
+// Monthly attendance history for a specific user
+router.get("/monthly/:userName", getMonthlyAttendances);
 
 module.exports = router;

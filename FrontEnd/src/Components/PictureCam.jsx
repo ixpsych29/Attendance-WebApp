@@ -1,5 +1,5 @@
 import Webcam from "react-webcam";
-import { useCallback, useContext, useRef, useState } from "react";
+import { useCallback, useContext, useRef, useState, useEffect } from "react";
 import axios from "axios";
 import UserContext from "./userContext";
 import { Button } from "@mui/material";
@@ -16,15 +16,35 @@ const PictureCam = () => {
   const [checkedIn, setCheckedIn] = useState(false);
 
   const { username } = useContext(UserContext);
-  // console.log("PictureCam Working", username);
 
-  //notification in case of success
-  // const notify = () => toast.success("Success!");
+  useEffect(() => {
+    // Check if the user has already checked in for the day
+    const checkIfCheckedIn = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/attendance/${username}`
+        );
+        if (response.data) {
+          setCheckedIn(true);
+        } else {
+          setCheckedIn(false);
+        }
+      } catch (error) {
+        console.log(error.response.data.message);
+      }
+    };
+
+    checkIfCheckedIn();
+  }, [username]);
+
+  useEffect(() => {
+    // If the user checks in or checks out, reset the image source
+    setImgSrc(null);
+  }, [checkedIn]);
 
   const capture = useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImgSrc(imageSrc);
-    // console.log(imageSrc);
   }, [webcamRef]);
 
   const retake = () => {
@@ -33,74 +53,30 @@ const PictureCam = () => {
 
   const handlePicSubmit = async () => {
     const date = new Date();
-    console.log("Attendance Submitted at: ", date);
     try {
-      const existingAttendanceResponse = await axios.get(
-        `http://localhost:3000/api/attendance/${username}`
-      );
+      if (!checkedIn) {
+        // Check-in logic
+        await axios.post("http://localhost:3000/api/attendance", {
+          username: username,
+          picture: imgSrc,
+          entranceTime: date.toISOString(),
+        });
 
-      //checking if attendance already marked
-      if (existingAttendanceResponse.data.length > 0) {
-        toast.error("Attendance Already Marked!");
-        navigate("/home");
-        return;
-      }
-      console.log("Attendance Data:", {
-        username: username,
-        picture: imgSrc,
-        entranceTime: date,
-      });
-
-      //if not marked, then mark attendance
-      await axios.post("http://localhost:3000/api/attendance", {
-        username: username,
-        picture: imgSrc,
-        entranceTime: date.toISOString(),
-      });
-      console.log("before checkin condtion");
-      if (checkedIn) {
-        console.log("if, put api");
-        const response = await axios.put(
-          "http://localhost:3000/api/attendance",
-          { username: username, checkoutTime: date.toISOString() }
-        );
-        if (response.data && response.data.error) {
-          console.error("Error:", response.data.error);
-          toast.error("Error updating attendance");
-        } else {
-          toast.success("Attendance Updated!");
-          navigate("/home");
-        }
-        console.log("after checkin condtion");
+        // Notify user and set checked-in state
+        toast.success("Check-in Successful!");
+        setCheckedIn(true);
       } else {
-        console.log("else, post api");
-        const response = await axios.post(
-          "http://localhost:3000/api/attendance",
-          {
-            username: username,
-            picture: imgSrc,
-            entranceTime: date,
-          }
-        );
-
-        // console.log("Response Data, FrontEnd", response.data);
-
-        if (response.data && response.data.error) {
-          // If the server sends an error response
-          console.error("Error:", response.data.error);
-          toast.error("Error marking attendance");
-        } else {
-          // If the attendance is marked successfully
-          toast.success("Attendance Marked!");
-          setCheckedIn(true);
-          navigate("/home");
-        }
+        // Check-out logic
+        await axios.put(`http://localhost:3000/api/attendance/${username}`, {
+          leavingTime: date,
+        }); // Notify user and reset state
+        toast.success("Check-out Successful!");
+        setCheckedIn(false);
       }
+
+      navigate("/home");
     } catch (error) {
-      // console.log(error.response.data.message);
-      console.log(
-        "errooorrrrssssssssssssssssssssssssssssssssssssssssssssssssss"
-      );
+      console.log(error.response.data.message);
     }
   };
 
@@ -142,9 +118,9 @@ const PictureCam = () => {
                 bgcolor: "#1db0e6",
                 "&:hover": { bgcolor: "#1688b3" },
               }}
-              onClick={() => handlePicSubmit()}
+              onClick={handlePicSubmit}
             >
-              <CheckIcon />
+              {checkedIn ? <CheckIcon /> : "Check-in"}
             </Button>
           </>
         ) : (
@@ -159,7 +135,7 @@ const PictureCam = () => {
             }}
             onClick={capture}
           >
-            Check-in &nbsp;
+            {checkedIn ? "Check-out" : "Check-in"} &nbsp;
             <CameraAltIcon />
           </Button>
         )}
