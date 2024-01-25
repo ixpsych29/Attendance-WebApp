@@ -134,6 +134,9 @@ export default function LoginForm({ login, role }) {
             onChange={handleChange}
             error={Boolean(errors.username)}
             helperText={errors.username}
+            inputProps={{
+              maxLength: 25, // Limiting to 15 characters
+            }}
           />
           <TextField
             margin="normal"
@@ -160,6 +163,9 @@ export default function LoginForm({ login, role }) {
                   </IconButton>
                 </InputAdornment>
               ),
+            }}
+            inputProps={{
+              maxLength: 20, // Limiting to 15 characters
             }}
           />
           <Button

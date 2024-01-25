@@ -97,11 +97,10 @@ export default function SignupForm() {
 
         const response = await axios.post(`${backendBaseUrl}${apiEndpoint}`, {
           name: formData.name,
-          username: formData.userName, // Ensure that the 'username' field is included
+          username: formData.userName,
           email: formData.email,
           password: formData.password,
         });
-        // Assuming your backend returns some data, you can log or use it as needed
         console.log(response.data);
 
         navigate("/");
@@ -110,10 +109,6 @@ export default function SignupForm() {
       } catch (error) {
         // Handle errors from the server
         console.error("Error registering user:", error);
-        console.log("Response data:", error.response.data);
-        console.log("Response status:", error.response.status);
-        console.log("Response headers:", error.response.headers);
-        // You may want to update the state or show an error message to the user
       }
     } else {
       // Form is not valid, handle accordingly
@@ -151,6 +146,9 @@ export default function SignupForm() {
             error={errors.name}
             value={formData.name}
             onChange={handleChanges}
+            inputProps={{
+              maxLength: 30, // Limiting to 30 characters
+            }}
           />
           <TextField
             margin="normal"
@@ -163,6 +161,9 @@ export default function SignupForm() {
             error={errors.userName}
             value={formData.userName}
             onChange={handleChanges}
+            inputProps={{
+              maxLength: 25, // Limiting to 25 characters
+            }}
           />
           <TextField
             margin="normal"
@@ -176,6 +177,9 @@ export default function SignupForm() {
             onChange={handleChanges}
             error={!!errors.email}
             helperText={errors.email}
+            inputProps={{
+              maxLength: 35, // Limiting to 35 characters
+            }}
           />
           <TextField
             margin="normal"
@@ -203,6 +207,9 @@ export default function SignupForm() {
                 </InputAdornment>
               ),
             }}
+            inputProps={{
+              maxLength: 20, // Limiting to 20 characters
+            }}
           />
           <TextField
             margin="normal"
@@ -229,6 +236,9 @@ export default function SignupForm() {
                   </IconButton>
                 </InputAdornment>
               ),
+            }}
+            inputProps={{
+              maxLength: 20, // Limiting to 20 characters
             }}
           />
           <Button
