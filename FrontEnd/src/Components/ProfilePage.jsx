@@ -9,8 +9,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import axios from "axios";
-// import NoImage from "../assets/defaultProfile.jpg";
-// import axios from "axios";
 import {
   FormControl,
   Input,
@@ -18,9 +16,10 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import UserContext from "./userContext";
 import toast from "react-hot-toast";
+import ChangePassword from "./ChangePassword";
 
 function Copyright(props) {
   return (
@@ -42,28 +41,47 @@ function Copyright(props) {
 }
 
 export default function ProfilePage() {
-  const { username } = useContext(UserContext);
+  const {
+    username,
+    userProfilePic,
+    setUserProfilePicture,
+    fetchProfilePicture,
+    BASE_URL,
+  } = useContext(UserContext);
+
   const [isHovered, setIsHovered] = useState(false);
   const [file, setFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  useEffect(() => {
+    // Fetch the user's profile picture on component mount
+    fetchProfilePicture(username);
+  }, [username, fetchProfilePicture]);
 
   const handleFileChange = (event) => {
-    console.log(event.target.files);
     setFile(event.target.files[0]);
+
+    //upadting the selected file state
+    setSelectedFile(file);
+
+    //displaying image immediately in avatar
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setUserProfilePicture(reader.result);
+    };
+    // reader.readAsDataURL(event.target.files[0]);
+    reader.readAsDataURL(file);
   };
 
   const handleUpload = async (e) => {
     e.preventDefault();
     try {
-      console.log("profilePicture", typeof profilePicture);
-
       //storing image in formData
       const formData = new FormData();
       formData.append("profilePicture", file);
 
-      console.log(formData);
-
       const response = await axios.put(
-        `http://localhost:3000/api/users/${username}`,
+        `${BASE_URL}/api/users/${username}`,
         formData,
         {
           headers: {
@@ -71,14 +89,12 @@ export default function ProfilePage() {
           },
         }
       );
-      console.log(
-        "response from axios patch call to update data",
-        response.data
-      );
 
       if (response) {
-        console.log(response.data.imageUrl);
+        fetchProfilePicture(username); // Fetch the updated profile picture from the backend
         toast.success("Profile Updated Successfully");
+        setFile(null);
+        setSelectedFile(null);
       }
     } catch (err) {
       console.log("Error Updating Profile Pic", err);
@@ -90,185 +106,198 @@ export default function ProfilePage() {
   };
 
   return (
-    <Container component="main" maxWidth="xs" sx={{ color: "text.primary" }}>
-      <CssBaseline />
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Typography component="h1" variant="h5" fontWeight="bold">
-          Profile Information
-        </Typography>
-        <form onSubmit={handleUpload}>
-          <label htmlFor="upload-avatar">
-            <Avatar
-              sx={{
-                cursor: "pointer",
-                m: 5,
-                bgcolor: "grey",
-                width: "100px",
-                height: "100px",
-                "&:hover": {
-                  "& .upload-icon": {
-                    display: "block",
+    <>
+      <Container component="main" maxWidth="xs" sx={{ color: "text.primary" }}>
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography component="h1" variant="h5" fontWeight="bold">
+            Profile Information
+          </Typography>
+          <form onSubmit={handleUpload}>
+            <label htmlFor="upload-avatar">
+              <Avatar
+                sx={{
+                  cursor: "pointer",
+                  m: 5,
+                  bgcolor: "grey",
+                  width: "100px",
+                  height: "100px",
+                  "&:hover": {
+                    "& .upload-icon": {
+                      display: "block",
+                    },
                   },
-                },
-              }}
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-              alt="profile picture"
-            >
-              {file ? (
-                <img
-                  src={URL.createObjectURL(file)}
-                  alt="ProfilePicture"
-                  style={{ width: "100%", height: "100%" }}
-                />
-              ) : (
-                <>
-                  {isHovered && (
-                    // (console.log("hovered", "***********************************"),
-                    <CameraAltIcon
-                      className="upload-icon"
-                      fontSize="large"
-                      color="error"
-                      // onClick={openFileDialog}
-                    />
-                  )}
-                </>
+                }}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+                alt="profile picture"
+              >
+                {selectedFile ? (
+                  <img
+                    src={URL.createObjectURL(selectedFile)}
+                    alt="Preview"
+                    style={{ width: "100px", height: "100px" }}
+                  />
+                ) : userProfilePic ? (
+                  <img
+                    src={`${BASE_URL}/uploads/Images/${userProfilePic}`} //fetching dymaically images from backend
+                    alt="ProfilePicture"
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                ) : (
+                  <>
+                    {isHovered && (
+                      <CameraAltIcon
+                        className="upload-icon"
+                        fontSize="large"
+                        // color=""
+                        // onClick={openFileDialog}
+                      />
+                    )}
+                  </>
+                )}
+              </Avatar>
+
+              <Input
+                accept="image/*"
+                id="upload-avatar"
+                type="file"
+                style={{ display: "none" }}
+                onChange={handleFileChange}
+              />
+              {file && (
+                <div>
+                  <Button
+                    type="submit"
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      margin: "auto",
+                    }}
+                    variant="outlined"
+                  >
+                    Upload
+                  </Button>
+                </div>
               )}
-            </Avatar>
-            <Input
-              accept="image/*"
-              id="upload-avatar"
-              type="file"
-              style={{ display: "none" }}
-              onChange={handleFileChange}
-            />
-            {file && (
-              <div>
-                {/* {console.log("profilePicture", profilePicture.name)} */}
-                <Button
-                  type="submit"
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    margin: "auto",
-                  }}
-                  variant="outlined"
-                >
-                  Upload
-                </Button>
-              </div>
-            )}
-          </label>
-        </form>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="given-name"
-                name="firstName"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="family-name"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                disabled
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                defaultValue=""
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                disabled
-                required
-                fullWidth
-                id="username"
-                label="Username"
-                name="username"
-                autoComplete="username"
-                defaultValue={username}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <InputLabel htmlFor="gender">Gender</InputLabel>
-                <Select
-                  autoComplete="gender"
-                  defaultValue="select"
-                  fullWidth
-                  id="gender"
-                  label="Gender"
-                >
-                  <MenuItem value="select">Select</MenuItem>
-                  <MenuItem value="male">Male</MenuItem>
-                  <MenuItem value="female">Female</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                id="D.O.B"
-                label="D.O.B"
-                name="D.O.B"
-                type="date"
-
-                // placeholder=""
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                id="phone-no"
-                label="Phone Number"
-                name="Phone-no"
-                autoComplete="phone-no"
-              />
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{
-              mt: 3,
-              mb: 2,
-              bgcolor: "#1db0e6",
-              "&:hover": { bgcolor: "#1b1d72" },
-            }}
+            </label>
+          </form>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
           >
-            Update Profile
-          </Button>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  autoComplete="given-name"
+                  name="firstName"
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="First Name"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Last Name"
+                  name="lastName"
+                  autoComplete="family-name"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  disabled
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  defaultValue=""
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  disabled
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  name="username"
+                  autoComplete="username"
+                  defaultValue={username}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel htmlFor="gender">Gender</InputLabel>
+                  <Select
+                    autoComplete="gender"
+                    defaultValue="select"
+                    fullWidth
+                    id="gender"
+                    label="Gender"
+                  >
+                    <MenuItem value="select">Select</MenuItem>
+                    <MenuItem value="male">Male</MenuItem>
+                    <MenuItem value="female">Female</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  id="D.O.B"
+                  label="D.O.B"
+                  name="D.O.B"
+                  type="date"
+
+                  // placeholder=""
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  id="phone-no"
+                  label="Phone Number"
+                  name="Phone-no"
+                  autoComplete="phone-no"
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{
+                mt: 3,
+                mb: 2,
+                bgcolor: "#1db0e6",
+                "&:hover": { bgcolor: "#1b1d72" },
+              }}
+            >
+              Update Profile
+            </Button>
+          </Box>
         </Box>
-      </Box>
-      <Copyright sx={{ mt: 5 }} />
-    </Container>
+        <Copyright sx={{ mt: 5 }} />
+      </Container>
+      <ChangePassword />
+    </>
   );
 }

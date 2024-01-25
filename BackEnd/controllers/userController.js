@@ -19,7 +19,7 @@ const getUsers = async (req, res) => {
 //get a single User
 const getSingleUser = async (req, res) => {
   const { userName } = req.params;
-  const user = await User.find({ username: userName });
+  const user = await User.findOne({ username: userName });
   if (!user) {
     return res.status(404).json({ error: "No user found" });
   }
@@ -68,8 +68,8 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     //using username and timeStamp to create File name
-    // const timeStamp = new Date().toISOString().replace(/[-:.]/g, "");
-    const filename = `${req.params.userName}_${file.originalname}`;
+    const timeStamp = new Date().toISOString().replace(/[-:.]/g, "");
+    const filename = `${req.params.userName}_${timeStamp}_${file.originalname}`;
     console.log(file.originalname);
     console.log(filename);
     cb(null, filename);

@@ -5,12 +5,19 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
+const path = require("path");
 
 app.use(cors()); // Use this after the variable declaration
 const port = process.env.PORT || 4000;
 
 //middleware
 app.use(express.json());
+
+// Serve static files from the 'Images' directory within 'uploads'
+app.use(
+  "/uploads/Images",
+  express.static(path.join(__dirname, "uploads/Images"))
+);
 
 app.use((req, res, next) => {
   console.log(req.path, req.method);
