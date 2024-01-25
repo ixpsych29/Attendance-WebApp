@@ -1,8 +1,14 @@
 import convertArrayToCSV from "convert-array-to-csv";
 import FormatDateTime from "./formatDateTime";
+import toast from "react-hot-toast";
 
-const DownloadCSVReport = async (reportData) => {
+const DownloadCSVReport = async (reportData, reportType) => {
   try {
+    if (!reportData || reportData.length === 0) {
+      toast.error(`No records found for ${reportType} report`);
+      return;
+    }
+
     // Extract relevant data for CSV
     const csvData = reportData.map((record) => {
       return {
@@ -11,11 +17,15 @@ const DownloadCSVReport = async (reportData) => {
         entranceTime: FormatDateTime(record.entranceTime).formattedTime,
         leavingTime: record.leavingTime
           ? FormatDateTime(record.leavingTime).formattedTime
-          : null,
+          : "Not Checked Out",
       };
     });
+
     // Convert array to CSV
     const csvContent = convertArrayToCSV(csvData);
+
+    // Set the file name based on the report type
+    const fileName = `attendance_report_${reportType}.csv`;
 
     // Create a Blob with the CSV data
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -23,7 +33,7 @@ const DownloadCSVReport = async (reportData) => {
     // Create a download link
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = "attendance_report.csv";
+    link.download = fileName;
 
     // Append the link to the body and trigger the download
     document.body.appendChild(link);
@@ -33,7 +43,7 @@ const DownloadCSVReport = async (reportData) => {
     document.body.removeChild(link);
 
     // Notify user
-    alert("CSV report generated successfully!");
+    toast.success(`CSV report (${reportType}) generated successfully!`);
   } catch (error) {
     console.error("Error generating CSV report", error);
   }

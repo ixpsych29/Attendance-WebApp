@@ -1,14 +1,11 @@
 import {
-  Avatar,
+  Box,
   Button,
   Divider,
+  Menu,
+  MenuItem,
   Paper,
-  Table,
-  TableBody,
-  TableCell,
   TableContainer,
-  TableHead,
-  TableRow,
   Typography,
 } from "@mui/material";
 import DatePickerCmp from "./DatePickerCmp";
@@ -17,12 +14,12 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
 import DownloadCSVReport from "./DownladReport";
-import FormatDateTime from "./formatDateTime";
+import AttendanceRecordTable from "./AttendanceRecordTable";
 
 const RecordList = ({ selectedDate, setSelectedDate }) => {
   const { username, role } = useContext(UserContext);
-  // console.log(username);
   const [attendanceRecord, setAttendanceRecord] = useState([]);
+  const [anchorEl, setAnchorEl] = useState(null);
   const isAdmin = role === "admin";
 
   useEffect(() => {
@@ -47,24 +44,36 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
     // Calling the fetchAttendanceRecords Function
     fetchAttendanceRecords();
   }, [isAdmin, username, selectedDate]);
+
   const handleDateChange = (newDate) => {
     setSelectedDate(newDate);
   };
-  const generateCSVReport = async () => {
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const generateCSVReport = async (reportType) => {
     try {
-      // Fetch attendance data for the previous month
-      // const lastMonthStartDate = dayjs().subtract(1, "month").startOf("month");
-      // const lastMonthEndDate = dayjs().subtract(1, "month").endOf("month");
+      let startDate, endDate;
 
-      const currentMonthStartDate = dayjs().startOf("month");
-      const currentDate = dayjs().endOf("day");
+      if (reportType === "thisMonth") {
+        startDate = dayjs().startOf("month");
+        endDate = dayjs().endOf("day");
+      } else if (reportType === "lastMonth") {
+        startDate = dayjs().subtract(1, "month").startOf("month");
+        endDate = dayjs().subtract(1, "month").endOf("month");
+      } else if (reportType === "last3Months") {
+        startDate = dayjs().subtract(3, "month").startOf("month");
+        endDate = dayjs().subtract(1, "month").endOf("month");
+      }
 
-      // Generate report for the current month
-      const apiUrl = `http://localhost:3000/api/attendance/report?startDate=${currentMonthStartDate.toISOString()}&endDate=${currentDate.toISOString()}`;
-
-      // const apiUrl = `http://localhost:3000/api/attendance/report?startDate=${lastMonthStartDate.toISOString()}&endDate=${lastMonthEndDate.toISOString()}`;
+      const apiUrl = `http://localhost:3000/api/attendance/report?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`;
       const reportResponse = await axios.get(apiUrl);
-      DownloadCSVReport(reportResponse.data);
+      DownloadCSVReport(reportResponse.data, reportType);
     } catch (error) {
       console.error("Error generating CSV report", error);
     }
@@ -84,88 +93,34 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
         variant="middle"
         sx={{ mt: 7, mb: 7, borderColor: "primary.main", borderWidth: 2 }}
       />
-      <Button
-        variant="contained"
-        onClick={generateCSVReport}
-        sx={{ left: "5%" }}
-      >
-        Generate CSV Report
-      </Button>
       {isAdmin ? (
-        <DatePickerCmp value={selectedDate} onChange={handleDateChange} />
+        <Box>
+          <Button
+            variant="contained"
+            onClick={handleMenuOpen}
+            sx={{ left: "5%", mr: 1 }}
+          >
+            Generate Report
+          </Button>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+          >
+            <MenuItem onClick={() => generateCSVReport("thisMonth")}>
+              This Month Report
+            </MenuItem>
+            <MenuItem onClick={() => generateCSVReport("lastMonth")}>
+              Last Month Report
+            </MenuItem>
+            <MenuItem onClick={() => generateCSVReport("last3Months")}>
+              Last 3 Months Report
+            </MenuItem>
+          </Menu>
+          <DatePickerCmp value={selectedDate} onChange={handleDateChange} />{" "}
+        </Box>
       ) : null}
-      <Table
-        stickyHeader
-        sx={{
-          minWidth: 650,
-          mt: 3,
-        }}
-        size="small"
-        aria-label="a dense table"
-      >
-        <TableHead>
-          <TableRow>
-            <TableCell align="center">Picture</TableCell>
-            <TableCell align="center">User Name</TableCell>
-            <TableCell align="center">Date</TableCell>
-            <TableCell align="center">Entrance Time</TableCell>
-            <TableCell align="center">Leave Time</TableCell>
-          </TableRow>
-        </TableHead>
-
-        <TableBody>
-          {attendanceRecord.map((record) => (
-            <TableRow
-              key={record._id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell
-                align="center"
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                {record.picture ? (
-                  <Avatar sx={{ width: 70, height: 70 }}>
-                    <img
-                      src={record.picture}
-                      alt="Attendance"
-                      style={{ maxWidth: "100px" }}
-                    />
-                  </Avatar>
-                ) : (
-                  "Not Found"
-                )}
-              </TableCell>
-              <TableCell align="center">{record.username}</TableCell>
-
-              {/* //Displaying Date  */}
-              <TableCell component="th" align="center" scope="row">
-                {FormatDateTime(record.entranceTime).formattedDate}
-              </TableCell>
-
-              {/* //displaying entranceTime */}
-              <TableCell component="th" align="center" scope="row">
-                {FormatDateTime(record.entranceTime).formattedTime}
-              </TableCell>
-
-              {/* displaying leavingTime */}
-
-              {record.leavingTime ? (
-                <TableCell component="th" align="center" scope="row">
-                  {FormatDateTime(record.leavingTime).formattedTime}
-                </TableCell>
-              ) : (
-                <TableCell component="th" align="center" scope="row">
-                  {"didn't Checked Out "}
-                </TableCell>
-              )}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <AttendanceRecordTable attendanceRecord={attendanceRecord} />
     </TableContainer>
   );
 };
