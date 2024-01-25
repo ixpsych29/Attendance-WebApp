@@ -20,6 +20,12 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
   const { username, role } = useContext(UserContext);
   const [attendanceRecord, setAttendanceRecord] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [dateRange, setDateRange] = useState({
+    start: dayjs().startOf("month"),
+    end: dayjs().endOf("day"),
+  });
+  const [showPreviousMonth, setShowPreviousMonth] = useState(false);
+
   const isAdmin = role === "admin";
 
   useEffect(() => {
@@ -31,7 +37,7 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
           apiUrl = `http://localhost:3000/api/attendance/all?date=${selectedDate.toISOString()}`;
         } else {
           // Fetch attendance records for the current user
-          apiUrl = `http://localhost:3000/api/attendance/monthly/${username}`;
+          apiUrl = `http://localhost:3000/api/attendance/monthly/${username}?startDate=${dateRange.start.toISOString()}&endDate=${dateRange.end.toISOString()}`;
         }
 
         const response = await axios.get(apiUrl);
@@ -43,7 +49,7 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
 
     // Calling the fetchAttendanceRecords Function
     fetchAttendanceRecords();
-  }, [isAdmin, username, selectedDate]);
+  }, [isAdmin, username, selectedDate, dateRange]);
 
   const handleDateChange = (newDate) => {
     setSelectedDate(newDate);
@@ -77,6 +83,14 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
     } catch (error) {
       console.error("Error generating CSV report", error);
     }
+  };
+  const handleLastMonthClick = () => {
+    // Set the date range to last month
+    setDateRange({
+      start: dayjs().subtract(1, "month").startOf("month"),
+      end: dayjs().subtract(1, "month").endOf("month"),
+    });
+    setShowPreviousMonth(true);
   };
 
   return (
@@ -119,7 +133,29 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
           </Menu>
           <DatePickerCmp value={selectedDate} onChange={handleDateChange} />{" "}
         </Box>
-      ) : null}
+      ) : showPreviousMonth ? (
+        <Button
+          variant="contained"
+          onClick={() => {
+            setShowPreviousMonth(false);
+            setDateRange({
+              start: dayjs().startOf("month"),
+              end: dayjs().endOf("day"),
+            });
+          }}
+          sx={{ left: "5%", mr: 1 }}
+        >
+          This Month Records
+        </Button>
+      ) : (
+        <Button
+          variant="contained"
+          onClick={handleLastMonthClick}
+          sx={{ left: "5%", mr: 1 }}
+        >
+          Previous Month Records
+        </Button>
+      )}
       <AttendanceRecordTable attendanceRecord={attendanceRecord} />
     </TableContainer>
   );

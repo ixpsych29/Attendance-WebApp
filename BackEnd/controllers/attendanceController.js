@@ -114,13 +114,21 @@ const getPresentOnes = async (req, res) => {
 const getMonthlyAttendances = async (req, res) => {
   try {
     const { userName } = req.params;
-    const now = new Date();
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    let { startDate, endDate } = req.query;
+
+    // If startDate and endDate are not provided, set default values for the current month
+    if (!startDate || !endDate) {
+      const now = new Date();
+      startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+      endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    } else {
+      startDate = new Date(startDate);
+      endDate = new Date(endDate);
+    }
 
     const attendances = await Attendance.find({
       username: userName,
-      entranceTime: { $gte: startOfMonth, $lte: endOfMonth },
+      entranceTime: { $gte: startDate, $lte: endDate },
     });
 
     res.status(200).json(attendances);
