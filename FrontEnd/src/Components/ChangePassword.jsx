@@ -82,6 +82,7 @@ export default function ChangePassword() {
             <TextField
               margin="normal"
               required
+              inputProps={{ maxLength: 7 }}
               fullWidth
               name="password"
               label="Enter New Password"
@@ -113,6 +114,7 @@ export default function ChangePassword() {
             <TextField
               margin="normal"
               required
+              inputProps={{ maxLength: 7 }}
               fullWidth
               name="confirmPassword"
               label="Confirm-Password"
@@ -145,7 +147,12 @@ export default function ChangePassword() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{
+                mt: 3,
+                mb: 2,
+                bgcolor: "#1db0e6",
+                "&:hover": { bgcolor: "#1b1d72" },
+              }}
             >
               Change Password
             </Button>

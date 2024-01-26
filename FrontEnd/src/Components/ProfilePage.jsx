@@ -19,7 +19,6 @@ import {
 import { useContext, useEffect, useState } from "react";
 import UserContext from "./userContext";
 import toast from "react-hot-toast";
-import ChangePassword from "./ChangePassword";
 
 function Copyright(props) {
   return (
@@ -297,7 +296,6 @@ export default function ProfilePage() {
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
-      <ChangePassword />
     </>
   );
 }

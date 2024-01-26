@@ -166,18 +166,28 @@ export default function LoginForm({ login, role }) {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{
+              mt: 3,
+              mb: 2,
+              bgcolor: "#1db0e6",
+              "&:hover": { bgcolor: "#1b1d72" },
+            }}
           >
             LogIn
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Link href="#" variant="body2" sx={{ textDecoration: "none" }}>
                 Forgot password?
               </Link>
             </Grid>
             <Grid item>
-              <Link component={RouterLink} to="/signup" variant="body2">
+              <Link
+                component={RouterLink}
+                to="/signup"
+                variant="body2"
+                sx={{ textDecoration: "none" }}
+              >
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
