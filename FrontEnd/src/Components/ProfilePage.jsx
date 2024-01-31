@@ -2,7 +2,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import Box from "@mui/material/Box";
@@ -19,25 +18,6 @@ import {
 import { useContext, useEffect, useState } from "react";
 import UserContext from "./userContext";
 import toast from "react-hot-toast";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      sx={{ color: "text.primary" }}
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="#">
-        SandyApps
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 export default function ProfilePage() {
   const {
@@ -294,7 +274,6 @@ export default function ProfilePage() {
             </Button>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </>
   );

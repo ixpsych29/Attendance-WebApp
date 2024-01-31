@@ -60,7 +60,7 @@ const deleteUser = async (req, res) => {
   res.status(200).json(user);
 };
 
-//updation logic starts here...
+//profile picture updation logic starts here...
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -109,7 +109,7 @@ const updateUser = async (req, res) => {
       const fileName = req.file.filename;
       console.log(fileName);
 
-      //updating the mongoDB with picName
+      // updating the mongoDB with picName
       const updateRes = User.findOneAndUpdate(
         { username: userName },
         { profilePicture: fileName },

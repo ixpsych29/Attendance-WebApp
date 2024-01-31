@@ -1,5 +1,4 @@
 import Dashboard from "./Components/Dashboard";
-import ProfilePage from "./Components/ProfilePage";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Home from "./Components/Home";
 import Attendence from "./Components/Attendence";
@@ -8,6 +7,7 @@ import SignupForm from "./Components/SignupForm";
 import { useState } from "react";
 import Nopage from "./Components/Nopage";
 import UserDashboard from "./Components/UserDashboard";
+import ProfileParent from "./Components/ProfileParent";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -33,7 +33,7 @@ function App() {
           element={<LoginForm login={setAuthenticated} role={setRole} />}
           index
         />
-        <Route path="/signup" element={<SignupForm />} index />
+        <Route path="/signup" element={<SignupForm />} index /> 
         <Route path="/*" element={<Nopage />} index />
         <Route
           path="/home/"
@@ -46,7 +46,7 @@ function App() {
           {role === "admin" && <Route index element={<Dashboard />} />}
           <Route
             path="profile"
-            element={<ProtectedRoute element={<ProfilePage />} />}
+            element={<ProtectedRoute element={<ProfileParent />} />}
           ></Route>
           {role === "user" && (
             <Route

@@ -4,16 +4,17 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { IconButton, InputAdornment } from "@mui/material";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import toast from "react-hot-toast";
-
-const defaultTheme = createTheme();
+import axios from "axios";
+import UserContext from "./userContext";
 
 export default function ChangePassword() {
+  const { username } = useContext(UserContext);
+
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
@@ -48,117 +49,116 @@ export default function ChangePassword() {
   };
 
   //handleForm Functions
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     if (validateForm()) {
-      toast.success("Password Changed Successfully");
+      try {
+        const Base_Url = "http://localhost:3000";
+        const apiEndpoint = "/api/users";
+
+        const response = await axios.put(
+          `${Base_Url}${apiEndpoint}/${username}`,
+          { password: formData.password }
+        );
+
+        console.log(response.data);
+        toast.success("Password Changed Successfully");
+      } catch (err) {
+        console.error(err);
+      }
     } else {
+      //Password is not valid
       toast.error("Enter a Valid Password");
     }
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography component="h1" variant="h5">
-            Change Password
-          </Typography>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{ mt: 1 }}
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography component="h1" variant="h5">
+          Change Password
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            inputProps={{ maxLength: 15 }}
+            fullWidth
+            name="password"
+            label="Enter New Password"
+            type={showPassword ? "text" : "password"}
+            id="password"
+            autoComplete="current-password"
+            value={formData.password}
+            onChange={handleChanges}
+            error={errors.password}
+            helperText={errors.password}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <TextField
+            margin="normal"
+            required
+            inputProps={{ maxLength: 15 }}
+            fullWidth
+            name="confirmPassword"
+            label="Confirm-Password"
+            type={showPassword ? "text" : "password"}
+            id="confirmPassword"
+            autoComplete="confirm-password"
+            value={formData.confirmPassword}
+            onChange={handleChanges}
+            error={!!errors.confirmPassword}
+            helperText={errors.confirmPassword}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{
+              mt: 3,
+              mb: 2,
+              bgcolor: "#1db0e6",
+              "&:hover": { bgcolor: "#1b1d72" },
+            }}
           >
-            <TextField
-              margin="normal"
-              required
-              inputProps={{ maxLength: 7 }}
-              fullWidth
-              name="password"
-              label="Enter New Password"
-              type={showPassword ? "text" : "password"}
-              id="password"
-              autoComplete="current-password"
-              value={formData.password}
-              onChange={handleChanges}
-              error={errors.password}
-              helperText={errors.password}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() => setShowPassword(!showPassword)}
-                      edge="end"
-                    >
-                      {showPassword ? (
-                        <VisibilityOffIcon />
-                      ) : (
-                        <VisibilityIcon />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <TextField
-              margin="normal"
-              required
-              inputProps={{ maxLength: 7 }}
-              fullWidth
-              name="confirmPassword"
-              label="Confirm-Password"
-              type={showPassword ? "text" : "password"}
-              id="confirmPassword"
-              autoComplete="confirm-password"
-              value={formData.confirmPassword}
-              onChange={handleChanges}
-              error={!!errors.confirmPassword}
-              helperText={errors.confirmPassword}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={() => setShowPassword(!showPassword)}
-                      edge="end"
-                    >
-                      {showPassword ? (
-                        <VisibilityOffIcon />
-                      ) : (
-                        <VisibilityIcon />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{
-                mt: 3,
-                mb: 2,
-                bgcolor: "#1db0e6",
-                "&:hover": { bgcolor: "#1b1d72" },
-              }}
-            >
-              Change Password
-            </Button>
-          </Box>
+            Change Password
+          </Button>
         </Box>
-      </Container>
-    </ThemeProvider>
+      </Box>
+    </Container>
   );
 }
