@@ -11,7 +11,7 @@ import Container from "@mui/material/Container";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import axios from "axios";
-import UserContext from "./userContext";
+import UserContext from "./UserContext";
 // eslint-disable-next-line no-unused-vars
 import toast, { Toaster } from "react-hot-toast";
 import { IconButton, InputAdornment } from "@mui/material";

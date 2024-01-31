@@ -3,7 +3,7 @@ import PictureCam from "./PictureCam";
 import { CssBaseline } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import UserContext from "./userContext";
+import UserContext from "./UserContext";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 

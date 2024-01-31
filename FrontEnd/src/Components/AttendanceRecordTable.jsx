@@ -6,7 +6,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import FormatDateTime from "./formatDateTime";
+import FormatDateTime from "./FormatDateTime";
 function AttendanceRecordTable({ attendanceRecord }) {
   if (attendanceRecord.length === 0) {
     return (

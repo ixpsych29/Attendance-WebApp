@@ -19,7 +19,7 @@ import {
   Select,
 } from "@mui/material";
 import { useContext, useState } from "react";
-import UserContext from "./userContext";
+import UserContext from "./UserContext";
 import toast from "react-hot-toast";
 
 function Copyright(props) {

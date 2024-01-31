@@ -1,5 +1,5 @@
 import convertArrayToCSV from "convert-array-to-csv";
-import FormatDateTime from "./formatDateTime";
+import FormatDateTime from "./FormatDateTime";
 import toast from "react-hot-toast";
 
 const DownloadCSVReport = async (reportData, reportType) => {

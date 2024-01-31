@@ -1,7 +1,7 @@
 import Webcam from "react-webcam";
 import { useCallback, useContext, useRef, useState, useEffect } from "react";
 import axios from "axios";
-import UserContext from "./userContext";
+import UserContext from "./UserContext";
 import { Button } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import RefreshIcon from "@mui/icons-material/Refresh";
