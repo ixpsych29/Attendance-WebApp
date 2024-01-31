@@ -4,9 +4,9 @@ const {
   getSingleUser,
   createUser,
   deleteUser,
-  updateUser,
+  updatePicture,
+  updateProfile,
   loginUser,
-  upload,
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -21,7 +21,8 @@ router.get("/:userName", getSingleUser);
 router.post("/", createUser);
 
 //update user profile
-router.put("/:userName", updateUser);
+router.put("/:userName/update-picture", updatePicture);
+router.put("/:userName/update-profile", updateProfile);
 
 //delete user
 router.delete("/:userName", deleteUser);

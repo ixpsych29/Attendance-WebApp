@@ -25,10 +25,6 @@ const UserProvider = ({ children }) => {
         `http://localhost:3000/api/users/${username}`
       );
       if (response.status === 200) {
-        console.log(
-          "Getting Picture but not showing",
-          response.data.profilePicture
-        );
         setUserProfilePic(response.data.profilePicture);
       } else {
         console.error(

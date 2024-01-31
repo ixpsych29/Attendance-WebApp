@@ -8,16 +8,11 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import axios from "axios";
-import {
-  FormControl,
-  Input,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@mui/material";
+import { Input } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import UserContext from "./userContext";
 import toast from "react-hot-toast";
+import MuiPhoneNumber from "material-ui-phone-number-2";
 
 export default function ProfilePage() {
   const {
@@ -31,6 +26,15 @@ export default function ProfilePage() {
   const [isHovered, setIsHovered] = useState(false);
   const [file, setFile] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    phoneNo: "",
+  });
+
+  //handling Form Data
+  const handleValueChange = (event) => {
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+  };
 
   useEffect(() => {
     // Fetch the user's profile picture on component mount
@@ -48,8 +52,10 @@ export default function ProfilePage() {
     reader.onloadend = () => {
       setUserProfilePicture(reader.result);
     };
-    // reader.readAsDataURL(event.target.files[0]);
-    reader.readAsDataURL(file);
+    if (file) {
+      // reader.readAsDataURL(event.target.files[0]);
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleUpload = async (e) => {
@@ -60,7 +66,7 @@ export default function ProfilePage() {
       formData.append("profilePicture", file);
 
       const response = await axios.put(
-        `${BASE_URL}/api/users/${username}`,
+        `${BASE_URL}/api/users/${username}/update-picture`,
         formData,
         {
           headers: {
@@ -175,25 +181,17 @@ export default function ProfilePage() {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} sm>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
-                  required
+                  name="name"
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="name"
+                  label="Name"
                   autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
+                  inputProps={{ maxLength: 20 }}
+                  value={formData.name}
+                  onChange={handleValueChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -220,42 +218,34 @@ export default function ProfilePage() {
                   defaultValue={username}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
-                  <InputLabel htmlFor="gender">Gender</InputLabel>
-                  <Select
-                    autoComplete="gender"
-                    defaultValue="select"
-                    fullWidth
-                    id="gender"
-                    label="Gender"
-                  >
-                    <MenuItem value="select">Select</MenuItem>
-                    <MenuItem value="male">Male</MenuItem>
-                    <MenuItem value="female">Female</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  id="D.O.B"
-                  label="D.O.B"
-                  name="D.O.B"
-                  type="date"
-
-                  // placeholder=""
-                />
-              </Grid>
 
               <Grid item xs={12}>
-                <TextField
-                  fullWidth
+                {/* <TextField
+                  // fullWidth
                   id="phone-no"
                   label="Phone Number"
                   name="Phone-no"
                   autoComplete="phone-no"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <MuiPhoneNumber defaultCountry="pk" fullWidth />
+                      </InputAdornment>
+                    ),
+                  }}
+                /> */}
+
+                <MuiPhoneNumber
+                  defaultCountry="pk"
+                  fullWidth
+                  label="Phone Number"
+                  value={formData.phoneNo}
+                  onChange={(value) =>
+                    setFormData({ ...formData, phoneNo: value })
+                  }
+                  id="phoneNo"
+                  margin="dense"
+                  variant="outlined"
                 />
               </Grid>
             </Grid>

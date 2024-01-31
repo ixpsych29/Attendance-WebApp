@@ -93,8 +93,8 @@ const upload = multer({
   },
 });
 
-//update a User
-const updateUser = async (req, res) => {
+//update a ProfilePicture of User
+const updatePicture = async (req, res) => {
   console.log(req.body);
   const { userName } = req.params;
 
@@ -131,6 +131,22 @@ const updateUser = async (req, res) => {
   }
 };
 
+//updating a profile of user
+const updateProfile = async (req, res) => {
+  const { name, password } = req.body;
+
+  //ADD doc to DB
+  try {
+    const newUser = await User.findOneAndUpdate({
+      name,
+      password,
+    });
+    res.status(200).json(newUser);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 //login a user
 const loginUser = async (req, res) => {
   const { username, password } = req.body;
@@ -163,7 +179,8 @@ module.exports = {
   getSingleUser,
   createUser,
   deleteUser,
-  updateUser,
+  updatePicture,
+  updateProfile,
   loginUser,
   upload,
 };
