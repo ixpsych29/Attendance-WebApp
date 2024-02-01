@@ -40,7 +40,7 @@ const UserProvider = ({ children }) => {
         setNameOfUser(response.data.name);
         setUserProfilePic(response.data.profilePicture);
         setUserEmail(response.data.email);
-        setPhoneNumber(response.data.phoneNo);
+        setPhoneNumber(response.data.phoneNumber);
       } else {
         console.error(
           "Error fetching profile picture. Server response:",

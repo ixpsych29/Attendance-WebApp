@@ -37,11 +37,9 @@ export default function ProfilePage() {
     try {
       //making an APi call
 
-      const profileUpdateResponse = await axios.put(
-        `${BASE_URL}/api/users/${username}/update-profile`,
-        { phoneNo: formData.phoneNo }
-      );
-      console.log("the response from backend", profileUpdateResponse.data);
+      await axios.put(`${BASE_URL}/api/users/${username}/update-profile`, {
+        phoneNo: formData.phoneNo,
+      });
       toast.success("Profile Updated");
     } catch (err) {
       console.log("Error Updating Profile Data", err);
