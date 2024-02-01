@@ -8,13 +8,16 @@ const UserProvider = ({ children }) => {
   const [userProfilePic, setUserProfilePic] = useState();
   const [email, setEmail] = useState("");
   const [nameUser, setNameUser] = useState("");
+  const [phNumber, setPhNumber] = useState("");
 
   const BASE_URL = `http://localhost:3000`;
 
   const setNameOfUser = (name) => {
     setNameUser(name);
   };
-
+  const setPhoneNumber = (phone) => {
+    setPhNumber(phone);
+  };
   const setUserName = (name) => {
     setUsername(name);
   };
@@ -37,6 +40,7 @@ const UserProvider = ({ children }) => {
         setNameOfUser(response.data.name);
         setUserProfilePic(response.data.profilePicture);
         setUserEmail(response.data.email);
+        setPhoneNumber(response.data.phoneNo);
       } else {
         console.error(
           "Error fetching profile picture. Server response:",
@@ -56,8 +60,8 @@ const UserProvider = ({ children }) => {
     <UserContext.Provider
       value={{
         nameUser,
-        setNameOfUser,
         username,
+        phNumber,
         setUserName,
         role,
         setUserRole,
@@ -66,7 +70,6 @@ const UserProvider = ({ children }) => {
         fetchProfilePicture,
         BASE_URL,
         email,
-        setUserEmail,
       }}
     >
       {children}

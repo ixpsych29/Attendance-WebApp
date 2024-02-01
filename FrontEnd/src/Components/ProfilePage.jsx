@@ -13,13 +13,14 @@ import ProfilePictureUpload from "./ProfilePictureUpload";
 import toast from "react-hot-toast";
 
 export default function ProfilePage() {
-  const { nameUser, username, BASE_URL, email } = useContext(UserContext);
+  const { nameUser, username, BASE_URL, email, phNumber } =
+    useContext(UserContext);
 
   const [formData, setFormData] = useState({
     name: nameUser,
     email: email,
     username: username,
-    phoneNo: "",
+    phoneNo: phNumber,
   });
 
   //handling Form Data
@@ -38,7 +39,7 @@ export default function ProfilePage() {
 
       const profileUpdateResponse = await axios.put(
         `${BASE_URL}/api/users/${username}/update-profile`,
-        formData
+        { phoneNo: formData.phoneNo }
       );
       console.log("the response from backend", profileUpdateResponse.data);
       toast.success("Profile Updated");
@@ -73,22 +74,23 @@ export default function ProfilePage() {
               <Grid item xs={12} sm>
                 <TextField
                   autoComplete="given-name"
+                  disabled
                   name="name"
                   fullWidth
                   id="name"
                   label="Name"
+                  helperText="You can't change your name"
                   // autoFocus
                   inputProps={{ maxLength: 30 }}
-                  // value={formData.name}
+                  value={nameUser}
                   onChange={handleValueChange}
-                  defaultValue={nameUser}
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   disabled
-                  required
                   fullWidth
+                  helperText="You can't change your email"
                   id="email"
                   label="Email Address"
                   name="email"
@@ -99,7 +101,7 @@ export default function ProfilePage() {
               <Grid item xs={12}>
                 <TextField
                   disabled
-                  required
+                  helperText="You can't change your username"
                   fullWidth
                   id="username"
                   label="Username"
