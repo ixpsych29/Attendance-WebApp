@@ -13,7 +13,7 @@ import axios from "axios";
 import UserContext from "./userContext";
 
 export default function ChangePassword() {
-  const { username } = useContext(UserContext);
+  const { username, BASE_URL } = useContext(UserContext);
 
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
@@ -54,18 +54,16 @@ export default function ChangePassword() {
 
     if (validateForm()) {
       try {
-        const Base_Url = "http://localhost:3000";
-        const apiEndpoint = "/api/users";
+        await axios.put(`${BASE_URL}/api/users/${username}/update-profile`, {
+          password: formData.password,
+        });
 
-        const response = await axios.put(
-          `${Base_Url}${apiEndpoint}/${username}`,
-          { password: formData.password }
-        );
-
-        console.log(response.data);
         toast.success("Password Changed Successfully");
+
+        //setting the form to empty
+        setFormData({ password: "", confirmPassword: "" });
       } catch (err) {
-        console.error(err);
+        console.error("Error in Updating Password", err);
       }
     } else {
       //Password is not valid

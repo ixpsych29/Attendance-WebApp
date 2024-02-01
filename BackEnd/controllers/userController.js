@@ -134,16 +134,26 @@ const updatePicture = async (req, res) => {
 //updating a profile of user
 const updateProfile = async (req, res) => {
   const { userName } = req.params;
-  const { phoneNo } = req.body;
+  const { phoneNo, password } = req.body;
 
   //ADD doc to DB
   try {
-    const newUser = await User.findOneAndUpdate(
-      { username: userName },
-      { phoneNumber: phoneNo },
-      { new: true }
-    );
-    res.status(200).json(newUser);
+    if (phoneNo) {
+      const newUser = await User.findOneAndUpdate(
+        { username: userName },
+        { phoneNumber: phoneNo },
+        { new: true }
+      );
+      res.status(200).json(newUser);
+    }
+    if (password) {
+      const newUser = await User.findOneAndUpdate(
+        { username: userName },
+        { password: password },
+        { new: true }
+      );
+      res.status(200).json(newUser);
+    }
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
