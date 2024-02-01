@@ -6,8 +6,14 @@ const UserProvider = ({ children }) => {
   const [username, setUsername] = useState("");
   const [role, setRole] = useState("");
   const [userProfilePic, setUserProfilePic] = useState();
+  const [email, setEmail] = useState("");
+  const [nameUser, setNameUser] = useState("");
 
   const BASE_URL = `http://localhost:3000`;
+
+  const setNameOfUser = (name) => {
+    setNameUser(name);
+  };
 
   const setUserName = (name) => {
     setUsername(name);
@@ -18,6 +24,9 @@ const UserProvider = ({ children }) => {
   const setUserProfilePicture = (pic) => {
     setUserProfilePic(pic);
   };
+  const setUserEmail = (userEmail) => {
+    setEmail(userEmail);
+  };
 
   const fetchProfilePicture = async (username) => {
     try {
@@ -25,7 +34,9 @@ const UserProvider = ({ children }) => {
         `http://localhost:3000/api/users/${username}`
       );
       if (response.status === 200) {
+        setNameOfUser(response.data.name);
         setUserProfilePic(response.data.profilePicture);
+        setUserEmail(response.data.email);
       } else {
         console.error(
           "Error fetching profile picture. Server response:",
@@ -44,6 +55,8 @@ const UserProvider = ({ children }) => {
   return (
     <UserContext.Provider
       value={{
+        nameUser,
+        setNameOfUser,
         username,
         setUserName,
         role,
@@ -52,6 +65,8 @@ const UserProvider = ({ children }) => {
         setUserProfilePicture,
         fetchProfilePicture,
         BASE_URL,
+        email,
+        setUserEmail,
       }}
     >
       {children}

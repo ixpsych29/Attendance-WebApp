@@ -13,6 +13,7 @@ import axios from "axios";
 import { IconButton, InputAdornment } from "@mui/material";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import toast from "react-hot-toast";
 
 function Copyright(props) {
   return (
@@ -103,6 +104,7 @@ export default function SignupForm() {
         });
         // Assuming your backend returns some data, you can log or use it as needed
         console.log(response.data);
+        toast.success("Registered Successfully");
 
         navigate("/");
 

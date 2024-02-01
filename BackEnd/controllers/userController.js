@@ -133,14 +133,11 @@ const updatePicture = async (req, res) => {
 
 //updating a profile of user
 const updateProfile = async (req, res) => {
-  const { name, password } = req.body;
+  const { name, phoneNo } = req.body;
 
   //ADD doc to DB
   try {
-    const newUser = await User.findOneAndUpdate({
-      name,
-      password,
-    });
+    const newUser = await User.findOneAndUpdate({ username: userName },{name: name},{});
     res.status(200).json(newUser);
   } catch (error) {
     res.status(400).json({ error: error.message });

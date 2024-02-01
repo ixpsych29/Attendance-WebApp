@@ -59,7 +59,7 @@ const ProfilePictureUpload = () => {
 
       if (response) {
         fetchProfilePicture(username); // Fetch the updated profile picture from the backend
-        toast.success("Profile Updated Successfully");
+        toast.success("Profile Picture Updated");
         setFile(null);
         setSelectedFile(null);
       }

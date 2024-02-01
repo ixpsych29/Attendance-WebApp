@@ -2,33 +2,49 @@ import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
-
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-// import axios from "axios";
-
+import axios from "axios";
 import { useContext, useState } from "react";
 import UserContext from "./userContext";
-// import toast from "react-hot-toast";
 import MuiPhoneNumber from "material-ui-phone-number-2";
 import ProfilePictureUpload from "./ProfilePictureUpload";
+import toast from "react-hot-toast";
 
 export default function ProfilePage() {
-  const { username } = useContext(UserContext);
+  const { nameUser, username, BASE_URL, email } = useContext(UserContext);
 
   const [formData, setFormData] = useState({
-    name: "",
+    name: nameUser,
+    email: email,
+    username: username,
     phoneNo: "",
   });
 
   //handling Form Data
   const handleValueChange = (event) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
+    const inputValue = event.target.value;
+
+    // Allow only letters and spaces
+    const filteredValue = inputValue.replace(/[^A-Za-z\s]/g, "");
+    setFormData({ ...formData, name: filteredValue });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    try {
+      //making an APi call
+
+      const profileUpdateResponse = await axios.put(
+        `${BASE_URL}/api/users/${username}/update-profile`,
+        formData
+      );
+      console.log("the response from backend", profileUpdateResponse.data);
+      toast.success("Profile Updated");
+    } catch (err) {
+      console.log("Error Updating Profile Data", err);
+    }
   };
 
   return (
@@ -61,10 +77,11 @@ export default function ProfilePage() {
                   fullWidth
                   id="name"
                   label="Name"
-                  autoFocus
-                  inputProps={{ maxLength: 20 }}
-                  value={formData.name}
+                  // autoFocus
+                  inputProps={{ maxLength: 30 }}
+                  // value={formData.name}
                   onChange={handleValueChange}
+                  defaultValue={nameUser}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -76,7 +93,7 @@ export default function ProfilePage() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
-                  defaultValue=""
+                  value={email}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -88,26 +105,11 @@ export default function ProfilePage() {
                   label="Username"
                   name="username"
                   autoComplete="username"
-                  defaultValue={username}
+                  value={username}
                 />
               </Grid>
 
               <Grid item xs={12}>
-                {/* <TextField
-                  // fullWidth
-                  id="phone-no"
-                  label="Phone Number"
-                  name="Phone-no"
-                  autoComplete="phone-no"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <MuiPhoneNumber defaultCountry="pk" fullWidth />
-                      </InputAdornment>
-                    ),
-                  }}
-                /> */}
-
                 <MuiPhoneNumber
                   defaultCountry="pk"
                   fullWidth
@@ -122,10 +124,12 @@ export default function ProfilePage() {
                 />
               </Grid>
             </Grid>
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
+              disabled={!(formData.name && formData.phoneNo)}
               sx={{
                 mt: 3,
                 mb: 2,
