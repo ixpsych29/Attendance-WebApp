@@ -1,15 +1,17 @@
 import { Box, Container, CssBaseline, Stack } from "@mui/material";
 import DisplayCard from "./DisplayCard";
 import RecordList from "./RecordList";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
+import UserContext from "./UserContext";
 
 const Dashboard = () => {
   const [totalEmployees, setTotalEmployees] = useState(0);
   const [presentEmployees, setPresentEmployees] = useState(0);
   const [absentEmployees, setAbsentEmployees] = useState(0);
   const [selectedDate, setSelectedDate] = useState(dayjs());
+  const { Api_EndPoint } = useContext(UserContext);
 
   // const date = new Date();
   // console.log(date);
@@ -22,11 +24,11 @@ const Dashboard = () => {
 
         //fetching total no of users
         const totalResponse = await axios.get(
-          `http://localhost:3000/api/users?cacheBuster=${uniqueIdentifier}`
+          `${Api_EndPoint}/api/users?cacheBuster=${uniqueIdentifier}`
         );
         // console.log("totalResponse ", totalResponse.data);
         setTotalEmployees(totalResponse.data.totalEmployees || 0);
-        const apiUrl = `http://localhost:3000/api/attendance/all?date=${selectedDate.toISOString()}`;
+        const apiUrl = `${Api_EndPoint}/api/attendance/all?date=${selectedDate.toISOString()}`;
         //fetching the total present employees
         const presentResponse = await axios.get(apiUrl);
         const distinctEmployeeCount = presentResponse.data.length;
@@ -42,7 +44,7 @@ const Dashboard = () => {
       }
     };
     fetchRecords();
-  }, [selectedDate]);
+  }, [selectedDate, Api_EndPoint]);
 
   return (
     <Box>

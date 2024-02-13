@@ -1,7 +1,10 @@
 import { useState } from "react";
 import UserContext from "./UserContext";
+import setupEnv from "../../setupEnv.js";
 
 const UserProvider = ({ children }) => {
+  const Api_EndPoint = setupEnv.apiEndpoint;
+
   const [username, setUsername] = useState("");
   const [role, setRole] = useState("");
 
@@ -13,7 +16,9 @@ const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ username, setUserName, role, setUserRole }}>
+    <UserContext.Provider
+      value={{ username, setUserName, role, setUserRole, Api_EndPoint }}
+    >
       {children}
     </UserContext.Provider>
   );

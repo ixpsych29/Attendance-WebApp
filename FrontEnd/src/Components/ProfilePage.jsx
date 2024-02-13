@@ -42,7 +42,7 @@ function Copyright(props) {
 }
 
 export default function ProfilePage() {
-  const { username } = useContext(UserContext);
+  const { username , Api_EndPoint} = useContext(UserContext);
   const [isHovered, setIsHovered] = useState(false);
   const [file, setFile] = useState(null);
 
@@ -63,7 +63,7 @@ export default function ProfilePage() {
       console.log(formData);
 
       const response = await axios.put(
-        `http://localhost:3000/api/users/${username}`,
+        `${Api_EndPoint}/api/users/${username}`,
         formData,
         {
           headers: {
@@ -131,12 +131,10 @@ export default function ProfilePage() {
               ) : (
                 <>
                   {isHovered && (
-                    // (console.log("hovered", "***********************************"),
                     <CameraAltIcon
                       className="upload-icon"
                       fontSize="large"
                       color="error"
-                      // onClick={openFileDialog}
                     />
                   )}
                 </>
@@ -151,7 +149,6 @@ export default function ProfilePage() {
             />
             {file && (
               <div>
-                {/* {console.log("profilePicture", profilePicture.name)} */}
                 <Button
                   type="submit"
                   sx={{
@@ -238,8 +235,6 @@ export default function ProfilePage() {
                 label="D.O.B"
                 name="D.O.B"
                 type="date"
-
-                // placeholder=""
               />
             </Grid>
 

@@ -8,11 +8,12 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import { IconButton, InputAdornment } from "@mui/material";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import UserContext from "./UserContext";
 
 function Copyright(props) {
   return (
@@ -36,6 +37,7 @@ function Copyright(props) {
 // TODO remove, this demo shouldn't need to reset the theme.
 
 export default function SignupForm() {
+  const { Api_EndPoint } = useContext(UserContext);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -92,10 +94,9 @@ export default function SignupForm() {
 
     if (validateForm()) {
       try {
-        const backendBaseUrl = "http://localhost:3000";
         const apiEndpoint = "/api/users";
 
-        const response = await axios.post(`${backendBaseUrl}${apiEndpoint}`, {
+        const response = await axios.post(`${Api_EndPoint}${apiEndpoint}`, {
           name: formData.name,
           username: formData.userName,
           email: formData.email,

@@ -17,7 +17,7 @@ import DownloadCSVReport from "./DownladReport";
 import AttendanceRecordTable from "./AttendanceRecordTable";
 
 const RecordList = ({ selectedDate, setSelectedDate }) => {
-  const { username, role } = useContext(UserContext);
+  const { username, role ,Api_EndPoint} = useContext(UserContext);
   const [attendanceRecord, setAttendanceRecord] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [dateRange, setDateRange] = useState({
@@ -34,10 +34,10 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
         let apiUrl;
         if (isAdmin) {
           // Fetch attendance records for all users (admin)
-          apiUrl = `http://localhost:3000/api/attendance/all?date=${selectedDate.toISOString()}`;
+          apiUrl = `${Api_EndPoint}/api/attendance/all?date=${selectedDate.toISOString()}`;
         } else {
           // Fetch attendance records for the current user
-          apiUrl = `http://localhost:3000/api/attendance/monthly/${username}?startDate=${dateRange.start.toISOString()}&endDate=${dateRange.end.toISOString()}`;
+          apiUrl = `${Api_EndPoint}/api/attendance/monthly/${username}?startDate=${dateRange.start.toISOString()}&endDate=${dateRange.end.toISOString()}`;
         }
 
         const response = await axios.get(apiUrl);
@@ -49,7 +49,7 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
 
     // Calling the fetchAttendanceRecords Function
     fetchAttendanceRecords();
-  }, [isAdmin, username, selectedDate, dateRange]);
+  }, [isAdmin, username, selectedDate, dateRange, Api_EndPoint]);
 
   const handleDateChange = (newDate) => {
     setSelectedDate(newDate);
@@ -77,7 +77,7 @@ const RecordList = ({ selectedDate, setSelectedDate }) => {
         endDate = dayjs().subtract(1, "month").endOf("month");
       }
 
-      const apiUrl = `http://localhost:3000/api/attendance/report?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`;
+      const apiUrl = `${Api_EndPoint}/api/attendance/report?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`;
       const reportResponse = await axios.get(apiUrl);
       DownloadCSVReport(reportResponse.data, reportType);
     } catch (error) {
