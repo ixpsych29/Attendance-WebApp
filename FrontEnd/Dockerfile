@@ -5,7 +5,7 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Copy the current directory contents to /app
-COPY package*.json .
+COPY package*.json ./
 
 # Install app dependencies
 RUN npm install

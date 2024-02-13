@@ -4,7 +4,7 @@ services:
   # Frontend Service
   frontend:
     build:
-      context: ./Frontend
+      context: ./FrontEnd
     ports:
       - "5173:5173"
     depends_on:
@@ -19,7 +19,7 @@ services:
   # Backend Service
   backend:
     build:
-      context: ./Backend
+      context: ./BackEnd
     ports:
       - "3000:3000"
     depends_on:
