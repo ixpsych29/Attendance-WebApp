@@ -3,12 +3,12 @@ import PictureCam from "./PictureCam";
 import { CssBaseline } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import UserContext from "./userContext";
+import UserContext from "./UserContext";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 function Attendence() {
-  const { username } = useContext(UserContext);
+  const { username, Api_EndPoint } = useContext(UserContext);
   const [attendanceMarked, setAttendanceMarked] = useState(false);
   const navigate = useNavigate();
 
@@ -17,7 +17,7 @@ function Attendence() {
     const checkIfCheckedIn = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/attendance/${username}`
+          `${Api_EndPoint}/api/attendance/${username}`
         );
         if (response.data && response.data.leavingTime != null) {
           setAttendanceMarked(true);
@@ -28,7 +28,7 @@ function Attendence() {
     };
 
     checkIfCheckedIn();
-  }, [username]);
+  }, [username, Api_EndPoint]);
 
   function redirectToDashboard() {
     toast.success("You Have Already Marked Your Attendance For Today");

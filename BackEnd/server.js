@@ -5,10 +5,10 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
-const path = require("path");
+const migrateAdminUser = require("./migration/migrateAdminUser");
 
-app.use(cors()); // Use this after the variable declaration
-const port = process.env.PORT || 4000;
+app.use(cors());
+const port = process.env.PORT || 3000;
 
 //middleware
 app.use(express.json());
@@ -31,7 +31,10 @@ app.use("/api/attendance", attendanceRoutes);
 //connect to db
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => {
+  .then(async () => {
+    // Call your migration function here
+    await migrateAdminUser();
+
     //listening to requests
     app.listen(port, () => {
       console.log(`Connected to DB && listening on port ${port}`);

@@ -1,7 +1,7 @@
 import Webcam from "react-webcam";
 import { useCallback, useContext, useRef, useState, useEffect } from "react";
 import axios from "axios";
-import UserContext from "./userContext";
+import UserContext from "./UserContext";
 import { Button } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import RefreshIcon from "@mui/icons-material/Refresh";
@@ -15,14 +15,14 @@ const PictureCam = () => {
   const [imgSrc, setImgSrc] = useState(null);
   const [checkedIn, setCheckedIn] = useState(false);
 
-  const { username } = useContext(UserContext);
+  const { username , Api_EndPoint } = useContext(UserContext);
 
   useEffect(() => {
     // Check if the user has already checked in for the day
     const checkIfCheckedIn = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/attendance/${username}`
+          `${Api_EndPoint}/api/attendance/${username}`
         );
         if (response.data) {
           setCheckedIn(true);
@@ -35,7 +35,7 @@ const PictureCam = () => {
     };
 
     checkIfCheckedIn();
-  }, [username]);
+  }, [username , Api_EndPoint]);
 
   useEffect(() => {
     // If the user checks in or checks out, reset the image source
@@ -56,7 +56,7 @@ const PictureCam = () => {
     try {
       if (!checkedIn) {
         // Check-in logic
-        await axios.post("http://localhost:3000/api/attendance", {
+        await axios.post(`${Api_EndPoint}/api/attendance`, {
           username: username,
           picture: imgSrc,
           entranceTime: date.toISOString(),
@@ -67,7 +67,7 @@ const PictureCam = () => {
         setCheckedIn(true);
       } else {
         // Check-out logic
-        await axios.put(`http://localhost:3000/api/attendance/${username}`, {
+        await axios.put(`${Api_EndPoint}/api/attendance/${username}`, {
           leavingTime: date,
         }); // Notify user and reset state
         toast.success("Check-out Successful!");

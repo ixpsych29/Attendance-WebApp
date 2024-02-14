@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  # Frontend Service
+  frontend:
+    build:
+      context: ./FrontEnd
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_ENDPOINT=http://localhost:3000
+  # MongoDB Service
+  mongo:
+      image: mongo:latest
+      ports:
+        - "27017:27017"
+      volumes:
+        - ./mongo-data:/data/db
+  # Backend Service
+  backend:
+    build:
+      context: ./BackEnd
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    environment:
+      - PORT=3000
+      - MONGO_URI=mongodb://mongo:27017/attendance-app 
+  

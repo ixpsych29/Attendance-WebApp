@@ -11,7 +11,7 @@ import Container from "@mui/material/Container";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import axios from "axios";
-import UserContext from "./userContext";
+import UserContext from "./UserContext";
 // eslint-disable-next-line no-unused-vars
 import toast, { Toaster } from "react-hot-toast";
 import { IconButton, InputAdornment } from "@mui/material";
@@ -44,7 +44,7 @@ export default function LoginForm({ login, role }) {
 
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [errors, setErrors] = useState({});
-  const { setUserName, setUserRole } = useContext(UserContext);
+  const { setUserName, setUserRole, Api_EndPoint } = useContext(UserContext);
   const navigate = useNavigate();
 
   /* *********** Form Validation ************ */
@@ -73,13 +73,10 @@ export default function LoginForm({ login, role }) {
 
     if (validateForm()) {
       try {
-        const response = await axios.post(
-          "http://localhost:3000/api/users/login",
-          {
-            username: formData.username,
-            password: formData.password,
-          }
-        );
+        const response = await axios.post(`${Api_EndPoint}/api/users/login`, {
+          username: formData.username,
+          password: formData.password,
+        });
         // console.log(response.data);
 
         //accessing username
@@ -115,7 +112,7 @@ export default function LoginForm({ login, role }) {
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: "#fff" }}>
-          <img src="/src/assets/images/logo.png" width="28px" height="auto" />
+          <img src="/src/assets/logo.png" width="28px" height="auto" />
         </Avatar>
         <Typography component="h1" variant="h5">
           Login
@@ -134,6 +131,9 @@ export default function LoginForm({ login, role }) {
             onChange={handleChange}
             error={Boolean(errors.username)}
             helperText={errors.username}
+            inputProps={{
+              maxLength: 25, // Limiting to 15 characters
+            }}
           />
           <TextField
             margin="normal"
@@ -160,6 +160,9 @@ export default function LoginForm({ login, role }) {
                   </IconButton>
                 </InputAdornment>
               ),
+            }}
+            inputProps={{
+              maxLength: 20, // Limiting to 15 characters
             }}
           />
           <Button

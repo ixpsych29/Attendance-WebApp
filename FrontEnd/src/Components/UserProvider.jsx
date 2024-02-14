@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
-import UserContext from "./userContext";
+import UserContext from "./UserContext";
 import axios from "axios";
+import setupEnv from "../../setupEnv.js";
 
 const UserProvider = ({ children }) => {
+  const Api_EndPoint = setupEnv.apiEndpoint;
+
   const [username, setUsername] = useState("");
   const [role, setRole] = useState("");
   const [userProfilePic, setUserProfilePic] = useState();
@@ -70,6 +73,7 @@ const UserProvider = ({ children }) => {
         fetchProfilePicture,
         BASE_URL,
         email,
+        Api_EndPoint,
       }}
     >
       {children}

@@ -13,7 +13,7 @@ import TodayIcon from "@mui/icons-material/Today";
 import ModeNightIcon from "@mui/icons-material/ModeNight";
 import { Link, useLocation } from "react-router-dom";
 import { useContext } from "react";
-import UserContext from "./userContext";
+import UserContext from "./UserContext";
 
 const Sidebar = ({ mode, setMode }) => {
   const { role } = useContext(UserContext);
