@@ -15,7 +15,7 @@ const PictureCam = () => {
   const [imgSrc, setImgSrc] = useState(null);
   const [checkedIn, setCheckedIn] = useState(false);
 
-  const { username , Api_EndPoint } = useContext(UserContext);
+  const { username, Api_EndPoint } = useContext(UserContext);
 
   useEffect(() => {
     // Check if the user has already checked in for the day
@@ -35,7 +35,7 @@ const PictureCam = () => {
     };
 
     checkIfCheckedIn();
-  }, [username , Api_EndPoint]);
+  }, [username, Api_EndPoint]);
 
   useEffect(() => {
     // If the user checks in or checks out, reset the image source
