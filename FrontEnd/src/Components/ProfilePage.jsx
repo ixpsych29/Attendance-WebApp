@@ -13,7 +13,7 @@ import ProfilePictureUpload from "./ProfilePictureUpload";
 import toast from "react-hot-toast";
 
 export default function ProfilePage() {
-  const { nameUser, username, BASE_URL, email, phNumber } =
+  const { nameUser, username, Api_EndPoint, email, phNumber } =
     useContext(UserContext);
 
   const [formData, setFormData] = useState({
@@ -37,7 +37,7 @@ export default function ProfilePage() {
     try {
       //making an APi call
 
-      await axios.put(`${BASE_URL}/api/users/${username}/update-profile`, {
+      await axios.put(`${Api_EndPoint}/api/users/${username}/update-profile`, {
         phoneNo: formData.phoneNo,
       });
       toast.success("Profile Updated");
