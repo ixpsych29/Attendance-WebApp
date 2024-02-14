@@ -6,6 +6,7 @@ const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
 const migrateAdminUser = require("./migration/migrateAdminUser");
+const path = require("path");
 
 app.use(cors());
 const port = process.env.PORT || 3000;
