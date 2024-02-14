@@ -44,7 +44,7 @@ export default function LoginForm({ login, role }) {
 
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [errors, setErrors] = useState({});
-  const { setUserName, setUserRole , Api_EndPoint } = useContext(UserContext);
+  const { setUserName, setUserRole, Api_EndPoint } = useContext(UserContext);
   const navigate = useNavigate();
 
   /* *********** Form Validation ************ */
@@ -73,13 +73,10 @@ export default function LoginForm({ login, role }) {
 
     if (validateForm()) {
       try {
-        const response = await axios.post(
-          `${Api_EndPoint}/api/users/login`,
-          {
-            username: formData.username,
-            password: formData.password,
-          }
-        );
+        const response = await axios.post(`${Api_EndPoint}/api/users/login`, {
+          username: formData.username,
+          password: formData.password,
+        });
         // console.log(response.data);
 
         //accessing username
@@ -115,7 +112,7 @@ export default function LoginForm({ login, role }) {
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: "#fff" }}>
-          <img src="/src/assets/images/logo.png" width="28px" height="auto" />
+          <img src="/src/assets/logo.png" width="28px" height="auto" />
         </Avatar>
         <Typography component="h1" variant="h5">
           Login
