@@ -6,12 +6,19 @@ const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
 const migrateAdminUser = require("./migration/migrateAdminUser");
+const path = require("path");
 
 app.use(cors());
 const port = process.env.PORT || 3000;
 
 //middleware
 app.use(express.json());
+
+// Serve static files from the 'Images' directory within 'uploads'
+app.use(
+  "/uploads/Images",
+  express.static(path.join(__dirname, "uploads/Images"))
+);
 
 app.use((req, res, next) => {
   console.log(req.path, req.method);

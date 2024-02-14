@@ -24,6 +24,10 @@ const userModel = new Schema(
       type: String,
       default: null,
     },
+    phoneNumber: {
+      type: String,
+      default: null,
+    },
     role: {
       type: String,
       enum: ["user", "admin"],

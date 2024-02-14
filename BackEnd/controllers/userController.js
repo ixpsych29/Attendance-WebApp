@@ -19,7 +19,7 @@ const getUsers = async (req, res) => {
 //get a single User
 const getSingleUser = async (req, res) => {
   const { userName } = req.params;
-  const user = await User.find({ username: userName });
+  const user = await User.findOne({ username: userName });
   if (!user) {
     return res.status(404).json({ error: "No user found" });
   }
@@ -60,7 +60,7 @@ const deleteUser = async (req, res) => {
   res.status(200).json(user);
 };
 
-//updation logic starts here...
+//profile picture updation logic starts here...
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -68,8 +68,8 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     //using username and timeStamp to create File name
-    // const timeStamp = new Date().toISOString().replace(/[-:.]/g, "");
-    const filename = `${req.params.userName}_${file.originalname}`;
+    const timeStamp = new Date().toISOString().replace(/[-:.]/g, "");
+    const filename = `${req.params.userName}_${timeStamp}_${file.originalname}`;
     console.log(file.originalname);
     console.log(filename);
     cb(null, filename);
@@ -93,8 +93,8 @@ const upload = multer({
   },
 });
 
-//update a User
-const updateUser = async (req, res) => {
+//update a ProfilePicture of User
+const updatePicture = async (req, res) => {
   console.log(req.body);
   const { userName } = req.params;
 
@@ -109,7 +109,7 @@ const updateUser = async (req, res) => {
       const fileName = req.file.filename;
       console.log(fileName);
 
-      //updating the mongoDB with picName
+      // updating the mongoDB with picName
       const updateRes = User.findOneAndUpdate(
         { username: userName },
         { profilePicture: fileName },
@@ -128,6 +128,34 @@ const updateUser = async (req, res) => {
   } catch (error) {
     console.error("Error updating profile picture:", error);
     res.status(500).json({ error: error.message });
+  }
+};
+
+//updating a profile of user
+const updateProfile = async (req, res) => {
+  const { userName } = req.params;
+  const { phoneNo, password } = req.body;
+
+  //ADD doc to DB
+  try {
+    if (phoneNo) {
+      const newUser = await User.findOneAndUpdate(
+        { username: userName },
+        { phoneNumber: phoneNo },
+        { new: true }
+      );
+      res.status(200).json(newUser);
+    }
+    if (password) {
+      const newUser = await User.findOneAndUpdate(
+        { username: userName },
+        { password: password },
+        { new: true }
+      );
+      res.status(200).json(newUser);
+    }
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 };
 
@@ -163,7 +191,8 @@ module.exports = {
   getSingleUser,
   createUser,
   deleteUser,
-  updateUser,
+  updatePicture,
+  updateProfile,
   loginUser,
   upload,
 };
