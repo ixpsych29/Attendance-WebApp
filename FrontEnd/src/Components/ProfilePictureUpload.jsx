@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState, useRef } from "react";
-import UserContext from "./userContext";
+import UserContext from "./UserContext";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { Avatar, Button, Input } from "@mui/material";
@@ -11,7 +11,7 @@ const ProfilePictureUpload = () => {
     userProfilePic,
     setUserProfilePicture,
     fetchProfilePicture,
-    BASE_URL,
+    Api_EndPoint
   } = useContext(UserContext);
 
   const [isHovered, setIsHovered] = useState(false);
@@ -55,7 +55,7 @@ const ProfilePictureUpload = () => {
       formData.append("profilePicture", file);
 
       const response = await axios.put(
-        `${BASE_URL}/api/users/${username}/update-picture`,
+        `${Api_EndPoint}/api/users/${username}/update-picture`,
         formData,
         {
           headers: {
@@ -103,7 +103,7 @@ const ProfilePictureUpload = () => {
             />
           ) : userProfilePic ? (
             <img
-              src={`${BASE_URL}/uploads/Images/${userProfilePic}`} //fetching dymaically images from backend
+              src={`${Api_EndPoint}/uploads/Images/${userProfilePic}`} //fetching dymaically images from backend
               alt="ProfilePicture"
               style={{ width: "100%", height: "100%" }}
             />

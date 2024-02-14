@@ -12,7 +12,7 @@ import {
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import UserContext from "./userContext";
+import UserContext from "./UserContext";
 import ProfilePictureUpload from "./ProfilePictureUpload";
 
 const StyledToolBar = styled(Toolbar)({

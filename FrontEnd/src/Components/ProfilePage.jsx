@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import axios from "axios";
 import { useContext, useState } from "react";
-import UserContext from "./userContext";
+import UserContext from "./UserContext";
 import MuiPhoneNumber from "material-ui-phone-number-2";
 import ProfilePictureUpload from "./ProfilePictureUpload";
 import toast from "react-hot-toast";

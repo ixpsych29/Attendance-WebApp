@@ -4,6 +4,7 @@ import axios from "axios";
 import setupEnv from "../../setupEnv.js";
 
 const UserProvider = ({ children }) => {
+  
   const Api_EndPoint = setupEnv.apiEndpoint;
 
   const [username, setUsername] = useState("");
@@ -12,8 +13,6 @@ const UserProvider = ({ children }) => {
   const [email, setEmail] = useState("");
   const [nameUser, setNameUser] = useState("");
   const [phNumber, setPhNumber] = useState("");
-
-  const BASE_URL = `http://localhost:3000`;
 
   const setNameOfUser = (name) => {
     setNameUser(name);
@@ -34,30 +33,29 @@ const UserProvider = ({ children }) => {
     setEmail(userEmail);
   };
 
-  const fetchProfilePicture = async (username) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3000/api/users/${username}`
-      );
-      if (response.status === 200) {
-        setNameOfUser(response.data.name);
-        setUserProfilePic(response.data.profilePicture);
-        setUserEmail(response.data.email);
-        setPhoneNumber(response.data.phoneNumber);
-      } else {
-        console.error(
-          "Error fetching profile picture. Server response:",
-          response.status
-        );
-      }
-    } catch (error) {
-      console.error("Error fetching profile picture:", error);
-    }
-  };
-
   useEffect(() => {
+    const fetchProfilePicture = async (username) => {
+      try {
+        const response = await axios.get(
+          `${Api_EndPoint}/api/users/${username}`
+        );
+        if (response.status === 200) {
+          setNameOfUser(response.data.name);
+          setUserProfilePic(response.data.profilePicture);
+          setUserEmail(response.data.email);
+          setPhoneNumber(response.data.phoneNumber);
+        } else {
+          console.error(
+            "Error fetching profile picture. Server response:",
+            response.status
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching profile picture:", error);
+      }
+    };
     fetchProfilePicture(username);
-  }, [username]);
+  }, [username, Api_EndPoint]);
 
   return (
     <UserContext.Provider
@@ -70,8 +68,6 @@ const UserProvider = ({ children }) => {
         setUserRole,
         userProfilePic,
         setUserProfilePicture,
-        fetchProfilePicture,
-        BASE_URL,
         email,
         Api_EndPoint,
       }}

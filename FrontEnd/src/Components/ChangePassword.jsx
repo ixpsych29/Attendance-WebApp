@@ -10,10 +10,10 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
-import UserContext from "./userContext";
+import UserContext from "./UserContext";
 
 export default function ChangePassword() {
-  const { username, BASE_URL } = useContext(UserContext);
+  const { username, Api_EndPoint } = useContext(UserContext);
 
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
@@ -54,9 +54,12 @@ export default function ChangePassword() {
 
     if (validateForm()) {
       try {
-        await axios.put(`${BASE_URL}/api/users/${username}/update-profile`, {
-          password: formData.password,
-        });
+        await axios.put(
+          `${Api_EndPoint}/api/users/${username}/update-profile`,
+          {
+            password: formData.password,
+          }
+        );
 
         toast.success("Password Changed Successfully");
 
