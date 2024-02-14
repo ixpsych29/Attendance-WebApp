@@ -9,6 +9,8 @@ services:
       - "5173:5173"
     depends_on:
       - backend
+    environment:
+      - VITE_API_ENDPOINT=http://localhost:3000
   # MongoDB Service
   mongo:
       image: mongo:latest
