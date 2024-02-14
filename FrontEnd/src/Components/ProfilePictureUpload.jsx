@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import UserContext from "./userContext";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -17,26 +17,33 @@ const ProfilePictureUpload = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [file, setFile] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     // Fetch the user's profile picture on component mount
     fetchProfilePicture(username);
   }, [username, fetchProfilePicture]);
 
+  const handleImageClick = () => {
+    inputRef.current.click();
+  };
+
   const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
+    const pictureSelected = event.target.files[0];
+    setFile(pictureSelected);
 
     //upadting the selected file state
     setSelectedFile(file);
+    console.log(file, selectedFile);
 
     //displaying image immediately in avatar
     const reader = new FileReader();
     reader.onloadend = () => {
       setUserProfilePicture(reader.result);
     };
-    if (file) {
+    if (pictureSelected) {
       // reader.readAsDataURL(event.target.files[0]);
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(pictureSelected);
     }
   };
 
@@ -69,7 +76,7 @@ const ProfilePictureUpload = () => {
   };
 
   return (
-    <form onSubmit={handleUpload}>
+    <form onClick={handleImageClick} onSubmit={handleUpload}>
       <label htmlFor="upload-avatar">
         <Avatar
           sx={{
@@ -118,6 +125,7 @@ const ProfilePictureUpload = () => {
           accept="image/*"
           id="upload-avatar"
           type="file"
+          ref={inputRef}
           style={{ display: "none" }}
           onChange={handleFileChange}
         />

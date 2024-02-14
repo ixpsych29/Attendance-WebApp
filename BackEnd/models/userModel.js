@@ -22,7 +22,7 @@ const userModel = new Schema(
     },
     profilePicture: {
       type: String,
-      default: "../uploads/Images/noImage.jpeg",
+      default: null,
     },
     phoneNumber: {
       type: String,
