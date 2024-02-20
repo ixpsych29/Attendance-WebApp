@@ -4,7 +4,6 @@ import axios from "axios";
 import setupEnv from "../../setupEnv.js";
 
 const UserProvider = ({ children }) => {
-  
   const Api_EndPoint = setupEnv.apiEndpoint;
 
   const [username, setUsername] = useState("");
@@ -33,27 +32,25 @@ const UserProvider = ({ children }) => {
     setEmail(userEmail);
   };
 
-  useEffect(() => {
-    const fetchProfilePicture = async (username) => {
-      try {
-        const response = await axios.get(
-          `${Api_EndPoint}/api/users/${username}`
+  const fetchProfilePicture = async (username) => {
+    try {
+      const response = await axios.get(`${Api_EndPoint}/api/users/${username}`);
+      if (response.status === 200) {
+        setNameOfUser(response.data.name);
+        setUserProfilePic(response.data.profilePicture);
+        setUserEmail(response.data.email);
+        setPhoneNumber(response.data.phoneNumber);
+      } else {
+        console.error(
+          "Error fetching profile picture. Server response:",
+          response.status
         );
-        if (response.status === 200) {
-          setNameOfUser(response.data.name);
-          setUserProfilePic(response.data.profilePicture);
-          setUserEmail(response.data.email);
-          setPhoneNumber(response.data.phoneNumber);
-        } else {
-          console.error(
-            "Error fetching profile picture. Server response:",
-            response.status
-          );
-        }
-      } catch (error) {
-        console.error("Error fetching profile picture:", error);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching profile picture:", error);
+    }
+  };
+  useEffect(() => {
     fetchProfilePicture(username);
   }, [username, Api_EndPoint]);
 
@@ -68,6 +65,7 @@ const UserProvider = ({ children }) => {
         setUserRole,
         userProfilePic,
         setUserProfilePicture,
+        fetchProfilePicture,
         email,
         Api_EndPoint,
       }}

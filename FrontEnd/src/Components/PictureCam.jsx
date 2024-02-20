@@ -14,8 +14,9 @@ const PictureCam = () => {
   const webcamRef = useRef(null);
   const [imgSrc, setImgSrc] = useState(null);
   const [checkedIn, setCheckedIn] = useState(false);
-
+  // const [permissionGranted, setPermissionGranted] = useState(false);
   const { username, Api_EndPoint } = useContext(UserContext);
+  // const [permissionRequested, setPermissionRequested] = useState(false);
 
   useEffect(() => {
     // Check if the user has already checked in for the day
@@ -24,16 +25,11 @@ const PictureCam = () => {
         const response = await axios.get(
           `${Api_EndPoint}/api/attendance/${username}`
         );
-        if (response.data) {
-          setCheckedIn(true);
-        } else {
-          setCheckedIn(false);
-        }
+        setCheckedIn(!!response.data);
       } catch (error) {
         console.log(error.response.data.message);
       }
     };
-
     checkIfCheckedIn();
   }, [username, Api_EndPoint]);
 
@@ -80,6 +76,21 @@ const PictureCam = () => {
     }
   };
 
+  // useEffect(() => {
+  //   if (!permissionRequested) {
+  //     const requestCameraPermission = async () => {
+  //       try {
+  //         await navigator.mediaDevices.getUserMedia({ video: true });
+  //         setPermissionGranted(true);
+  //       } catch (error) {
+  //         console.log("Error requesting camera access:", error);
+  //       }
+  //     };
+
+  //     requestCameraPermission();
+  //     setPermissionRequested(true);
+  //   }
+  // }, [permissionRequested]);
   return (
     <div className="container">
       {imgSrc ? (
