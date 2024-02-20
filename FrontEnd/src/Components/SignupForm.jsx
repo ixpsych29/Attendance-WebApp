@@ -97,13 +97,13 @@ export default function SignupForm() {
       try {
         const apiEndpoint = "/api/users";
 
-        const response = await axios.post(`${Api_EndPoint}${apiEndpoint}`, {
+        await axios.post(`${Api_EndPoint}${apiEndpoint}`, {
           name: formData.name,
           username: formData.userName,
           email: formData.email,
           password: formData.password,
         });
-        console.log(response.data);
+        // console.log(response.data);
         toast.success("Registered Successfully");
 
         navigate("/");
@@ -115,7 +115,7 @@ export default function SignupForm() {
       }
     } else {
       // Form is not valid, handle accordingly
-      console.log("Form is not valid");
+      toast.error("Form is not valid");
     }
   };
 
