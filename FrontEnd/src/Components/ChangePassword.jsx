@@ -26,10 +26,12 @@ export default function ChangePassword() {
   const validateForm = () => {
     let isValid = true;
     const newErrors = {};
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-{}|:;\'\",<.>/?\\`~]).{8,}$/;
 
     // Validate password
-    if (formData.password.length < 7 || formData.password.length > 15) {
+    if (formData.password.length < 7 || formData.password.length > 15 || !passwordRegex.test(formData.password)) {
       newErrors.password = "Enter a valid password between 7 and 15 letters";
+      toast.error("Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character");
       isValid = false;
     }
 
