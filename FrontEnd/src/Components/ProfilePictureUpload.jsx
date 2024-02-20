@@ -2,7 +2,7 @@ import { useContext, useEffect, useState, useRef } from "react";
 import UserContext from "./UserContext";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { Avatar, Button, Input } from "@mui/material";
+import { Avatar, Button } from "@mui/material";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 
 const ProfilePictureUpload = () => {
@@ -11,7 +11,7 @@ const ProfilePictureUpload = () => {
     userProfilePic,
     setUserProfilePicture,
     fetchProfilePicture,
-    Api_EndPoint
+    Api_EndPoint,
   } = useContext(UserContext);
 
   const [isHovered, setIsHovered] = useState(false);
@@ -29,21 +29,19 @@ const ProfilePictureUpload = () => {
   };
 
   const handleFileChange = (event) => {
-    const pictureSelected = event.target.files[0];
-    setFile(pictureSelected);
+    setFile(event.target.files[0]);
 
     //upadting the selected file state
     setSelectedFile(file);
-    console.log(file, selectedFile);
 
     //displaying image immediately in avatar
     const reader = new FileReader();
     reader.onloadend = () => {
       setUserProfilePicture(reader.result);
     };
-    if (pictureSelected) {
+    if (file) {
       // reader.readAsDataURL(event.target.files[0]);
-      reader.readAsDataURL(pictureSelected);
+      reader.readAsDataURL(file);
     }
   };
 
@@ -76,7 +74,7 @@ const ProfilePictureUpload = () => {
   };
 
   return (
-    <form onClick={handleImageClick} onSubmit={handleUpload}>
+    <form onSubmit={handleUpload}>
       <label htmlFor="upload-avatar">
         <Avatar
           sx={{
@@ -91,6 +89,7 @@ const ProfilePictureUpload = () => {
               },
             },
           }}
+          onClick={handleImageClick}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           alt="profile picture"
@@ -121,7 +120,7 @@ const ProfilePictureUpload = () => {
           )}
         </Avatar>
 
-        <Input
+        <input
           accept="image/*"
           id="upload-avatar"
           type="file"
