@@ -13,7 +13,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "./UserContext";
-import ProfilePictureUpload from "./ProfilePictureUpload";
+// import ProfilePictureUpload from "./ProfilePictureUpload";
 
 const StyledToolBar = styled(Toolbar)({
   display: "flex",
@@ -46,7 +46,7 @@ const UserImage = styled("img")(({ theme }) => ({
 const Navbar = ({ login }) => {
   const [open, setOpen] = useState(false);
 
-  const { username } = useContext(UserContext);
+  const { username, userProfilePic, Api_EndPoint } = useContext(UserContext);
 
   return (
     <AppBar
@@ -74,14 +74,10 @@ const Navbar = ({ login }) => {
           <Badge badgeContent={4} color="error">
             <NotificationsIcon color="white" />
           </Badge>
-          <Avatar sx={{ width: 30, height: 30 }}>
-            <ProfilePictureUpload />
-          </Avatar>
+          <Avatar sx={{ width: 30, height: 30 }} srcSet={`${Api_EndPoint}/uploads/Images/${userProfilePic}`} onClick={() => setOpen(true)} />
         </Icons>
         <UserBox>
-          <Avatar sx={{ width: 30, height: 30 }} onClick={() => setOpen(true)}>
-            <ProfilePictureUpload />
-          </Avatar>
+        <Avatar sx={{ width: 30, height: 30 }} srcSet={`${Api_EndPoint}/uploads/Images/${userProfilePic}`} onClick={() => setOpen(true)} />
           <Typography variant="span">{username}</Typography>
         </UserBox>
       </StyledToolBar>
