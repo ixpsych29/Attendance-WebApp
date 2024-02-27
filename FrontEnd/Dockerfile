@@ -15,4 +15,6 @@ COPY . .
 
 EXPOSE 5173
 
+ENV VITE_API_ENDPOINT=https://backend-73ghfkcvpa-de.a.run.app
+
 CMD [ "npm","run","dev" ]

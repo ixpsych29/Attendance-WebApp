@@ -61,7 +61,8 @@ export default function SignupForm() {
 
     // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-{}|:;\'\",<.>/?\\`~]).{8,}$/;
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-{}|:;\\'\\",<.>/?\\`~]).{8,}$/;
 
     if (!formData.name) {
       newErrors.name = "Enter Name";
@@ -77,9 +78,15 @@ export default function SignupForm() {
     }
 
     // Validate password
-    if (formData.password.length < 7 || formData.password.length > 15 ||!passwordRegex.test(formData.password)) {
+    if (
+      formData.password.length < 7 ||
+      formData.password.length > 15 ||
+      !passwordRegex.test(formData.password)
+    ) {
       newErrors.password = "Enter a valid password between 7 and 15 letters";
-      toast.error("Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character");
+      toast.error(
+        "Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character"
+      );
       isValid = false;
     }
 
@@ -98,8 +105,19 @@ export default function SignupForm() {
 
     if (validateForm()) {
       try {
-        const apiEndpoint = "/api/users";
+        // Check if the username already exists
+        const usernameExists = await axios.get(
+          `${Api_EndPoint}/api/users/${formData.userName}`
+        );
+        if (usernameExists.data) {
+          // Username already exists, display an error
+          toast.error(
+            "Username already exists. Please choose a different username."
+          );
+          return;
+        }
 
+        const apiEndpoint = "/api/users";
         await axios.post(`${Api_EndPoint}${apiEndpoint}`, {
           name: formData.name,
           username: formData.userName,
