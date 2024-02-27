@@ -2,24 +2,24 @@
 
 **Sandyapps** proudly presents the **Web Attendance App**, a user-friendly and efficient solution for managing your team's attendance. Built with the powerful **MERN stack** (MongoDB, Express.js, React.js, Node.js) and enhanced with **Material-UI** (MUI) for a sleek interface, this app streamlines the entire process.
 
-**Seamless User Experience:**
+### Seamless User Experience:
 
 - **Secure User Management:** Users can effortlessly sign up, log in, and log out, ensuring data privacy through robust authentication measures.
 - **Real-time Attendance Marking:** Capture attendance instantly with a timestamp. 
 - **Enhanced Check-out:** Securely verify check-out with a real-time photo capture.
 
-**Empowering Administration:**
+### Empowering Administration:
 
 - **Dedicated Admin Panel:** Manage your workforce efficiently with a comprehensive admin panel.
 - **Real-time Attendance Monitoring:** View and manage all users' attendance records as they happen.
 - **Customizable Reporting:** Generate detailed attendance reports in CSV format for any period within the last 3 months.
 
-**Effortless Deployment:**
+### Effortless Deployment:
 
 - **Dockerized for Simplicity:** Enjoy easy deployment and management with Docker containerization.
 - **Accessible on Cloud:** Access the deployed application directly at [https://frontend-73ghfkcvpa-de.a.run.app].
 
-**Tech Stack for Reliability:**
+### Tech Stack for Reliability:
 
 - **MongoDB:** Securely store user and attendance data.
 - **Express.js:** Handle API requests efficiently on the backend.
@@ -29,27 +29,25 @@
 - **Toastify:** Display informative notifications to users.
 - **Docker:** Simplify deployment and management across environments.
 
-**Embrace Open Source Collaboration:**
+### Embrace Open Source Collaboration:
 
 We encourage contributions from the open-source community! Share your ideas through bug reports, feature requests, or pull requests.
 
-**Installation**
-Clone the repository:
+### Installation:
 
-bash
-git clone https://github.com/sandyapps/web-attendance-app.git
+1. **Clone the repository:**
 
-**Navigate to the project directory:**
+    ```bash
+    git clone https://github.com/sandyapps/web-attendance-app.git
+    cd web-attendance-app
+    ```
 
-bash
-cd web-attendance-app
+2. **Run the Docker Compose command:**
 
-**Run the Docker Compose command:**
+    ```bash
+    docker-compose up
+    ```
 
-bash
-docker-compose up
-
-Access the application in your browser at http://localhost:5173.
-
+3. **Access the application in your browser at http://localhost:5173.**
 
 **Say goodbye to manual attendance tracking and hello to a smarter, more efficient way to manage your workforce. Let the Web Attendance App empower your team!**
