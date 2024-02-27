@@ -33,8 +33,23 @@
 
 We encourage contributions from the open-source community! Share your ideas through bug reports, feature requests, or pull requests.
 
-**License:**
+**Installation**
+Clone the repository:
 
-This project is licensed under the permissive **MIT License** (LICENSE.md). Feel free to use, modify, and distribute the code for your specific needs.
+bash
+git clone https://github.com/sandyapps/web-attendance-app.git
+
+**Navigate to the project directory:**
+
+bash
+cd web-attendance-app
+
+**Run the Docker Compose command:**
+
+bash
+docker-compose up
+
+Access the application in your browser at http://localhost:5173.
+
 
 **Say goodbye to manual attendance tracking and hello to a smarter, more efficient way to manage your workforce. Let the Web Attendance App empower your team!**
