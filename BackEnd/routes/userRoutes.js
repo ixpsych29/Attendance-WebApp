@@ -7,6 +7,7 @@ const {
   updatePicture,
   updateProfile,
   loginUser,
+  UserExist
 } = require("../controllers/userController");
 
 const router = express.Router();
@@ -16,6 +17,7 @@ router.get("/", getUsers);
 
 //single user
 router.get("/:userName", getSingleUser);
+router.get("/exists/:userName", UserExist);
 
 //insert new user
 router.post("/", createUser);

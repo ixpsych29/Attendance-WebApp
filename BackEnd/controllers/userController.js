@@ -118,7 +118,6 @@ const updatePicture = async (req, res) => {
         if (!user) {
           return res.status(404).json({ error: "User not found" });
         }
-        console.log(updateRes.data);
         //otherwise respond with success message
         res
           .status(200)
@@ -126,7 +125,6 @@ const updatePicture = async (req, res) => {
       });
     });
   } catch (error) {
-    console.error("Error updating profile picture:", error);
     res.status(500).json({ error: error.message });
   }
 };
@@ -185,6 +183,22 @@ const loginUser = async (req, res) => {
   }
 };
 
+async function UserExist(req, res) {
+  const { userName } = req.params;
+  try {
+    const user = await User.findOne({ username: userName }).exec();
+    if (user) {
+      // User found, so it exists
+      return res.status(200).json({ exists: true });
+    } else {
+      // User not found, so it does not exist
+      return res.status(200).json({ exists: false });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+}
+
 //exporting modules
 module.exports = {
   getUsers,
@@ -195,4 +209,5 @@ module.exports = {
   updateProfile,
   loginUser,
   upload,
+  UserExist,
 };

@@ -105,18 +105,21 @@ export default function SignupForm() {
 
     if (validateForm()) {
       try {
+        console.log("hsgasduigbdas");
+
         // Check if the username already exists
         const usernameExists = await axios.get(
-          `${Api_EndPoint}/api/users/${formData.userName}`
+          `${Api_EndPoint}/api/users/exists/${formData.userName}`
         );
-        if (usernameExists.data) {
+        console.log(usernameExists);
+
+        if (usernameExists.data.exists) {
           // Username already exists, display an error
           toast.error(
             "Username already exists. Please choose a different username."
           );
           return;
         }
-
         const apiEndpoint = "/api/users";
         await axios.post(`${Api_EndPoint}${apiEndpoint}`, {
           name: formData.name,
@@ -124,11 +127,8 @@ export default function SignupForm() {
           email: formData.email,
           password: formData.password,
         });
-        // console.log(response.data);
         toast.success("Registered Successfully");
-
         navigate("/");
-
         // Optionally, you can redirect the user or perform other actions after successful registration
       } catch (error) {
         // Handle errors from the server
