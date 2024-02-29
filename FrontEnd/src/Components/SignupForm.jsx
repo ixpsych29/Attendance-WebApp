@@ -105,14 +105,10 @@ export default function SignupForm() {
 
     if (validateForm()) {
       try {
-        console.log("hsgasduigbdas");
-
         // Check if the username already exists
         const usernameExists = await axios.get(
           `${Api_EndPoint}/api/users/exists/${formData.userName}`
         );
-        console.log(usernameExists);
-
         if (usernameExists.data.exists) {
           // Username already exists, display an error
           toast.error(
