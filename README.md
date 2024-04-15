@@ -1,4 +1,4 @@
-## Web Attendance App: Streamline Your Workforce Management 
+## sandyApps Attendance WebApp: Streamline Your Workforce Management 
 
 **Sandyapps** proudly presents the **Web Attendance App**, a user-friendly and efficient solution for managing your team's attendance. Built with the powerful **MERN stack** (MongoDB, Express.js, React.js, Node.js) and enhanced with **Material-UI** (MUI) for a sleek interface, this app streamlines the entire process.
 
